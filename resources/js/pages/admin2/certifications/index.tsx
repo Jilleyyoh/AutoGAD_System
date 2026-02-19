@@ -138,12 +138,12 @@ export default function CertificationsIndex({
                     </div>
 
                     {/* Info Card */}
-                    <div className="mb-8 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4">
+                    <div className="mb-8 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
                         <div className="flex gap-3">
-                            <AlertCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                            <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                             <div>
-                                <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">About Certifications</h3>
-                                <p className="text-sm text-emerald-800 dark:text-emerald-200 mt-1">
+                                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Certifications</h3>
+                                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
                                     Issue certificates for projects that have completed their evaluation process and meet certification criteria.
                                 </p>
                             </div>

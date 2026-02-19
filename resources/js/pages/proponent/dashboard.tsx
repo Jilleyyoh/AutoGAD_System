@@ -93,6 +93,7 @@ export default function Dashboard({ projects, proponent }: Props) {
             <Link
               href={route('proponent.pap.create')}
               className={combineTheme('inline-flex items-center gap-2 px-6 py-3 border border-transparent shadow-md text-sm font-medium rounded-lg transition-all', themeClasses.button.primary)}
+              style={{ backgroundColor: '#5a189a' }}
             >
               <Plus className="w-5 h-5" />
               Submit New PAP

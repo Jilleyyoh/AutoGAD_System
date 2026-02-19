@@ -6,11 +6,9 @@
 export const themeClasses = {
     // Text colors
     text: {
-        primary: 'text-gray-900 dark:text-gray-100',
+        primary: 'text-gray-900 dark:text-white',
         secondary: 'text-gray-600 dark:text-gray-400',
-        tertiary: 'text-gray-500 dark:text-gray-400',
-        muted: 'text-gray-500 dark:text-gray-500',
-        inverse: 'text-white dark:text-gray-100',
+        tertiary: 'text-gray-500 dark:text-gray-500',
     },
 
     // Background colors
@@ -24,22 +22,22 @@ export const themeClasses = {
 
     // Border colors
     border: {
-        primary: 'border-gray-200 dark:border-slate-700',
+        primary: 'border-gray-200 dark:border-gray-700',
         secondary: 'border-gray-300 dark:border-slate-600',
         light: 'border-gray-100 dark:border-slate-800',
     },
 
     // Button states
     button: {
-        primary: 'text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500',
+        primary: 'bg-blue-600 hover:bg-blue-700 text-white',
         secondary: 'text-gray-900 dark:text-gray-100 bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600',
         ghost: 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700',
     },
 
     // Status badge colors
     badge: {
-        blue: 'bg-blue-100 dark:bg-blue-900/70 text-blue-800 dark:text-blue-100',
-        green: 'bg-green-100 dark:bg-green-900/70 text-green-800 dark:text-green-100',
+        blue: 'text-blue-600',
+        green: 'text-green-600',
         red: 'bg-red-100 dark:bg-red-900/70 text-red-800 dark:text-red-100',
         yellow: 'bg-yellow-100 dark:bg-yellow-900/70 text-yellow-800 dark:text-yellow-100',
         purple: 'bg-purple-100 dark:bg-purple-900/70 text-purple-800 dark:text-purple-100',
@@ -62,26 +60,26 @@ export const themeClasses = {
         error: 'bg-red-50 dark:bg-red-900/60 border-red-200 dark:border-red-700 text-red-700 dark:text-red-100',
         success: 'bg-green-50 dark:bg-green-900/60 border-green-200 dark:border-green-700 text-green-700 dark:text-green-100',
         warning: 'bg-yellow-50 dark:bg-yellow-900/60 border-yellow-200 dark:border-yellow-700 text-yellow-700 dark:text-yellow-100',
-        info: 'bg-blue-50 dark:bg-blue-900/60 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-100',
+        info: 'border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800',
     },
 
     // Card styling
     card: {
-        base: 'bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700',
+        base: 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700',
         hover: 'hover:shadow-lg dark:hover:shadow-slate-900/50',
     },
 
     // Gradient backgrounds for cards
     gradient: {
-        blue: 'from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800',
-        purple: 'from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800',
+        blue: 'from-blue-500 to-blue-600',
+        purple: 'from-purple-600 to-purple-700',
         emerald: 'from-emerald-50 to-emerald-100 dark:from-emerald-900 dark:to-emerald-800',
     },
 
     // Border accent colors for cards
     borderAccent: {
-        blue: 'border-blue-200 dark:border-blue-700',
-        purple: 'border-purple-200 dark:border-purple-700',
+        blue: 'border-blue-500',
+        purple: 'border-purple-500',
         emerald: 'border-emerald-200 dark:border-emerald-700',
         green: 'border-green-200 dark:border-green-700',
     },
@@ -111,12 +109,6 @@ export const themeClasses = {
     icon: {
         muted: 'text-gray-400 dark:text-gray-500',
         primary: 'text-gray-900 dark:text-gray-100',
-    },
-
-    // Sidebar styling
-    sidebar: {
-        active: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-bold',
-        link: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100',
     },
 } as const;
 

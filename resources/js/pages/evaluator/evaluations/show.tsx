@@ -388,7 +388,7 @@ export default function Show({
     ];
 
     return (
-        <AppLayout>
+        <AppLayout  breadcrumbs={[{ title: 'Dashboard', href: route('evaluator.dashboard') }, { title: 'Evaluations', href: route('evaluator.evaluations.index') }, { title: 'Evaluate', href: route('evaluator.evaluations.show', project.id) }]}>
             <Head title={`Evaluate: ${project.project_code}`} />
 
             <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
@@ -398,7 +398,7 @@ export default function Show({
                         <div className="flex items-center justify-between">
                             {/* Back button and title */}
                             <div className="flex items-center gap-6">
-                                <Link
+                                {/* <Link
                                     href="/evaluator/evaluations"
                                     className={combineTheme(
                                         'p-3 rounded-xl border transition-all duration-200 hover:shadow-md', 
@@ -407,7 +407,7 @@ export default function Show({
                                     )}
                                 >
                                     <ChevronLeft className="w-5 h-5" />
-                                </Link>
+                                </Link> */}
                                 <div className="space-y-1">
                                     <h1 className={combineTheme('text-2xl font-bold tracking-tight', themeClasses.text.primary)}>
                                         {project.project_code}
@@ -535,9 +535,9 @@ export default function Show({
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={combineTheme(
-                                        'flex-1 px-6 py-4 text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset first:rounded-tl-xl last:rounded-tr-xl',
+                                        'flex-1 px-6 py-4 text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-inset first:rounded-tl-xl last:rounded-tr-xl',
                                         activeTab === tab.id
-                                            ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-b-2 border-blue-600 dark:border-blue-400'
+                                            ? 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 border-b-2 border-purple-600 dark:border-purple-400'
                                             : combineTheme('hover:bg-gray-50 dark:hover:bg-slate-700', themeClasses.text.secondary)
                                     )}
                                 >
@@ -551,80 +551,36 @@ export default function Show({
                             {/* Project Information Tab */}
                             {activeTab === 'info' && (
                                 <div className="space-y-6">
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        {/* Project Details */}
-                                        <div className="space-y-4">
-                                            <h3 className={combineTheme('text-lg font-semibold mb-4', themeClasses.text.primary)}>
-                                                Project Details
-                                            </h3>
-                                            <div className="space-y-3">
-                                                <div>
-                                                    <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Code</p>
-                                                    <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.project_code}</p>
-                                                </div>
-                                                <div>
-                                                    <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Title</p>
-                                                    <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.title}</p>
-                                                </div>
-                                                <div>
-                                                    <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Organization</p>
-                                                    <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.organization}</p>
-                                                </div>
-                                                <div>
-                                                    <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Proponent</p>
-                                                    <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.proponent_name}</p>
-                                                </div>
-                                                <div>
-                                                    <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Domain</p>
-                                                    <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.domain}</p>
-                                                </div>
-                                                <div>
-                                                    <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Implementation Phase</p>
-                                                    <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.phase}</p>
-                                                </div>
+                                    {/* Project Details */}
+                                    <div className="space-y-4">
+                                        <h3 className={combineTheme('text-lg font-semibold mb-4', themeClasses.text.primary)}>
+                                            Project Details
+                                        </h3>
+                                        <div className="space-y-3">
+                                            <div>
+                                                <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Code</p>
+                                                <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.project_code}</p>
                                             </div>
-                                        </div>
-
-                                        {/* Documents */}
-                                        <div className="space-y-4">
-                                            <h3 className={combineTheme('text-lg font-semibold mb-4', themeClasses.text.primary)}>
-                                                Project Documents
-                                            </h3>
-                                            {documents.length > 0 ? (
-                                                <div className="space-y-3">
-                                                    {documents.map((doc) => (
-                                                        <div key={doc.id} className={combineTheme('p-4 rounded-lg border', 'bg-gray-50 dark:bg-slate-700 border-gray-200 dark:border-slate-600')}>
-                                                            <div className="flex items-start justify-between gap-3">
-                                                                <div className="flex-1 min-w-0">
-                                                                    <p className={combineTheme('font-medium text-sm', themeClasses.text.primary)}>{doc.file_name}</p>
-                                                                    <p className={combineTheme('text-xs mt-1', themeClasses.text.tertiary)}>{doc.document_type}</p>
-                                                                    {doc.description && (
-                                                                        <p className={combineTheme('text-xs mt-1', themeClasses.text.secondary)}>{doc.description}</p>
-                                                                    )}
-                                                                    {doc.drive_link && (
-                                                                        <p className={combineTheme('text-xs mt-1 text-blue-600 dark:text-blue-400', themeClasses.text.secondary)}>Link: {doc.drive_link}</p>
-                                                                    )}
-                                                                    <p className={combineTheme('text-xs mt-1', themeClasses.text.tertiary)}>
-                                                                        Uploaded: {new Date(doc.upload_date).toLocaleDateString()}
-                                                                    </p>
-                                                                </div>
-                                                                <div className="flex gap-2">
-                                                                    {doc.file_path && (
-                                                                        <a
-                                                                            href={`/evaluator/evaluations/download/${doc.id}`}
-                                                                            className="text-xs bg-gray-600 hover:bg-gray-700 text-white px-3 py-1.5 rounded-lg transition-colors"
-                                                                        >
-                                                                            Download
-                                                                        </a>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ) : (
-                                                <p className={combineTheme('text-sm italic', themeClasses.text.tertiary)}>No documents available</p>
-                                            )}
+                                            <div>
+                                                <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Title</p>
+                                                <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.title}</p>
+                                            </div>
+                                            <div>
+                                                <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Organization</p>
+                                                <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.organization}</p>
+                                            </div>
+                                            <div>
+                                                <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Proponent</p>
+                                                <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.proponent_name}</p>
+                                            </div>
+                                            <div>
+                                                <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Domain</p>
+                                                <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.domain}</p>
+                                            </div>
+                                            <div>
+                                                <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Implementation Phase</p>
+                                                <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.phase}</p>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -924,9 +880,16 @@ export default function Show({
                                                 <div className="flex-grow">
                                                     {doc.drive_link ? (
                                                         <>
-                                                            <h3 className={combineTheme('font-bold', 'text-blue-600 dark:text-blue-400')}>
-                                                                {doc.drive_link}
-                                                            </h3>
+                                                            <a 
+                                                                href={doc.drive_link.startsWith('http') ? doc.drive_link : `https://${doc.drive_link}`}
+                                                                target="_blank" 
+                                                                rel="noopener noreferrer"
+                                                                className="block"
+                                                            >
+                                                                <h3 className={combineTheme('font-bold', 'text-blue-600 dark:text-blue-400')}>
+                                                                    {doc.drive_link}
+                                                                </h3>
+                                                            </a>
                                                             <p className={combineTheme('text-sm mt-1', themeClasses.text.secondary)}>
                                                                 Supporting Documents
                                                             </p>
@@ -946,7 +909,7 @@ export default function Show({
                                                             )}
                                                         </>
                                                     )}
-                                                    <p className={combineTheme('text-xs mt-2', themeClasses.text.muted)}>
+                                                    <p className={combineTheme('text-xs mt-2', themeClasses.text.tertiary)}>
                                                         Uploaded: {doc.upload_date}
                                                     </p>
                                                 </div>
@@ -1131,7 +1094,7 @@ export default function Show({
                                                                     )}
                                                                 </h4>
                                                                 <span className={combineTheme('font-mono text-sm font-bold px-3 py-1 rounded-full', isCurrentRange ? 'bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200' : 'bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-gray-300')}>
-                                                                    {interp.min} - {interp.max}
+                                                                    {interp.min}-{interp.max}
                                                                 </span>
                                                             </div>
                                                             <p className={combineTheme('text-sm leading-relaxed', isCurrentRange ? 'text-blue-600 dark:text-blue-300' : themeClasses.text.secondary)}>
@@ -1211,7 +1174,7 @@ export default function Show({
                                                 <button
                                                     onClick={handleSubmit}
                                                     disabled={saving || submitting || !finalAction}
-                                                    className={combineTheme('group flex items-center justify-center gap-3 px-8 py-4 text-white rounded-xl font-semibold transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:transform-none disabled:hover:shadow-none', 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-indigo-500 dark:hover:from-blue-600 dark:hover:to-indigo-600')}
+                                                    className={combineTheme('group flex items-center justify-center gap-3 px-8 py-4 text-white rounded-xl font-semibold transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:transform-none disabled:hover:shadow-none', 'bg-[#5a189a] hover:bg-[#4a0e7a]')}
                                                 >
                                                     <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                                     <span>{submitting ? 'Submitting Evaluation...' : 'Submit Final Evaluation'}</span>
@@ -1248,7 +1211,7 @@ export default function Show({
 
                     {/* Tab Navigation Buttons */}
                     <div className="flex justify-between items-center mt-6">
-                        <button
+                        {/* <button
                             onClick={() => {
                                 const currentIndex = tabs.findIndex(t => t.id === activeTab);
                                 if (currentIndex > 0) {
@@ -1263,9 +1226,9 @@ export default function Show({
                             )}
                         >
                             ← Previous
-                        </button>
+                        </button> */}
 
-                        <button
+                        {/* <button
                             onClick={() => {
                                 const currentIndex = tabs.findIndex(t => t.id === activeTab);
                                 if (currentIndex < tabs.length - 1) {
@@ -1280,7 +1243,7 @@ export default function Show({
                             )}
                         >
                             Next →
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 

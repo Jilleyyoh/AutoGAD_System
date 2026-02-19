@@ -77,7 +77,7 @@ export default function Dashboard({ admin, stats }: Props) {
                     <div className="mb-8">
                         <Link
                             href="/admin2/evaluations"
-                            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-colors text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-colors text-white bg-[#5a189a] hover:bg-[#4a0e7a] dark:bg-[#5a189a] dark:hover:bg-[#4a0e7a]"
                         >
                             <FileText className="w-5 h-5" />
                             Manage Evaluations
@@ -164,9 +164,9 @@ export default function Dashboard({ admin, stats }: Props) {
                     </div>
 
                     {/* Process Flow */}
-                    <div className="mt-12 border border-blue-200 dark:border-blue-800 rounded-lg p-8 bg-blue-50 dark:bg-blue-900/10">
-                        <h2 className="text-lg font-semibold mb-4 text-blue-900 dark:text-blue-100">📋 Evaluation Consolidation Process</h2>
-                        <div className="space-y-3 text-blue-800 dark:text-blue-200">
+                    <div className="mt-12 bg-gradient-to-br from-purple-50 to-purple-50 dark:from-purple-900/10 dark:to-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-6">
+                        <h2 className="text-lg font-semibold mb-4 text-purple-900 dark:text-purple-100 flex items-center gap-2">Evaluation Consolidation Process</h2>
+                        <div className="space-y-3 text-purple-800 dark:text-purple-200 text-sm">
                             <p>1. <strong>Review Results</strong> — View all evaluator feedback and scores for a project</p>
                             <p>2. <strong>Verify Completeness</strong> — Ensure all assigned evaluators have submitted</p>
                             <p>3. <strong>Make Decision</strong> — Approve for certification or return for review</p>

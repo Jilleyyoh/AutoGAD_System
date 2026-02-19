@@ -355,12 +355,12 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                 )}
 
                 {/* Info Card */}
-                <div className="mb-8 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">
+                <div className="mb-8 bg-gradient-to-br from-purple-50 to-purple-50 dark:from-purple-900/10 dark:to-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-6">
                     <div className="flex gap-3">
-                         <AlertCircle className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+                         <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                         <div>
-                            <h3 className="font-semibold text-indigo-900 dark:text-indigo-100">About Assignments</h3>
-                            <p className="text-sm text-indigo-800 dark:text-indigo-200 mt-1">
+                            <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Assignments</h3>
+                            <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
                                 Assignments manage the workflow of project evaluations. Assign evaluators to projects, track progress through different statuses, and ensure timely completion of evaluations.
                             </p>
                         </div>
@@ -439,6 +439,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                             <button
                                                 type="button"
                                                 onClick={applyFilters}
+                                                style={{ backgroundColor: '#5a189a' }}
                                                 className={combineTheme('w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all', themeClasses.button.primary)}
                                             >
                                                 Apply Filters
@@ -562,7 +563,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                     const statusName = (project as any).status_name || '';
                                                     const { color, icon: StatusIcon, bg, border } = getStatusColorAndIcon(statusName);
                                                     return (
-                                                        <span className={combineTheme('inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold', bg, border, 'border')}>
+                                                        <span className={combineTheme('inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold w-32 justify-center', bg, border, 'border')}>
                                                             <StatusIcon className="w-3 h-3" />
                                                             {STATUS_LABELS[statusName] || (statusName ? statusName.split('_').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : 'Unknown')}
                                                         </span>
@@ -598,7 +599,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                                     <button
                                                                         onClick={() => handleReassignToProponent(project)}
                                                                         disabled={loadingEvaluators}
-                                                                        className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed', themeClasses.button.primary)}
+                                                                        className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-32 justify-center', themeClasses.button.primary)}
                                                                     >
                                                                         {loadingEvaluators ? 'Processing...' : 'Reassign to Proponent'}
                                                                     </button>
@@ -610,7 +611,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                                     <button
                                                                         onClick={() => handleSelectEvaluator(project)}
                                                                         disabled={loadingEvaluators}
-                                                                        className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed', themeClasses.button.primary)}
+                                                                        className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-32 justify-center', themeClasses.button.primary)}
                                                                     >
                                                                         {loadingEvaluators ? 'Loading...' : 'Reassign'}
                                                                     </button>
@@ -621,7 +622,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                                 <button
                                                                     onClick={() => handleSelectEvaluator(project)}
                                                                     disabled={loadingEvaluators}
-                                                                    className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed', themeClasses.button.primary)}
+                                                                    className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-32 justify-center', themeClasses.button.primary)}
                                                                 >
                                                                     {loadingEvaluators ? 'Loading...' : 'Assign'}
                                                                 </button>
@@ -629,7 +630,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                         }
 
                                                         return (
-                                                            <span className={combineTheme('inline-flex items-center px-4 py-2 text-sm font-medium rounded-md', project.status === 4 ? themeClasses.badge.red : themeClasses.badge.green)}>
+                                                            <span className={combineTheme('inline-flex items-center px-4 py-2 text-sm font-medium rounded-md w-32 justify-center', project.status === 4 ? themeClasses.badge.red : themeClasses.badge.green)}>
                                                                 {project.status === 4 ? 'Declined' : 'Completed'}
                                                             </span>
                                                         );

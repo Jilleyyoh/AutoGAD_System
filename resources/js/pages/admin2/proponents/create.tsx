@@ -180,7 +180,7 @@ export default function Create({ proponentRoleId }: Props) {
                 <button
                   type="submit"
                   disabled={processing}
-                  className="px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition disabled:opacity-50"
+                  className="px-4 py-2 bg-[#5a189a] dark:bg-[#5a189a] text-white rounded-lg hover:bg-[#4a0e7a] dark:hover:bg-[#4a0e7a] transition disabled:opacity-50"
                 >
                   {processing ? 'Creating...' : 'Create Proponent'}
                 </button>

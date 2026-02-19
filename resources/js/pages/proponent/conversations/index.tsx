@@ -122,7 +122,7 @@ export default function ConversationsIndex() {
                         </div>
                         <button
                             onClick={() => setShowModal(true)}
-                            className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium gap-2 bg-blue-600 hover:bg-blue-700 text-white"
+                            className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium gap-2 bg-[#5a189a] hover:bg-[#5a189a] text-white"
                         >
                             <Plus className="w-4 h-4" />
                             New Message

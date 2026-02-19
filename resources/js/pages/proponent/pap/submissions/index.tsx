@@ -275,6 +275,7 @@ export default function SubmissionsIndex() {
                   type="button"
                   onClick={applyFilters}
                   className={combineTheme('w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all', themeClasses.button.primary)}
+                  style={{ backgroundColor: '#5a189a' }}
                 >
                   Apply Filters
                 </button>
@@ -317,6 +318,7 @@ export default function SubmissionsIndex() {
               <Link 
                 href={route('proponent.pap.create')} 
                 className={combineTheme('inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-all', themeClasses.button.primary)}
+                style={{ backgroundColor: '#5a189a' }}
               >
                 <Plus className="w-4 h-4" />
                 Create New PAP

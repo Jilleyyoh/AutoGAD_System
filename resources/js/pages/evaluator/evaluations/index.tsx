@@ -171,12 +171,12 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                     </div>
 
                     {/* Info Card */}
-                    <div className="mb-8 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">
+                    <div className="mb-8 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
                         <div className="flex gap-3">
-                             <AlertCircle className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+                             <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                             <div>
-                                <h3 className="font-semibold text-indigo-900 dark:text-indigo-100">About Evaluations</h3>
-                                <p className="text-sm text-indigo-800 dark:text-indigo-200 mt-1">
+                                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Evaluations</h3>
+                                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
                                     Evaluations allow you to review and assess submitted projects. Track your evaluation progress, provide feedback, and contribute to the approval process.
                                 </p>
                             </div>
@@ -262,7 +262,7 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                 <button
                                     type="button"
                                     onClick={applyFilters}
-                                    className={combineTheme('w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all', themeClasses.button.primary)}
+                                    className="w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all bg-[#5a189a] text-white hover:bg-[#4a0e7a]"
                                 >
                                     Apply Filters
                                 </button>
@@ -379,7 +379,7 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                                                 const statusKey = String(project.status || '').toLowerCase();
                                                                 const { color, icon: StatusIcon, bg, border } = getStatusColorAndIcon(statusKey);
                                                                 return (
-                                                                    <span className={combineTheme('inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold', bg, border, 'border')}>
+                                                                    <span className={combineTheme('inline-flex items-center justify-center gap-1 px-3 py-1 rounded-full text-xs font-semibold w-36', bg, border, 'border')}>
                                                                         <StatusIcon className="w-3 h-3" />
                                                                         {statusKey ? statusKey.split('_').map((word, idx) => 
                                                                             word.charAt(0).toUpperCase() + word.slice(1)
@@ -397,9 +397,8 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                                                     return (
                                                                         <Link
                                                                             href={`/evaluator/evaluations/${project.id}`}
-                                                                            className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm', themeClasses.button.secondary)}
+                                                                            className={combineTheme('inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm w-44', themeClasses.button.secondary)}
                                                                         >
-                                                                            <FileText className="w-4 h-4 mr-2" />
                                                                             View
                                                                         </Link>
                                                                     );
@@ -410,9 +409,8 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                                                     return (
                                                                         <Link
                                                                             href={`/evaluator/evaluations/${project.id}`}
-                                                                            className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm', themeClasses.button.secondary)}
+                                                                            className={combineTheme('inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm w-44', themeClasses.button.secondary)}
                                                                         >
-                                                                            <FileText className="w-4 h-4 mr-2" />
                                                                             View
                                                                         </Link>
                                                                     );
@@ -423,9 +421,8 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                                                     return (
                                                                         <Link
                                                                             href={`/evaluator/evaluations/${project.id}`}
-                                                                            className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm', themeClasses.button.secondary)}
+                                                                            className={combineTheme('inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm w-44', themeClasses.button.secondary)}
                                                                         >
-                                                                            <FileText className="w-4 h-4 mr-2" />
                                                                             View
                                                                         </Link>
                                                                     );
@@ -438,9 +435,8 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                                                         <button
                                                                             onClick={() => { if (isEnabled) { window.location.href = `/evaluator/evaluations/${project.id}`; } }}
                                                                             disabled={!isEnabled}
-                                                                            className={combineTheme(`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm ${isEnabled ? '' : 'opacity-50 cursor-not-allowed'}`, isEnabled ? themeClasses.button.primary : themeClasses.button.secondary)}
+                                                                            className={combineTheme(`inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm w-44 ${isEnabled ? '' : 'opacity-50 cursor-not-allowed'}`, isEnabled ? themeClasses.button.primary : themeClasses.button.secondary)}
                                                                         >
-                                                                            <FileText className="w-4 h-4 mr-2" />
                                                                             Re-Evaluate
                                                                         </button>
                                                                     );
@@ -454,9 +450,8 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                                                     return (
                                                                         <Link
                                                                             href={`/evaluator/evaluations/${project.id}`}
-                                                                            className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white', themeClasses.button.primary)}
+                                                                            className={combineTheme('inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white w-44', themeClasses.button.primary)}
                                                                         >
-                                                                            <FileText className="w-4 h-4 mr-2" />
                                                                             {wasRevised ? 'Re-Evaluate' : 'Continue Evaluation'}
                                                                         </Link>
                                                                     );
@@ -466,9 +461,8 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                                                 return (
                                                                     <Link
                                                                         href={`/evaluator/evaluations/${project.id}`}
-                                                                        className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white', themeClasses.button.primary)}
+                                                                        className={combineTheme('inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white w-44', themeClasses.button.primary)}
                                                                     >
-                                                                        <FileText className="w-4 h-4 mr-2" />
                                                                         Evaluate
                                                                     </Link>
                                                                 );

@@ -82,22 +82,21 @@ export default function Index({ evaluators }: Props) {
             </div>
             <Link
               href={route('evaluators.create')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 dark:bg-emerald-700 dark:hover:bg-emerald-800 whitespace-nowrap"
+              style={{ backgroundColor: '#5a189a' }}
+              className="inline-flex items-center gap-2 px-6 py-3 hover:bg-emerald-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 dark:bg-emerald-700 dark:hover:bg-emerald-800 whitespace-nowrap"
             >
               <Plus className="w-5 h-5" />
               Add Evaluator
             </Link>
           </div>
 
-          
-
           {/* Info Card - Moved Below Search Bar */}
-          <div className="mb-8 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4">
+          <div className="mb-8 bg-gradient-to-br from-purple-50 to-purple-50 dark:from-purple-900/10 dark:to-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-6">
             <div className="flex gap-3">
-              <AlertCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">About Evaluators</h3>
-                <p className="text-sm text-emerald-800 dark:text-emerald-200 mt-1">
+                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Evaluators</h3>
+                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
                   Evaluators are assigned to specific domains and will conduct evaluations of projects submitted under those domains.
                 </p>
               </div>

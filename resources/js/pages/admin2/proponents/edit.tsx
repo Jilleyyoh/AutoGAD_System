@@ -53,40 +53,41 @@ export default function Edit({ proponent }: Props) {
       ]}
     >
       <Head title="Edit Proponent" />
-      <div className="proponent-management">
-        <h1 className="text-2xl font-bold mb-6">Edit Proponent</h1>
+      <div className="min-h-screen bg-white dark:bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Proponent</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Edit proponent details for project submissions.</p>
+          </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 max-w-lg">
-          <div className="bg-white shadow-sm rounded-lg p-6">
-            <h2 className="text-lg font-medium mb-4">User Information</h2>
-            
-            <div className="space-y-4">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block font-medium text-gray-700">Name</label>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
                 <input
                   type="text"
                   id="name"
                   value={data.name}
                   onChange={(e) => setData('name', e.target.value)}
-                  className="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                 />
-                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                {errors.name && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.name}</p>}
               </div>
 
               <div>
-                <label htmlFor="email" className="block font-medium text-gray-700">Email</label>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                 <input
                   type="email"
                   id="email"
                   value={data.email}
                   onChange={(e) => setData('email', e.target.value)}
-                  className="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                 />
-                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                {errors.email && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.email}</p>}
               </div>
 
               <div>
-                <label htmlFor="password" className="block font-medium text-gray-700">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   New Password <span className="text-sm text-gray-500">(leave blank to keep current password)</span>
                 </label>
                 <input
@@ -94,14 +95,14 @@ export default function Edit({ proponent }: Props) {
                   id="password"
                   value={data.password}
                   onChange={(e) => setData('password', e.target.value)}
-                  className="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                   placeholder="Enter new password"
                 />
-                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+                {errors.password && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.password}</p>}
               </div>
 
               <div>
-                <label htmlFor="password_confirmation" className="block font-medium text-gray-700">
+                <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Confirm New Password
                 </label>
                 <input
@@ -109,76 +110,63 @@ export default function Edit({ proponent }: Props) {
                   id="password_confirmation"
                   value={data.password_confirmation}
                   onChange={(e) => setData('password_confirmation', e.target.value)}
-                  className="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                   placeholder="Confirm new password"
                 />
-                {errors.password_confirmation && <p className="mt-1 text-sm text-red-600">{errors.password_confirmation}</p>}
+                {errors.password_confirmation && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.password_confirmation}</p>}
               </div>
-            </div>
-          </div>
 
-          <div className="bg-white shadow-sm rounded-lg p-6 mt-4">
-            <h2 className="text-lg font-medium mb-4">Proponent Details</h2>
-            
-            <div className="space-y-4">
               <div>
-                <label htmlFor="organization" className="block font-medium text-gray-700">Organization</label>
+                <label htmlFor="organization" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Organization</label>
                 <input
                   type="text"
                   id="organization"
                   value={data.organization}
                   onChange={(e) => setData('organization', e.target.value)}
-                  className="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                   placeholder="Enter organization name"
                 />
-                {errors.organization && <p className="mt-1 text-sm text-red-600">{errors.organization}</p>}
+                {errors.organization && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.organization}</p>}
               </div>
 
               <div>
-                <label htmlFor="position" className="block font-medium text-gray-700">Position</label>
+                <label htmlFor="position" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Position</label>
                 <input
                   type="text"
                   id="position"
                   value={data.position}
                   onChange={(e) => setData('position', e.target.value)}
-                  className="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                   placeholder="Enter position in organization"
                 />
-                {errors.position && <p className="mt-1 text-sm text-red-600">{errors.position}</p>}
+                {errors.position && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.position}</p>}
               </div>
 
               <div>
-                <label htmlFor="contact_number" className="block font-medium text-gray-700">Contact Number</label>
+                <label htmlFor="contact_number" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Number</label>
                 <input
                   type="text"
                   id="contact_number"
                   value={data.contact_number}
                   onChange={(e) => setData('contact_number', e.target.value)}
-                  className="mt-1 block w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                   placeholder="Enter contact number"
                 />
-                {errors.contact_number && <p className="mt-1 text-sm text-red-600">{errors.contact_number}</p>}
+                {errors.contact_number && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.contact_number}</p>}
               </div>
-            </div>
-          </div>
 
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={processing}
-              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center space-x-2"
-            >
-              {processing ? (
-                <>
-                  <span className="animate-spin">⌛</span>
-                  <span>Updating...</span>
-                </>
-              ) : (
-                <span>Update Proponent</span>
-              )}
-            </button>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={processing}
+                  className="px-4 py-2 bg-[#5a189a] dark:bg-[#5a189a] text-white rounded-lg hover:bg-[#4a0e7a] dark:hover:bg-[#4a0e7a] transition disabled:opacity-50"
+                >
+                  {processing ? 'Updating...' : 'Update Proponent'}
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </AppLayout>
   );

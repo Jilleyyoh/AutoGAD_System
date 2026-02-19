@@ -72,12 +72,12 @@ export default function Certificates({ certificates = [], error, highlightCertif
           </div>
 
           {/* Info Card */}
-          <div className="mb-8 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">
+          <div className="mb-8 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
             <div className="flex gap-3">
-                <AlertCircle className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-indigo-900 dark:text-indigo-100">About Certificates</h3>
-                <p className="text-sm text-indigo-800 dark:text-indigo-200 mt-1">
+                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Certificates</h3>
+                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
                   View and download certificates for projects you have successfully evaluated. Certificates are generated once projects are certified by Admin2.
                 </p>
               </div>

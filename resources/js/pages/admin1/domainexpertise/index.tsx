@@ -48,22 +48,21 @@ export default function Index({ domains }: Props) {
             </div>
             <Link
               href={route('domain.create')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 dark:bg-blue-700 dark:hover:bg-blue-800 whitespace-nowrap"
+              style={{ backgroundColor: '#5a189a' }}
+              className="inline-flex items-center gap-2 px-6 py-3 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 dark:bg-blue-700 dark:hover:bg-blue-800 whitespace-nowrap"
             >
               <Plus className="w-5 h-5" />
               Add Domain
             </Link>
           </div>
 
-          
-
           {/* Info Card */}
-          <div className="mb-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+          <div className="mb-8 bg-gradient-to-br from-purple-50 to-purple-50 dark:from-purple-900/10 dark:to-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-6">
             <div className="flex gap-3">
-              <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-blue-900 dark:text-blue-100">About Domains</h3>
-                <p className="text-sm text-blue-800 dark:text-blue-200 mt-1">
+                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Domains</h3>
+                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
                   Domains represent the evaluation criteria and areas of focus for GAD projects. Each domain helps structure the evaluation framework.
                 </p>
               </div>

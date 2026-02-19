@@ -490,7 +490,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                 onClick={() => setActiveTab('settings')}
                 className={`flex-1 px-6 py-4 font-medium text-sm transition-all ${
                   activeTab === 'settings'
-                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-b-2 border-blue-500'
+                    ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 border-b-2 border-purple-500'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 border-b-2 border-transparent'
                 }`}
               >
@@ -501,18 +501,18 @@ export default function Index({ settings, categories = [], interpretations = [],
                 onClick={() => setActiveTab('interpretations')}
                 className={`flex-1 px-6 py-4 font-medium text-sm transition-all ${
                   activeTab === 'interpretations'
-                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-b-2 border-blue-500'
+                    ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 border-b-2 border-purple-500'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 border-b-2 border-transparent'
                 }`}
               >
                 <Zap className="w-4 h-4 inline mr-2" />
-                Interpretations <span className="ml-2 bg-blue-200 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded-full text-xs font-semibold">{interpretations.length}</span>
+                Interpretations <span className="ml-2 bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-0.5 rounded-full text-xs font-semibold">{interpretations.length}</span>
               </button>
               <button
                 onClick={() => setActiveTab('categories-questions')}
                 className={`flex-1 px-6 py-4 font-medium text-sm transition-all ${
                   activeTab === 'categories-questions'
-                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-b-2 border-blue-500'
+                    ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 border-b-2 border-purple-500'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300 border-b-2 border-transparent'
                 }`}
               >

@@ -72,7 +72,7 @@ export default function Index({ proponents }: Props) {
             </div>
             <Link
               href={route('admin2.proponents.create')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 dark:bg-emerald-700 dark:hover:bg-emerald-800 whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#5a189a] hover:bg-[#4a0e7a] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 dark:bg-[#5a189a] dark:hover:bg-[#4a0e7a] whitespace-nowrap"
             >
               <Plus className="w-5 h-5" />
               Add Proponent
@@ -80,12 +80,12 @@ export default function Index({ proponents }: Props) {
           </div>
 
           {/* Info Card */}
-          <div className="mb-8 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4">
+          <div className="mb-8 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
             <div className="flex gap-3">
-              <AlertCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">About Proponents</h3>
-                <p className="text-sm text-emerald-800 dark:text-emerald-200 mt-1">
+                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Proponents</h3>
+                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
                   Proponents are individuals or organizations that submit projects for evaluation across various domains.
                 </p>
               </div>

@@ -122,7 +122,7 @@ function DocumentUpload({ data, setData, errors }: any) {
       {['proposal','memo','manual'].map(f => (
         <div key={f}>
           <label className={combineTheme('block text-sm font-medium capitalize', themeClasses.text.primary)}>
-            {f} {f === 'proposal' ? '' : f === 'proposal' && <span className="text-red-500">*</span>}
+            {f} {f === 'proposal' && <span className="text-red-500">*</span>}
           </label>
           {data[f] ? (
             <div className={combineTheme('mt-1 block w-full text-sm px-4 py-2 rounded-lg border bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex justify-between items-center', themeClasses.input.base)}>
@@ -172,12 +172,12 @@ function ReviewSubmit({ data, domains, phases }: { data: FormDataShape; domains:
         </div>
         <div className={combineTheme('border-t px-4 py-5 sm:px-6', themeClasses.border.primary)}>
           <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
-            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Title</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.title}</dd></div>
-            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Domain</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{resolveDomainName(domains.find((d: any) => d.id == data.domain_id))}</dd></div>
-            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Phase</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{phases.find((p: any) => p.id == data.implementation_phase_id)?.name}</dd></div>
-            <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Description</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.description}</dd></div>
-            <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Rationale</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.rationale}</dd></div>
-            <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Objectives</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.objectives}</dd></div>
+            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Title</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.title || 'Not provided'}</dd></div>
+            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Domain</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.domain_id ? resolveDomainName(domains.find((d: any) => d.id == data.domain_id)) : 'Not selected'}</dd></div>
+            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Phase</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.implementation_phase_id ? phases.find((p: any) => p.id == data.implementation_phase_id)?.name : 'Not selected'}</dd></div>
+            <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Description</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.description || 'Not provided'}</dd></div>
+            <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Rationale</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.rationale || 'Not provided'}</dd></div>
+            <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Objectives</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.objectives || 'Not provided'}</dd></div>
           </dl>
         </div>
       </div>
@@ -185,9 +185,9 @@ function ReviewSubmit({ data, domains, phases }: { data: FormDataShape; domains:
         <div className="px-4 py-5 sm:px-6"><h3 className={combineTheme('text-lg font-medium leading-6', themeClasses.text.primary)}>Uploaded Documents</h3></div>
         <div className={combineTheme('border-t px-4 py-5 sm:px-6', themeClasses.border.primary)}>
           <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
-            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Proposal</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.proposal?.name}</dd></div>
-            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Memo</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.memo?.name}</dd></div>
-            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Manual</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.manual?.name}</dd></div>
+            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Proposal</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.proposal?.name || 'Not uploaded'}</dd></div>
+            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Memo</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.memo?.name || 'Not uploaded'}</dd></div>
+            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Manual</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.manual?.name || 'Not uploaded'}</dd></div>
             {data.supporting_documents_link && (
               <div className="sm:col-span-2">
                 <dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Supporting Documents (Link)</dt>
@@ -288,6 +288,10 @@ export default function Create() {
     { number: 3, name: 'Review & Submit' },
   ];
 
+  const isValid = () => {
+    return !!(data.title && data.domain_id && data.implementation_phase_id && data.description && data.proposal);
+  };
+
   const saveDraft = async () => {
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
@@ -345,36 +349,39 @@ export default function Create() {
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <nav aria-label="Progress">
-              <ol role="list" className={combineTheme('border rounded-md divide-y md:flex md:divide-y-0 shadow-sm', themeClasses.border.primary)}>
-                {steps.map(step => (
-                  <li key={step.name} className="relative md:flex-1 md:flex">
-                    <div className={`group flex items-center w-full ${
-                      currentStep === step.number ? 'bg-blue-600' : currentStep > step.number ? 'bg-green-600' : ''
-                    }`}>
-                      <span className={combineTheme('px-6 py-4 flex items-center text-sm font-medium', currentStep !== step.number && currentStep <= step.number ? themeClasses.text.primary : '')}>
-                        <span className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full ${
-                          currentStep === step.number
-                            ? 'bg-blue-800 text-white'
-                            : currentStep > step.number
-                            ? 'bg-green-800 text-white'
-                            : 'border-2 border-gray-300 dark:border-slate-600 text-gray-500 dark:text-gray-400'
-                        }`}>
-                          {currentStep > step.number ? (
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                          ) : (
-                            <span>{step.number}</span>
-                          )}
-                        </span>
-                        <span className={`ml-4 text-sm font-medium ${
-                          currentStep >= step.number ? 'text-white' : combineTheme('', themeClasses.text.secondary)
-                        }`}>{step.name}</span>
-                      </span>
+              <div className="flex items-center justify-center">
+                {steps.map((step, index) => (
+                  <React.Fragment key={step.name}>
+                    <div className="flex flex-col items-center">
+                      <div className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full ${
+                        currentStep === step.number
+                          ? 'bg-[#5a189a] text-white'
+                          : currentStep > step.number
+                          ? 'bg-[#9d4edd] text-white'
+                          : 'bg-gray-300 dark:bg-slate-600 text-gray-500 dark:text-gray-400'
+                      }`}>
+                        {currentStep > step.number ? (
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <span>{step.number}</span>
+                        )}
+                      </div>
+                      <span className={`mt-2 text-sm ${
+                        currentStep === step.number ? 'font-bold' : 'font-medium'
+                      } ${
+                        currentStep >= step.number ? 'text-[#5a189a] dark:text-[#5a189a]' : combineTheme('', themeClasses.text.secondary)
+                      }`}>{step.name}</span>
                     </div>
-                  </li>
+                    {index < steps.length - 1 && (
+                      <div className={`flex-1 mx-4 border-t-2 ${
+                        currentStep > step.number ? 'border-[#9d4edd]' : 'border-gray-300 dark:border-slate-600'
+                      }`} />
+                    )}
+                  </React.Fragment>
                 ))}
-              </ol>
+              </div>
             </nav>
           </div>
 
@@ -413,13 +420,13 @@ export default function Create() {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className={combineTheme('ml-auto inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md', themeClasses.button.primary)}
+                  className="ml-auto inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md bg-[#5a189a] hover:bg-[#4a148c] text-white"
                 >Next</button>
               ) : (
                 <button
                   type="submit"
-                  disabled={processing || !agreement}
-                  className={combineTheme('ml-auto inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white', processing || !agreement ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-500')}
+                  disabled={processing || !agreement || !isValid()}
+                  className={combineTheme('ml-auto inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white', processing || !agreement || !isValid() ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed' : 'bg-[#5a189a] hover:bg-[#4a148c] dark:bg-[#5a189a] dark:hover:bg-[#4a148c]')}
                 >{processing ? 'Submitting...' : 'Submit PAP'}</button>
               )}
             </div>
