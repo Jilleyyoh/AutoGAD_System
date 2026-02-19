@@ -18,6 +18,7 @@ class EnsureUserRole
         // Guard rails: redirect user back to their allowed namespace root if strays.
         if ($user->role_id === 1 && !str_starts_with($request->path(), 'proponent')) {
             return redirect()->route('proponent.dashboard');
+            
         }
         if ($user->role_id === 3 && !str_starts_with($request->path(), 'admin1')) {
             return redirect()->route('admin1.dashboard');
