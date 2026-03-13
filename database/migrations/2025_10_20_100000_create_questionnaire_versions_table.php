@@ -31,7 +31,7 @@ return new class extends Migration
         // Add version reference to evaluations table
         Schema::table('evaluations', function (Blueprint $table) {
             if (!Schema::hasColumn('evaluations', 'questionnaire_version_id')) {
-                $table->unsignedBigInteger('questionnaire_version_id')->nullable()->after('proponent_id');
+                $table->unsignedBigInteger('questionnaire_version_id')->nullable();
                 $table->foreign('questionnaire_version_id')
                     ->references('id')
                     ->on('questionnaire_versions')
