@@ -50,7 +50,7 @@ return new class extends Migration
             $table->softDeletes();
             
             // Indexes for efficient queries
-            $table->unique(['evaluation_id', 'questionnaire_category_id']);
+            $table->unique(['evaluation_id', 'questionnaire_category_id'], 'es_eval_cat_unique');
             $table->index('questionnaire_category_id');
             $table->index('actual_score'); // For filtering/sorting by score
         });
