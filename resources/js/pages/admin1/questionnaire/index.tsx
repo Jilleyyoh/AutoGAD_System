@@ -807,7 +807,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <span className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm px-4 py-1.5 rounded-full font-bold">
-                            {interpretation.score_min.toFixed(2)} – {interpretation.score_max.toFixed(2)}
+                            {parseFloat(interpretation.score_min).toFixed(2)} – {parseFloat(interpretation.score_max).toFixed(2)}
                           </span>
                         </div>
                         <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-1">{interpretation.interpretation}</h3>
