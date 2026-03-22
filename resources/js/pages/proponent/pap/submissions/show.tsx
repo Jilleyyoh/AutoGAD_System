@@ -168,18 +168,37 @@ export default function SubmissionShow() {
                   <p className={combineTheme('text-sm', themeClasses.text.secondary)}>No documents uploaded.</p>
                 )}
                 <ul className={combineTheme('divide-y', themeClasses.table.border)}>
-                  {project.documents.map(doc => (
-                    <li key={doc.id} className={combineTheme('py-3 flex items-center justify-between text-sm', themeClasses.table.row)}>
-                      <div>
-                        <div className={combineTheme('font-medium', themeClasses.text.primary)}>{doc.original_name}</div>
-                        {doc.type && <div className={combineTheme('text-xs mt-0.5', themeClasses.text.tertiary)}>{doc.type}</div>}
-                      </div>
-                      <a
-                        href={doc.download_route}
-                        className={combineTheme('inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm', themeClasses.button.primary)}
-                      >Download</a>
-                    </li>
-                  ))}
+                  {project.documents.map(doc => {
+                    const isLink = !!doc.drive_link;
+                    const displayType = isLink && doc.type === 'supporting' ? 'Supporting Documents (Link)' : doc.type || 'Document';
+                    const displayName = isLink ? displayType : doc.original_name;
+                    
+                    return (
+                      <li key={doc.id} className={combineTheme('py-3 flex items-center justify-between text-sm', themeClasses.table.row)}>
+                        <div className="flex-1">
+                          <div className={combineTheme('font-medium', themeClasses.text.primary)}>{displayName}</div>
+                          {isLink && doc.drive_link ? (
+                            <a
+                              href={doc.drive_link.startsWith('http') ? doc.drive_link : `https://${doc.drive_link}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={combineTheme('text-xs mt-0.5 text-blue-600 dark:text-blue-400 hover:underline break-all', themeClasses.text.tertiary)}
+                            >
+                              {doc.drive_link}
+                            </a>
+                          ) : (
+                            doc.type && <div className={combineTheme('text-xs mt-0.5', themeClasses.text.tertiary)}>{doc.type}</div>
+                          )}
+                        </div>
+                        {!isLink && (
+                          <a
+                            href={doc.download_route}
+                            className={combineTheme('ml-4 inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm', themeClasses.button.primary)}
+                          >Download</a>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             )}

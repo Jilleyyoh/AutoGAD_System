@@ -160,6 +160,7 @@ class ProponentPAPController extends Controller
                 'type' => $d->documentType?->name ?? 'unknown',
                 'original_name' => $d->original_name ?? $d->file_name,
                 'download_route' => $download,
+                'drive_link' => $d->drive_link,
             ];
         });
 
@@ -382,6 +383,7 @@ class ProponentPAPController extends Controller
                     'file_path' => $publicUrl,
                     'file_name' => $d->file_name,
                     'download_route' => route('proponent.pap.document.download', $d->id),
+                    'drive_link' => $d->drive_link,
                 ];
             }),
         ];

@@ -129,24 +129,41 @@ export default function Show({ project }: Props) {
             </div>
             <div className="border-t border-gray-200 dark:border-gray-700">
               <div className="divide-y divide-gray-200 dark:divide-gray-700">
-                {(project.documents || []).map((document) => (
-                  <div key={document.id} className="px-4 py-4 sm:px-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-900 dark:text-white">{document.type || 'Document'}</h4>
-                        {document.description && <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{document.description}</p>}
+                {(project.documents || []).map((document) => {
+                  const isLink = !!document.drive_link;
+                  const displayType = isLink && document.type === 'supporting' ? 'Supporting Documents (Link)' : document.type || 'Document';
+                  
+                  return (
+                    <div key={document.id} className="px-4 py-4 sm:px-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
+                          <h4 className="text-sm font-medium text-gray-900 dark:text-white">{displayType}</h4>
+                          {document.description && <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{document.description}</p>}
+                          {isLink && document.drive_link && (
+                            <p className="mt-2 text-sm">
+                              <a
+                                href={document.drive_link.startsWith('http') ? document.drive_link : `https://${document.drive_link}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 dark:text-blue-400 hover:underline break-all"
+                              >
+                                {document.drive_link}
+                              </a>
+                            </p>
+                          )}
+                        </div>
+                        {!isLink && (document.download_route || document.file_path) && (
+                          <a
+                            href={document.download_route || document.file_path || '#'}
+                            className="ml-4 inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          >
+                            Download
+                          </a>
+                        )}
                       </div>
-                      {(document.download_route || document.file_path) && (
-                        <a
-                          href={document.download_route || document.file_path || '#'}
-                          className="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
-                          Download
-                        </a>
-                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
