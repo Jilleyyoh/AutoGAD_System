@@ -11,6 +11,7 @@ interface DocumentItem {
   original_name: string;
   type?: string;
   download_route: string;
+  drive_link?: string;
 }
 
 interface EvaluationItem {

@@ -10,6 +10,7 @@ interface Document {
   file_path?: string | null; // Public URL (may be null)
   file_name?: string | null;
   download_route?: string; // Backend route for secure download
+  drive_link?: string; // External link for supporting documents
 }
 
 interface ProjectDomain {
