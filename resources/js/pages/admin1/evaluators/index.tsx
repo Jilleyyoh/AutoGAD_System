@@ -1,5 +1,10 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
+import { route } from 'ziggy-js';
+
+interface Props {
+  evaluators: any; // Replace 'any' with proper type
+}
 
 export default function Index({ evaluators }: Props) {
   return (
