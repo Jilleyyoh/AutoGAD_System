@@ -244,25 +244,39 @@ export default function ViewProjectDetailsModal({
                                 <div className="space-y-4">
                                     {project.documents.length > 0 ? (
                                         <div className="space-y-3">
-                                            {project.documents.map(doc => (
-                                                <div key={doc.id} className={combineTheme('flex items-start gap-3 p-4 border rounded-lg', themeClasses.table.row, 'hover:bg-gray-50 dark:hover:bg-slate-700')}>
-                                                    <FileText className={combineTheme('w-5 h-5 flex-shrink-0 mt-1', themeClasses.icon.primary)} />
-                                                    <div className="flex-grow min-w-0">
-                                                        <p className={combineTheme('font-semibold truncate', themeClasses.text.primary)}>{doc.file_name}</p>
-                                                        <p className={combineTheme('text-sm', themeClasses.text.tertiary)}>{doc.document_type}</p>
-                                                        {doc.description && <p className={combineTheme('text-sm mt-1', themeClasses.text.tertiary)}>{doc.description}</p>}
-                                                        {doc.drive_link && <p className={combineTheme('text-sm mt-1 text-blue-600 dark:text-blue-400', themeClasses.text.tertiary)}>Link: {doc.drive_link}</p>}
-                                                        <p className={combineTheme('text-xs mt-1', themeClasses.text.muted)}>Uploaded: {new Date(doc.upload_date).toLocaleDateString()}</p>
+                                            {project.documents.map(doc => {
+                                                const isLink = !!doc.drive_link;
+                                                const displayName = isLink && doc.document_type === 'supporting' ? 'Supporting Documents (Link)' : doc.file_name;
+                                                
+                                                return (
+                                                    <div key={doc.id} className={combineTheme('flex items-start gap-3 p-4 border rounded-lg', themeClasses.table.row, 'hover:bg-gray-50 dark:hover:bg-slate-700')}>
+                                                        <FileText className={combineTheme('w-5 h-5 flex-shrink-0 mt-1', themeClasses.icon.primary)} />
+                                                        <div className="flex-grow min-w-0">
+                                                            <p className={combineTheme('font-semibold truncate', themeClasses.text.primary)}>{displayName}</p>
+                                                            {!isLink && <p className={combineTheme('text-sm', themeClasses.text.tertiary)}>{doc.document_type}</p>}
+                                                            {doc.description && <p className={combineTheme('text-sm mt-1', themeClasses.text.tertiary)}>{doc.description}</p>}
+                                                            {isLink && doc.drive_link && (
+                                                                <a
+                                                                    href={doc.drive_link.startsWith('http') ? doc.drive_link : `https://${doc.drive_link}`}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className={combineTheme('text-sm mt-1 text-blue-600 dark:text-blue-400 hover:underline break-all', themeClasses.text.tertiary)}
+                                                                >
+                                                                    {doc.drive_link}
+                                                                </a>
+                                                            )}
+                                                            <p className={combineTheme('text-xs mt-1', themeClasses.text.tertiary)}>Uploaded: {new Date(doc.upload_date).toLocaleDateString()}</p>
+                                                        </div>
+                                                        <div className="flex gap-2 flex-shrink-0">
+                                                            {!isLink && doc.file_path && (
+                                                                <a href={`/admin1/assignments/download/${doc.id}`} className="p-2 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/20 rounded-lg transition-colors">
+                                                                    <Download className="w-5 h-5" />
+                                                                </a>
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                    <div className="flex gap-2 flex-shrink-0">
-                                                        {doc.file_path && (
-                                                            <a href={`/admin1/assignments/download/${doc.id}`} className="p-2 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/20 rounded-lg transition-colors">
-                                                                <Download className="w-5 h-5" />
-                                                            </a>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                         </div>
                                     ) : (
                                         <p className={combineTheme('text-center py-8', themeClasses.text.tertiary)}>No documents uploaded</p>

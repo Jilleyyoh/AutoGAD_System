@@ -495,6 +495,7 @@ class AssignmentController extends Controller
                     'original_name' => $doc->file_name,
                     'type' => $doc->documentType?->name ?? 'Document',
                     'download_route' => route('admin1.assignments.document-download', $doc->id),
+                    'drive_link' => $doc->drive_link,
                 ];
             });
 
