@@ -188,7 +188,7 @@ class ProponentPAPController extends Controller
                 'project_code' => $project->project_code,
                 'title' => $project->project_title,
                 'domain' => $project->domainExpertise?->domain_name,
-                'phase' => $project->implementationPhase?->name,
+                'implementation_phase' => $project->implementationPhase?->name,
                 'status' => $statusName,
                 'status_id' => $project->project_status_id,
                 'created_at' => $project->created_at?->toDateTimeString(),
