@@ -624,7 +624,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                                     disabled={loadingEvaluators}
                                                                     className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-32 justify-center', themeClasses.button.primary)}
                                                                 >
-                                                                    {loadingEvaluators ? 'Loading...' : 'Assign'}
+                                                                    {loadingEvaluators ? 'Loading...' : (project.evaluator ? 'Reassign' : 'Assign')}
                                                                 </button>
                                                             );
                                                         }
