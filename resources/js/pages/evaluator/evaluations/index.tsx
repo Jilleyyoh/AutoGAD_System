@@ -3,6 +3,7 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import { router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
+import DragScroll from '@/components/drag-scroll';
 import { Search, FileText, Calendar, Clock, Eye, CheckCircle2, XCircle, AlertCircle, X } from 'lucide-react';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 
@@ -290,7 +291,7 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                     {/* Projects Table */}
                     <div className={combineTheme('shadow-md rounded-lg overflow-hidden', themeClasses.card.base)}>
                         {filteredProjects.length > 0 ? (
-                            <div className="overflow-x-auto">
+                            <DragScroll>
                                 <table className={combineTheme('min-w-full divide-y', themeClasses.table.border)}>
                                     <thead className={themeClasses.table.header}>
                                         <tr>
@@ -452,7 +453,7 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                         })}
                                     </tbody>
                                 </table>
-                            </div>
+                            </DragScroll>
                         ) : (
                             <div className={combineTheme('px-6 py-12 text-center', themeClasses.text.tertiary)}>
                                 <p className="text-lg">No projects found</p>

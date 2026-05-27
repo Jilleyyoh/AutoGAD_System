@@ -90,12 +90,6 @@ export default function Show({ project }: Props) {
                     </Link>
                   )}
                 </div>
-                <Link
-                  href={route('proponent.dashboard')}
-                  className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300"
-                >
-                  Back to Dashboard
-                </Link>
               </div>
             </div>
 

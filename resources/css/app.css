@@ -155,3 +155,59 @@
         min-height: 12rem;
     }
 }
+
+.drag-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.drag-scroll.has-overflow {
+    cursor: grab;
+}
+
+.drag-scroll.is-dragging {
+    cursor: grabbing;
+}
+
+.drag-scroll::-webkit-scrollbar {
+    height: 10px;
+}
+
+.drag-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.drag-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 999px;
+}
+
+.dark .drag-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.28);
+}
+
+.drag-scroll.is-idle {
+    scrollbar-color: transparent transparent;
+}
+
+.drag-scroll.is-idle::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+.drag-scroll.is-active {
+    scrollbar-color: rgba(0, 0, 0, 0.45) transparent;
+}
+
+.dark .drag-scroll.is-active {
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.drag-scroll.is-active::-webkit-scrollbar-thumb,
+.drag-scroll:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.dark .drag-scroll.is-active::-webkit-scrollbar-thumb,
+.dark .drag-scroll:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import AppLayout from '@/layouts/app-layout';
-import { ChevronLeft, Send, User } from 'lucide-react';
+import { Send, User } from 'lucide-react';
 import axios from 'axios';
 
 interface User {
@@ -101,13 +101,6 @@ export default function Admin2ConversationShow() {
                                 View and reply to this conversation with the proponent
                             </p>
                         </div>
-                        <Link
-                            href={route('admin2.conversations.index')}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 dark:bg-gray-700 dark:hover:bg-gray-800 whitespace-nowrap"
-                        >
-                            <ChevronLeft className="w-5 h-5" />
-                            Back to Messages
-                        </Link>
                     </div>
 
                     {/* Proponent Info */}

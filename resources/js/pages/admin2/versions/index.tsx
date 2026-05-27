@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { ChevronLeft, Clock, Archive, Eye, MoreVertical, Trash2 } from 'lucide-react';
+import { Clock, Archive, Eye, MoreVertical, Trash2 } from 'lucide-react';
 import VersionInfo from '@/components/version-info';
 import { combineTheme, themeClasses } from '@/lib/theme-classes';
 
@@ -47,12 +47,6 @@ export default function VersionHistory({ versions }: Props) {
                     {/* Header */}
                     <div className="mb-8">
                         <div className="flex items-center gap-4 mb-4">
-                            <Link
-                                href="/admin2/settings"
-                                className={combineTheme('p-2 rounded-lg transition-colors', 'hover:bg-gray-100 dark:hover:bg-slate-700')}
-                            >
-                                <ChevronLeft className="w-6 h-6" />
-                            </Link>
                             <div>
                                 <h1 className={combineTheme('text-3xl font-bold', themeClasses.text.primary)}>
                                     Questionnaire Version History

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
+import DragScroll from '@/components/drag-scroll';
 import { route } from 'ziggy-js';
 import ConfirmationDialog from '@/components/ui/confirmation-dialog';
 import { Plus, Edit2, Trash2, Users, AlertCircle, Calendar, FileText } from 'lucide-react';
@@ -132,7 +133,7 @@ export default function Index({ proponents }: Props) {
           {/* Proponents Table */}
           <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-md overflow-hidden">
             {safeProponents.length > 0 ? (
-              <div className="overflow-x-auto">
+              <DragScroll>
                 <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
                   <thead className="bg-gray-50 dark:bg-gray-800">
                     <tr>
@@ -213,7 +214,7 @@ export default function Index({ proponents }: Props) {
                     ))}
                   </tbody>
                 </table>
-              </div>
+              </DragScroll>
             ) : (
               <div className="px-6 py-16 text-center">
                 <Users className="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-3" />

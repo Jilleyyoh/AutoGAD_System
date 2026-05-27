@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { ChevronLeft, Save, Send, CheckCircle2, Award, FileText, Clock } from 'lucide-react';
+import { Save, Send, CheckCircle2, Award, FileText, Clock } from 'lucide-react';
 import axios from 'axios';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 
@@ -362,16 +362,6 @@ export default function Show({
                         <div className="flex items-center justify-between">
                             {/* Back button and title */}
                             <div className="flex items-center gap-6">
-                                <Link
-                                    href="/evaluator/evaluations"
-                                    className={combineTheme(
-                                        'p-3 rounded-xl border transition-all duration-200 hover:shadow-md', 
-                                        themeClasses.border.primary,
-                                        'bg-gray-50 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600'
-                                    )}
-                                >
-                                    <ChevronLeft className="w-5 h-5" />
-                                </Link>
                                 <div className="space-y-1">
                                     <h1 className={combineTheme('text-2xl font-bold tracking-tight', themeClasses.text.primary)}>
                                         {project.project_code}

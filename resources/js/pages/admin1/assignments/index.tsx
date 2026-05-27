@@ -4,6 +4,7 @@ import { route } from 'ziggy-js';
 import { router } from '@inertiajs/react';
 import { ProjectAssignment } from '@/types/assignments';
 import AppLayout from '@/layouts/app-layout';
+import DragScroll from '@/components/drag-scroll';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import AssignEvaluatorModal from './AssignEvaluatorModal';
 import { Eye, CheckCircle2, AlertCircle, Clock, X, Calendar, ClipboardList } from 'lucide-react';
@@ -469,7 +470,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
 
                 {/* Projects Table/Grid */}
                 <div className={combineTheme('shadow-md rounded-lg border overflow-hidden', themeClasses.card.base)}>
-                    <div className="overflow-x-auto">
+                    <DragScroll>
                         <table className={combineTheme('min-w-full divide-y min-h-[300px]', themeClasses.table.border)}>
                             <thead className={themeClasses.table.header}>
                                 <tr>
@@ -639,7 +640,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                 )}
                             </tbody>
                         </table>
-                    </div>
+                    </DragScroll>
                 </div>
             </div>
 

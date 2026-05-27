@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Head, usePage, Link } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import AppLayout from '@/layouts/app-layout';
+import DragScroll from '@/components/drag-scroll';
 import { FileText, Download, Eye, AlertCircle, Award } from 'lucide-react';
 import { NativeSelect } from '@/components/ui/native-select';
 
@@ -191,7 +192,7 @@ export default function CertificationsIndex({
                                 <p>No projects found matching your criteria</p>
                             </div>
                         ) : (
-                            <div className="overflow-x-auto">
+                            <DragScroll>
                                 <table className="w-full">
                                     <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                                         <tr>
@@ -201,7 +202,7 @@ export default function CertificationsIndex({
                                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Score</th>
                                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Completion Date</th>
-                                            <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                                            <th className="px-6 py-3 text-right text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -235,15 +236,8 @@ export default function CertificationsIndex({
                                                 <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
                                                     {project.completion_date}
                                                 </td>
-                                                <td className="px-6 py-4 text-center">
-                                                    <div className="flex justify-center gap-2">
-                                                        <a
-                                                            href={route('admin2.certifications.show', project.id)}
-                                                            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
-                                                            title="View Details"
-                                                        >
-                                                            <Eye className="w-5 h-5" />
-                                                        </a>
+                                                <td className="px-6 py-4 pr-8 text-right">
+                                                    <div className="flex justify-end gap-2">
                                                         {project.is_certified && project.certificate_id && (
                                                             <a
                                                                 href={route('admin2.certifications.download', project.certificate_id)}
@@ -255,13 +249,20 @@ export default function CertificationsIndex({
                                                                 <Download className="w-5 h-5" />
                                                             </a>
                                                         )}
+                                                        <a
+                                                            href={route('admin2.certifications.show', project.id)}
+                                                            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
+                                                            title="View Details"
+                                                        >
+                                                            <Eye className="w-5 h-5" />
+                                                        </a>
                                                     </div>
                                                 </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
-                            </div>
+                            </DragScroll>
                         )}
                     </div>
 

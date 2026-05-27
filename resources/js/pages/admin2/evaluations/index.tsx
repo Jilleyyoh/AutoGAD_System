@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { Eye, ChevronLeft, Clock, AlertCircle, CheckCircle2, XCircle, FileText, BarChart3 } from 'lucide-react';
+import DragScroll from '@/components/drag-scroll';
+import { Eye, Clock, AlertCircle, CheckCircle2, XCircle, FileText, BarChart3 } from 'lucide-react';
 import { route } from 'ziggy-js';
 
 interface EvaluationItem {
@@ -198,9 +199,10 @@ export default function Index({ evaluations, pagination }: Props) {
                     </div>
 
                     {/* Projects Table */}
-                    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-md overflow-x-auto">
+                    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-md overflow-hidden">
                         {filteredEvaluations.length > 0 ? (
-                            <table className="w-full">
+                            <DragScroll>
+                                <table className="w-full">
                                 <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Project Code</th>
@@ -257,7 +259,8 @@ export default function Index({ evaluations, pagination }: Props) {
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table>
+                                </table>
+                            </DragScroll>
                         ) : (
                             <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                                 <p>No evaluations found</p>

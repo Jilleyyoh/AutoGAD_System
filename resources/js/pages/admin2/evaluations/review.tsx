@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { ChevronLeft, CheckCircle2, AlertCircle, Send } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Send } from 'lucide-react';
 import VersionInfo from '@/components/version-info';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import axios from 'axios';
@@ -198,17 +198,11 @@ export default function Review({ project, evaluations, average_score, evaluation
         >
             <Head title={`Review Evaluation - ${project.project_code}`} />
 
-            <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <div className="px-4 py-6 sm:px-0">
+            <div className="min-h-screen bg-white dark:bg-black">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     {/* Header */}
                     <div className="mb-8">
                         <div className="flex items-center gap-4 mb-4">
-                            <Link
-                                href="/admin2/evaluations"
-                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                            >
-                                <ChevronLeft className="w-6 h-6" />
-                            </Link>
                             <div>
                                 <h1 className="text-3xl font-bold text-gray-900">{project.project_code}</h1>
                                 <p className="text-gray-600">{project.title}</p>

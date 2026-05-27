@@ -3,6 +3,7 @@ import { Head, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
 import ConfirmationDialog from '@/components/ui/confirmation-dialog';
+import DragScroll from '@/components/drag-scroll';
 import { BarChart3, AlertCircle, CheckCircle2, Settings, Layers, Zap, Plus, Edit2, Trash2, ChevronDown, ChevronRight, Clock, RefreshCw } from 'lucide-react';
 import VersionInfo from '@/components/version-info';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
@@ -949,7 +950,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                             {/* Redistribute message removed - scoring is now always automatic */}
 
                             {category.items.length > 0 ? (
-                              <div className="overflow-x-auto">
+                              <DragScroll>
                                 <table className="w-full">
                                   <thead>
                                     <tr className="border-b border-gray-300 dark:border-gray-600">
@@ -995,7 +996,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                                       ))}
                                   </tbody>
                                 </table>
-                              </div>
+                              </DragScroll>
                             ) : (
                               <div className="text-center py-8">
                                 <p className="text-gray-600 dark:text-gray-400">No questions added yet</p>

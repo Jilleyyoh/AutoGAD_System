@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
+import DragScroll from '@/components/drag-scroll';
 import { route } from 'ziggy-js';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import { Clock, Eye, CheckCircle2, XCircle, Calendar, X, Plus, ArrowRight } from 'lucide-react';
@@ -260,7 +261,7 @@ export default function SubmissionsIndex() {
                 Create New PAP
               </Link>
             </div>
-            <div className="overflow-x-auto">
+            <DragScroll>
               <table className={combineTheme('min-w-full divide-y', themeClasses.table.border)}>
                 <thead className={themeClasses.table.header}>
                   <tr>
@@ -337,7 +338,7 @@ export default function SubmissionsIndex() {
                   )}
                 </tbody>
               </table>
-            </div>
+            </DragScroll>
 
             {/* Pagination */}
             <div className={combineTheme('px-6 py-4 border-t flex items-center justify-between', themeClasses.border.primary)}>
