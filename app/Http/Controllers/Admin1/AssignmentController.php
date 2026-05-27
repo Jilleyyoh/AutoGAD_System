@@ -431,7 +431,7 @@ class AssignmentController extends Controller
                 ];
                 
                 // Get all score interpretations for reference
-                $interpretations = \App\Models\ScoreInterpretation::all(['min', 'max', 'interpretation', 'description'])->toArray();
+                $interpretations = \App\Models\ScoreInterpretation::all(['score_min', 'score_max', 'interpretation', 'description'])->toArray();
             }
 
             return response()->json([
