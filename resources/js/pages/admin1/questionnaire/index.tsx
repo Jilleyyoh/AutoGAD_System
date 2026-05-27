@@ -807,7 +807,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <span className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm px-4 py-1.5 rounded-full font-bold">
-                            {parseFloat(interpretation.score_min).toFixed(2)} – {parseFloat(interpretation.score_max).toFixed(2)}
+                            {interpretation.score_min.toFixed(2)} – {interpretation.score_max.toFixed(2)}
                           </span>
                         </div>
                         <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-1">{interpretation.interpretation}</h3>
@@ -904,13 +904,6 @@ export default function Index({ settings, categories = [], interpretations = [],
                               <div>
                                 <div className="flex items-center gap-3">
                                   <h3 className="font-bold text-lg text-gray-900 dark:text-white">{category.category_name}</h3>
-                                  <span className={`px-3 py-1 text-xs font-bold rounded-full ${
-                                    category.is_active 
-                                      ? 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300' 
-                                      : 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-300'
-                                  }`}>
-                                    {category.is_active ? 'Active' : 'Inactive'}
-                                  </span>
                                 </div>
                                 {category.description && (
                                   <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{category.description}</p>
@@ -962,7 +955,6 @@ export default function Index({ settings, categories = [], interpretations = [],
                                       <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">No.</th>
                                       <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Question</th>
                                       <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Score Options</th>
-                                      <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Status</th>
                                       <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Actions</th>
                                     </tr>
                                   </thead>
@@ -981,15 +973,6 @@ export default function Index({ settings, categories = [], interpretations = [],
                                           </td>
                                           <td className="px-4 py-3 whitespace-nowrap">
                                             <div className="text-xs text-gray-700 dark:text-gray-300 font-mono bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">{item.score_options}</div>
-                                          </td>
-                                          <td className="px-4 py-3 whitespace-nowrap">
-                                            <span className={`px-2 py-1 text-xs font-bold rounded-full ${
-                                              item.is_active 
-                                                ? 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300' 
-                                                : 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-300'
-                                            }`}>
-                                              {item.is_active ? 'Active' : 'Inactive'}
-                                            </span>
                                           </td>
                                           <td className="px-4 py-3 whitespace-nowrap text-sm">
                                             <div className="flex gap-2">
@@ -1236,17 +1219,6 @@ export default function Index({ settings, categories = [], interpretations = [],
                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                     required
                   />
-                </div>
-                <div>
-                  <label className="flex items-center gap-2 p-2 rounded-lg">
-                    <input
-                      type="checkbox"
-                      checked={itemData.is_active}
-                      onChange={(e) => setItemData('is_active', e.target.checked)}
-                      className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Active</span>
-                  </label>
                 </div>
               </div>
 
