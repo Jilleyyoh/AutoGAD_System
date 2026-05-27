@@ -2,8 +2,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
 import { type User } from '@/types';
 
-export function UserInfo({ user, showEmail = false }: { user: User; showEmail?: boolean }) {
+export function UserInfo({ user, showEmail = false, tone = 'default' }: { user: User; showEmail?: boolean; tone?: 'default' | 'sidebar' }) {
     const getInitials = useInitials();
+    const nameClass = tone === 'sidebar' ? 'text-white' : 'text-foreground';
+    const emailClass = tone === 'sidebar' ? 'text-white/70' : 'text-muted-foreground';
 
     return (
         <>
@@ -14,8 +16,8 @@ export function UserInfo({ user, showEmail = false }: { user: User; showEmail?: 
                 </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium text-white">{user.name}</span>
-                {showEmail && <span className="truncate text-xs text-muted-foreground">{user.email}</span>}
+                <span className={`truncate font-medium ${nameClass}`}>{user.name}</span>
+                {showEmail && <span className={`truncate text-xs ${emailClass}`}>{user.email}</span>}
             </div>
         </>
     );

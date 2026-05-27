@@ -4,6 +4,7 @@ import axios from 'axios';
 import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
+import { NativeSelect } from '@/components/ui/native-select';
 
 interface SupportingDocDraft { 
   description: string; 
@@ -68,7 +69,7 @@ function RemarksAndProjectInfo({ data, setData, remarks, domains, phases, errors
               <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>
                 Domain
               </label>
-              <select
+              <NativeSelect
                 value={data.domain_id}
                 onChange={e => setData('domain_id', parseInt(e.target.value))}
                 className={combineTheme('w-full rounded-lg shadow-sm', themeClasses.input.base, themeClasses.input.focus)}
@@ -76,7 +77,7 @@ function RemarksAndProjectInfo({ data, setData, remarks, domains, phases, errors
                 {domains.map((d: { id: number; name: string }) => (
                   <option key={d.id} value={d.id}>{d.name}</option>
                 ))}
-              </select>
+              </NativeSelect>
               {errors?.domain_id && <p className="text-red-600 text-sm mt-1">{errors.domain_id}</p>}
             </div>
 
@@ -84,7 +85,7 @@ function RemarksAndProjectInfo({ data, setData, remarks, domains, phases, errors
               <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>
                 Implementation Phase
               </label>
-              <select
+              <NativeSelect
                 value={data.implementation_phase_id}
                 onChange={e => setData('implementation_phase_id', parseInt(e.target.value))}
                 className={combineTheme('w-full rounded-lg shadow-sm', themeClasses.input.base, themeClasses.input.focus)}
@@ -92,7 +93,7 @@ function RemarksAndProjectInfo({ data, setData, remarks, domains, phases, errors
                 {phases.map((p: { id: number; name: string }) => (
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
-              </select>
+              </NativeSelect>
               {errors?.implementation_phase_id && <p className="text-red-600 text-sm mt-1">{errors.implementation_phase_id}</p>}
             </div>
           </div>

@@ -5,6 +5,7 @@ import AppLayout from '@/layouts/app-layout';
 import { ChevronLeft, Save, Send, CheckCircle2, Award, FileText, Clock } from 'lucide-react';
 import axios from 'axios';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
+import ConfirmationDialog from '@/components/ui/confirmation-dialog';
 
 interface ProjectData {
     id: number;
@@ -147,6 +148,7 @@ export default function Show({
     const [submitting, setSubmitting] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
     const [isCompleted] = useState(evaluation.is_completed);
+    const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
 
     // Initialize scores and remarks from current data
     React.useEffect(() => {
@@ -331,17 +333,17 @@ export default function Show({
     };
 
     // Submit evaluation with final action
-    const handleSubmit = async () => {
+    const requestSubmit = () => {
         if (!finalAction) {
             setMessage({ type: 'error', text: 'Please select a Final Evaluation Decision before submitting.' });
             setTimeout(() => setMessage(null), 4000);
             return;
         }
 
-        if (!confirm('Are you sure you want to submit this evaluation? You will not be able to edit it afterwards.')) {
-            return;
-        }
+        setShowSubmitConfirm(true);
+    };
 
+    const handleSubmit = async () => {
         setSubmitting(true);
         try {
             // First save the scores
@@ -1173,7 +1175,7 @@ export default function Show({
                                                 </button>
 
                                                 <button
-                                                    onClick={handleSubmit}
+                                onClick={requestSubmit}
                                                     disabled={saving || submitting || !finalAction}
                                                     className={combineTheme('group flex items-center justify-center gap-3 px-8 py-4 text-white rounded-xl font-semibold transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:transform-none disabled:hover:shadow-none', 'bg-[#5a189a] hover:bg-[#4a0e7a]')}
                                                 >
@@ -1290,6 +1292,16 @@ export default function Show({
                 </div>
             </div>
         </div>
+            <ConfirmationDialog
+                isOpen={showSubmitConfirm}
+                onClose={() => setShowSubmitConfirm(false)}
+                onConfirm={handleSubmit}
+                title="Submit final evaluation?"
+                description="You will not be able to edit this evaluation after it is submitted."
+                confirmText="Submit Evaluation"
+                cancelText="Review Again"
+                confirmVariant="default"
+            />
         </AppLayout>
     );
 }

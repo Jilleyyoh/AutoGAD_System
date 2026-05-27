@@ -138,4 +138,20 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    textarea[rows='2'] {
+        min-height: 5rem;
+    }
+
+    textarea[rows='3'] {
+        min-height: 6.75rem;
+    }
+
+    textarea[rows='4'] {
+        min-height: 8.5rem;
+    }
+
+    textarea[rows='6'] {
+        min-height: 12rem;
+    }
 }

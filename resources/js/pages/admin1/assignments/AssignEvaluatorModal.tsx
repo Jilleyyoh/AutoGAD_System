@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { ProjectAssignment } from '@/types/assignments';
+import { NativeSelect } from '@/components/ui/native-select';
 
 interface Evaluator {
     id: number;
@@ -81,9 +82,9 @@ export default function AssignEvaluatorModal({ isOpen, onClose, project, evaluat
                             <label htmlFor="evaluator" className="block text-sm font-medium text-gray-700 mb-2">
                                 Select Evaluator for this Domain
                             </label>
-                            <select
+                            <NativeSelect
                                 id="evaluator"
-                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                className="rounded-md border border-gray-300 py-2 pl-3 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500"
                                 value={selectedEvaluatorId || ''}
                                 onChange={(e) => setSelectedEvaluatorId(e.target.value ? Number(e.target.value) : null)}
                                 disabled={loading || isAssigning}
@@ -94,7 +95,7 @@ export default function AssignEvaluatorModal({ isOpen, onClose, project, evaluat
                                         {evaluator.name} ({evaluator.email})
                                     </option>
                                 ))}
-                            </select>
+                            </NativeSelect>
                             
                             {evaluators.length === 0 && !loading && (
                                 <p className="mt-2 text-sm text-yellow-600">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
+import { NativeSelect } from '@/components/ui/native-select';
 
 interface DomainExpertise {
   id: number;
@@ -125,11 +126,11 @@ export default function Create({ domains, evaluatorRoleId }: Props) {
                 <label htmlFor="domain_expertise_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Domain Expertise
                 </label>
-                <select
+                <NativeSelect
                   id="domain_expertise_id"
                   value={data.domain_expertise_id}
                   onChange={(e) => setData('domain_expertise_id', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                  className="mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                   required
                 >
                   <option value="">Select a domain</option>
@@ -138,7 +139,7 @@ export default function Create({ domains, evaluatorRoleId }: Props) {
                       {domain.domain_name}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
                 {errors.domain_expertise_id && (
                   <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.domain_expertise_id}</p>
                 )}

@@ -6,6 +6,7 @@ import ConfirmationDialog from '@/components/ui/confirmation-dialog';
 import { BarChart3, AlertCircle, CheckCircle2, Settings, Layers, Zap, Plus, Edit2, Trash2, ChevronDown, ChevronRight, Clock, RefreshCw } from 'lucide-react';
 import VersionInfo from '@/components/version-info';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
+import { NativeSelect } from '@/components/ui/native-select';
 
 interface QuestionnaireItem {
   id: number;
@@ -548,7 +549,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                   <p className="text-gray-600 dark:text-gray-400 mt-2">Configure version and passing score threshold</p>
                 </div>
                 
-                <form onSubmit={handleSettingsSubmit} className="space-y-6">
+                <form onSubmit={handleSettingsSubmit} className="space-y-6" noValidate>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -1061,7 +1062,7 @@ export default function Index({ settings, categories = [], interpretations = [],
               <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               {editingCategory ? 'Edit Category' : 'New Category'}
             </h3>
-            <form onSubmit={handleCategorySubmit} className="space-y-5">
+            <form onSubmit={handleCategorySubmit} className="space-y-5" noValidate>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Category Name <span className="text-red-500">*</span>
@@ -1151,18 +1152,18 @@ export default function Index({ settings, categories = [], interpretations = [],
               <Edit2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               {editingItem ? 'Edit Question' : 'New Question'}
             </h3>
-            <form onSubmit={handleItemSubmit} className="space-y-5">
+            <form onSubmit={handleItemSubmit} className="space-y-5" noValidate>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Category <span className="text-red-500">*</span>
                 </label>
-                <select
+                <NativeSelect
                   value={itemData.category_id}
                   onChange={(e) => {
                     setItemData('category_id', e.target.value);
                     setSelectedCategoryForQuestion(parseInt(e.target.value));
                   }}
-                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   required
                 >
                   <option value="">Select a category</option>
@@ -1171,7 +1172,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                       {category.category_name}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </div>
 
               <div>
@@ -1251,7 +1252,7 @@ export default function Index({ settings, categories = [], interpretations = [],
               <Zap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               {editingInterpretation ? 'Edit Interpretation' : 'New Interpretation'}
             </h3>
-            <form onSubmit={handleInterpretationSubmit} className="space-y-5">
+            <form onSubmit={handleInterpretationSubmit} className="space-y-5" noValidate>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -1337,4 +1338,3 @@ export default function Index({ settings, categories = [], interpretations = [],
     </AppLayout>
   );
 }
-

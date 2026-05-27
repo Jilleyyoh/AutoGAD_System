@@ -10,6 +10,7 @@ interface ConfirmationDialogProps {
   description?: string;
   confirmText?: string;
   cancelText?: string;
+  confirmVariant?: React.ComponentProps<typeof Button>['variant'];
 }
 
 export default function ConfirmationDialog({
@@ -19,7 +20,8 @@ export default function ConfirmationDialog({
   title = 'Confirm Delete',
   description = 'Are you sure you want to delete this record? This action cannot be undone.',
   confirmText = 'Delete',
-  cancelText = 'Cancel'
+  cancelText = 'Cancel',
+  confirmVariant = 'destructive',
 }: ConfirmationDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -30,7 +32,7 @@ export default function ConfirmationDialog({
           <Button variant="outline" onClick={onClose}>
             {cancelText}
           </Button>
-          <Button variant="destructive" onClick={() => {
+          <Button variant={confirmVariant} onClick={() => {
             onConfirm();
             onClose();
           }}>

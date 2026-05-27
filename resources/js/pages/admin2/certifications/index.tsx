@@ -3,6 +3,7 @@ import { Head, usePage, Link } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import AppLayout from '@/layouts/app-layout';
 import { FileText, Download, Eye, AlertCircle, Award } from 'lucide-react';
+import { NativeSelect } from '@/components/ui/native-select';
 
 interface ScoreInterpretation {
     min: number;
@@ -169,15 +170,15 @@ export default function CertificationsIndex({
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Filter by Status
                                 </label>
-                                <select
+                                <NativeSelect
                                     value={filterStatus}
                                     onChange={(e) => setFilterStatus(e.target.value)}
-                                    className="w-full px-4 py-2 h-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    className="px-4 py-2 h-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                                 >
                                     <option value="all">All Projects</option>
                                     <option value="pending">Pending Certification</option>
                                     <option value="certified">Certified</option>
-                                </select>
+                                </NativeSelect>
                             </div>
                         </div>
                     </div>

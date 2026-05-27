@@ -6,6 +6,7 @@ import VersionInfo from '@/components/version-info';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import axios from 'axios';
 import { route } from 'ziggy-js';
+import ConfirmationDialog from '@/components/ui/confirmation-dialog';
 
 interface QuestionnaireVersion {
     id: number;
@@ -71,12 +72,10 @@ export default function Review({ project, evaluations, average_score, evaluation
     const [rejecting, setRejecting] = useState(false);
     const [adminRemarks, setAdminRemarks] = useState('');
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+    const [showApproveConfirm, setShowApproveConfirm] = useState(false);
+    const [showReturnConfirm, setShowReturnConfirm] = useState(false);
 
     const handleApprove = async () => {
-        if (!confirm('Are you sure you want to approve this evaluation for certification?')) {
-            return;
-        }
-
         setApproving(true);
         try {
             await axios.post(`/admin2/evaluations/${project.id}/consolidate`, {
@@ -99,10 +98,6 @@ export default function Review({ project, evaluations, average_score, evaluation
     };
 
     const handleReturnForReview = async () => {
-        if (!confirm('Are you sure you want to return this evaluation for review?')) {
-            return;
-        }
-
         setRejecting(true);
         try {
             await axios.post(`/admin2/evaluations/${project.id}/consolidate`, {
@@ -379,7 +374,7 @@ export default function Review({ project, evaluations, average_score, evaluation
                             {/* Action Buttons */}
                             <div className="flex gap-4">
                                 <button
-                                    onClick={handleApprove}
+                                    onClick={() => setShowApproveConfirm(true)}
                                     disabled={approving || rejecting}
                                     className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                                 >
@@ -387,7 +382,7 @@ export default function Review({ project, evaluations, average_score, evaluation
                                     {approving ? 'Approving...' : 'Approve for Certification'}
                                 </button>
                                 <button
-                                    onClick={handleReturnForReview}
+                                    onClick={() => setShowReturnConfirm(true)}
                                     disabled={approving || rejecting}
                                     className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                                 >
@@ -399,6 +394,25 @@ export default function Review({ project, evaluations, average_score, evaluation
                     )}
                 </div>
             </div>
+            <ConfirmationDialog
+                isOpen={showApproveConfirm}
+                onClose={() => setShowApproveConfirm(false)}
+                onConfirm={handleApprove}
+                title="Approve for certification?"
+                description="This will approve the consolidated evaluation and move the project toward certification."
+                confirmText="Approve"
+                cancelText="Cancel"
+                confirmVariant="default"
+            />
+            <ConfirmationDialog
+                isOpen={showReturnConfirm}
+                onClose={() => setShowReturnConfirm(false)}
+                onConfirm={handleReturnForReview}
+                title="Return for review?"
+                description="This will send the evaluation back for review instead of moving it to certification."
+                confirmText="Return for Review"
+                cancelText="Cancel"
+            />
         </AppLayout>
     );
 }

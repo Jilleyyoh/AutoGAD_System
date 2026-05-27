@@ -5,6 +5,7 @@ import axios from 'axios';
 import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
+import { NativeSelect } from '@/components/ui/native-select';
 
 // Types (expand as needed)
 interface SupportingDocDraft { description: string; file: File | null; }
@@ -45,30 +46,40 @@ function ProjectInformation({ data, setData, domains, phases, errors }: any) {
           <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>
             Domain <span className="text-red-500">*</span>
           </label>
-          <select
+          <NativeSelect
             value={data.domain_id}
             onChange={e => setData('domain_id', e.target.value)}
-            className={combineTheme('mt-1 block w-full rounded-md shadow-sm', themeClasses.input.base, themeClasses.input.focus)}
+            className={combineTheme(
+              'mt-1 block w-full px-4 py-2 rounded-lg border shadow-sm',
+              themeClasses.input.base,
+              themeClasses.input.focus,
+              data.domain_id ? themeClasses.text.primary : 'text-gray-400 dark:text-slate-400'
+            )}
           >
             <option value="">{domains?.length ? 'Select domain' : 'Loading domains...'}</option>
             {domains?.map((d: any) => (
               <option key={d.id} value={d.id}>{resolveDomainName(d)}</option>
             ))}
-          </select>
+          </NativeSelect>
           {errors?.domain_id && <p className="text-sm text-red-600 dark:text-red-400 mt-1">{errors.domain_id}</p>}
         </div>
         <div>
-          <label className={combineTheme('block text-sm font-medium', themeClasses.text.primary)}>Implementation Phase <span className="text-red-500">*</span></label>
-          <select
+          <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>Implementation Phase <span className="text-red-500">*</span></label>
+          <NativeSelect
             value={data.implementation_phase_id}
             onChange={e => setData('implementation_phase_id', e.target.value)}
-            className={combineTheme('mt-1 block w-full rounded-md shadow-sm', themeClasses.input.base, themeClasses.input.focus)}
+            className={combineTheme(
+              'mt-1 block w-full px-4 py-2 rounded-lg border shadow-sm',
+              themeClasses.input.base,
+              themeClasses.input.focus,
+              data.implementation_phase_id ? themeClasses.text.primary : 'text-gray-400 dark:text-slate-400'
+            )}
           >
             <option value="">{phases?.length ? 'Select phase' : 'Loading phases...'}</option>
             {phases?.map((p: any) => (
               <option key={p.id} value={p.id}>{p.name || p.title}</option>
             ))}
-          </select>
+          </NativeSelect>
           {errors?.implementation_phase_id && <p className="text-sm text-red-600 dark:text-red-400 mt-1">{errors.implementation_phase_id}</p>}
         </div>
       </div>
