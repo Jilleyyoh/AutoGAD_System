@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Head, Link } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 import AppLayout from '@/layouts/app-layout';
 import { ChevronLeft, Save, Send, CheckCircle2, Award, FileText, Clock } from 'lucide-react';
 import axios from 'axios';
@@ -429,7 +430,7 @@ export default function Show({
                                     Total Score
                                 </p>
                                 <p className="text-3xl font-bold text-blue-600 dark:text-blue-300 mb-1">
-                                    {totalScore.toFixed(1)}
+                                    {totalScore.toFixed(2)}
                                 </p>
                                 {scoreInterpretation && (
                                     <p className={combineTheme('text-sm font-medium', 'text-blue-700 dark:text-blue-200')}>
@@ -474,7 +475,7 @@ export default function Show({
                                                 Version Locked & Secured
                                             </p>
                                             <p className={combineTheme('text-xs', 'text-green-600 dark:text-green-300')}>
-                                                {version_integrity.categories_count} categories • {version_integrity.questions_count} questions • Max: {version_integrity.total_max_score.toFixed(1)}
+                                                {version_integrity.categories_count} categories • {version_integrity.questions_count} questions • Max: {version_integrity.total_max_score.toFixed(2)}
                                             </p>
                                         </div>
                                     </div>
@@ -652,7 +653,7 @@ export default function Show({
                                                             <div className="flex items-center gap-3">
                                                                 <div className="text-right">
                                                                     <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                                                                        {categoryScore.toFixed(1)}
+                                                                        {categoryScore.toFixed(2)}
                                                                     </p>
                                                                     <p className={combineTheme('text-xs', themeClasses.text.tertiary)}>
                                                                         / {category.max_score}
@@ -957,7 +958,7 @@ export default function Show({
                                                         TOTAL SCORE
                                                     </p>
                                                     <p className="text-6xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                                                        {totalScore.toFixed(1)}
+                                                        {totalScore.toFixed(2)}
                                                     </p>
                                                     <p className={combineTheme('text-lg', themeClasses.text.secondary)}>
                                                         out of {maxTotalScore.toFixed(0)} points
@@ -1039,7 +1040,7 @@ export default function Show({
                                                     <div className="space-y-4">
                                                         <div className="flex items-center justify-between">
                                                             <span className={combineTheme('text-2xl font-bold', themeClasses.text.primary)}>
-                                                                {catScore.total.toFixed(1)}
+                                                                {catScore.total.toFixed(2)}
                                                             </span>
                                                             <span className={combineTheme('text-sm', themeClasses.text.secondary)}>
                                                                 / {catScore.max.toFixed(0)} pts
@@ -1276,7 +1277,7 @@ export default function Show({
                                 <div className="flex-shrink-0">
                                     <div className={combineTheme('px-6 py-3 rounded-xl text-center', 'bg-green-100 dark:bg-green-800/50')}>
                                         <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                                            {totalScore.toFixed(1)}
+                                            {totalScore.toFixed(2)}
                                         </div>
                                         <div className={combineTheme('text-sm', 'text-green-700 dark:text-green-300')}>
                                             Final Score

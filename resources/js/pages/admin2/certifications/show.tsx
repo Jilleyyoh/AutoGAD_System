@@ -426,7 +426,7 @@ export default function CertificationShow({
                                                 )}
                                             </div>
                                             <span className={combineTheme('text-sm font-bold px-3 py-1 rounded whitespace-nowrap flex-shrink-0', themeClasses.text.primary, themeClasses.badge.blue)}>
-                                                {interp.min.toFixed(0)} - {interp.max.toFixed(0)}
+                                                {interp.min.toFixed(2)} - {interp.max.toFixed(2)}
                                             </span>
                                         </div>
                                     ))}

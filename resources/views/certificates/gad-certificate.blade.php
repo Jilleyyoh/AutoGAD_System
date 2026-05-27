@@ -388,7 +388,7 @@
                     @foreach($interpretations as $interp)
                     <tr>
                         <td>{{ $interp['interpretation'] }}</td>
-                        <td>{{ number_format($interp['min'], 0) }} - {{ number_format($interp['max'], 0) }}</td>
+                        <td>{{ number_format($interp['min'], 2) }} - {{ number_format($interp['max'], 2) }}</td>
                         <td>{{ $interp['description'] ?? '-' }}</td>
                     </tr>
                     @endforeach
