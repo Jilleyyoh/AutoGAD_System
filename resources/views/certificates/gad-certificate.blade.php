@@ -398,34 +398,41 @@
 
         <!-- Signature Section -->
         <div class="signature-section">
-            @foreach($evaluator_names as $evaluator)
-            <div class="signature-block">
-                <div class="signature-line"></div>
-                <div class="signature-name">{{ $evaluator }}</div>
-                <div class="signature-title">Project Evaluator</div>
-            </div>
-            @endforeach
-            @if(count($evaluator_names) == 1)
-            <div class="signature-block">
-                <div class="signature-line"></div>
-                <div class="signature-name">{{ $issued_by }}</div>
-                <div class="signature-title">Approving Officer</div>
-                <div class="issue-date">{{ $issue_date }}</div>
-            </div>
-            @endif
+            <table style="width: 100%; border-collapse: collapse; page-break-inside: avoid;">
+                <tr>
+                    @foreach($domain_evaluators as $evaluator)
+                    <td style="width: 50%; text-align: center; padding: 20px 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #2c3e50; margin-bottom: 8px;"></div>
+                        <div style="font-weight: bold; font-size: 11px; color: #2c3e50; margin-top: 2px;">{{ $evaluator['name'] }}</div>
+                        <div style="font-size: 10px; color: #7f8c8d;">Domain Evaluator</div>
+                    </td>
+                    @if($loop->iteration % 2 == 0)
+                </tr>
+                <tr>
+                    @endif
+                    @endforeach
+                    @foreach($admin_signatures as $admin)
+                    <td style="width: 50%; text-align: center; padding: 20px 10px; vertical-align: top;">
+                        <div style="border-top: 2px solid #2c3e50; margin-bottom: 8px;"></div>
+                        <div style="font-weight: bold; font-size: 11px; color: #2c3e50; margin-top: 2px;">{{ $admin['name'] }}</div>
+                        <div style="font-size: 10px; color: #7f8c8d;">Approving Officer</div>
+                    </td>
+                    @if($loop->iteration % 2 == 0)
+                </tr>
+                <tr>
+                    @endif
+                    @endforeach
+                    @if((count($domain_evaluators) + count($admin_signatures)) % 2 != 0)
+                    <td style="width: 50%; text-align: center; padding: 20px 10px;"></td>
+                    @endif
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center; padding: 20px 10px;">
+                        <div style="font-size: 9px; color: #34495e;">{{ $issue_date }}</div>
+                    </td>
+                </tr>
+            </table>
         </div>
-
-        @if(count($evaluator_names) > 1)
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; page-break-inside: avoid;">
-            <div></div>
-            <div class="signature-block">
-                <div class="signature-line"></div>
-                <div class="signature-name">{{ $issued_by }}</div>
-                <div class="signature-title">Approving Officer</div>
-                <div class="issue-date">{{ $issue_date }}</div>
-            </div>
-        </div>
-        @endif
 
         <!-- Footer -->
         <div class="footer">

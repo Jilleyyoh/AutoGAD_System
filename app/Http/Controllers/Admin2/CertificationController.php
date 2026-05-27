@@ -8,6 +8,8 @@ use App\Models\Certificate;
 use App\Models\CertificateStatus;
 use App\Models\Notification;
 use App\Models\ScoreInterpretation;
+use App\Models\Evaluator;
+use App\Models\User;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -428,6 +430,37 @@ class CertificationController extends Controller
             // Get evaluator names for signatures
             $evaluatorNames = $certificate->project->evaluations->pluck('evaluator.user.name')->unique()->values()->toArray();
 
+            // Get all evaluators assigned to this domain
+            $domainId = $certificate->project->domain_expertise_id;
+            $domainEvaluators = Evaluator::where('domain_expertise_id', $domainId)
+                ->with('user')
+                ->get()
+                ->map(function ($evaluator) {
+                    return [
+                        'name' => $evaluator->user->name,
+                        'email' => $evaluator->user->email,
+                    ];
+                })
+                ->values()
+                ->toArray();
+
+            // Get Admin 1 and Admin 2 users
+            $admins = User::whereHas('role', function ($query) {
+                $query->whereIn('name', ['admin1', 'admin2']);
+            })
+            ->orderBy('role_id')
+            ->get()
+            ->map(function ($user) {
+                $roleName = $user->role->name === 'admin1' ? 'Admin 1' : 'Admin 2';
+                return [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $roleName,
+                ];
+            })
+            ->values()
+            ->toArray();
+
             // Get maximum score from questionnaire (sum of all active category max scores)
             $maxScore = \App\Models\QuestionnaireCategory::where('is_active', true)->sum('max_score');
 
@@ -451,6 +484,8 @@ class CertificationController extends Controller
                 'evaluations' => $evaluations,
                 'interpretations' => $interpretations,
                 'evaluator_names' => $evaluatorNames,
+                'domain_evaluators' => $domainEvaluators,
+                'admin_signatures' => $admins,
                 'issued_by' => $certificate->issuedBy?->name ?? 'GAD System Administrator',
                 'remarks' => $certificate->remarks,
             ];
