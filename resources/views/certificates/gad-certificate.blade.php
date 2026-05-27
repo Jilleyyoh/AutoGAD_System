@@ -399,6 +399,7 @@
         <!-- Signature Section -->
         <div class="signature-section">
             <table style="width: 100%; border-collapse: collapse; page-break-inside: avoid;">
+                <!-- Domain Evaluators -->
                 <tr>
                     @foreach($domain_evaluators as $evaluator)
                     <td style="width: 50%; text-align: center; padding: 20px 10px; vertical-align: top;">
@@ -407,10 +408,16 @@
                         <div style="font-size: 10px; color: #7f8c8d;">Domain Evaluator</div>
                     </td>
                     @if($loop->iteration % 2 == 0)
-                </tr>
-                <tr>
+                    </tr><tr>
                     @endif
                     @endforeach
+                    @if(count($domain_evaluators) % 2 != 0)
+                    <td style="width: 50%;"></td>
+                    @endif
+                </tr>
+
+                <!-- Approving Officers -->
+                <tr>
                     @foreach($admin_signatures as $admin)
                     <td style="width: 50%; text-align: center; padding: 20px 10px; vertical-align: top;">
                         <div style="border-top: 2px solid #2c3e50; margin-bottom: 8px;"></div>
@@ -418,16 +425,17 @@
                         <div style="font-size: 10px; color: #7f8c8d;">Approving Officer</div>
                     </td>
                     @if($loop->iteration % 2 == 0)
-                </tr>
-                <tr>
+                    </tr><tr>
                     @endif
                     @endforeach
-                    @if((count($domain_evaluators) + count($admin_signatures)) % 2 != 0)
-                    <td style="width: 50%; text-align: center; padding: 20px 10px;"></td>
+                    @if(count($admin_signatures) % 2 != 0)
+                    <td style="width: 50%;"></td>
                     @endif
                 </tr>
+
+                <!-- Issue Date -->
                 <tr>
-                    <td colspan="2" style="text-align: center; padding: 20px 10px;">
+                    <td colspan="2" style="text-align: center; padding: 10px;">
                         <div style="font-size: 9px; color: #34495e;">{{ $issue_date }}</div>
                     </td>
                 </tr>
