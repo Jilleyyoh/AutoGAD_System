@@ -569,9 +569,9 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                     >
                                                         <Eye className="w-4 h-4" />
                                                     </button>
-                                                    {/* Hide/disable Assign button for terminal statuses: Declined (4), For Certification (5), Review (6), Certified (7) */}
+                                                    {/* Hide/disable Assign button for terminal statuses: Revision (2), Declined (4), For Certification (5), Review (6), Certified (7) */}
                                                     {(() => {
-                                                        if (![3,4,5,6,7].includes(project.status)) {
+                                                        if (![2,3,4,5,6,7].includes(project.status)) {
                                                             // If project is currently 'revision' we want to send it back to proponent
                                                             if ((project as any).status_name === 'revision') {
                                                                 return (
@@ -609,8 +609,15 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                         }
 
                                                         return (
-                                                            <span className={combineTheme('inline-flex items-center px-4 py-2 text-sm font-medium rounded-md w-32 justify-center', project.status === 4 ? themeClasses.badge.red : themeClasses.badge.green)}>
-                                                                {project.status === 4 ? 'Declined' : 'Completed'}
+                                                            <span className={combineTheme('inline-flex items-center px-4 py-2 text-sm font-medium rounded-md w-32 justify-center', 
+                                                                project.status === 2 ? themeClasses.badge.yellow : 
+                                                                project.status === 4 ? themeClasses.badge.red : 
+                                                                project.status === 6 ? themeClasses.badge.orange : 
+                                                                themeClasses.badge.green)}>
+                                                                {project.status === 2 ? 'Under Revision' : 
+                                                                 project.status === 4 ? 'Declined' : 
+                                                                 project.status === 6 ? 'In Review' : 
+                                                                 'Completed'}
                                                             </span>
                                                         );
                                                     })()}

@@ -38,6 +38,7 @@ export const themeClasses = {
     badge: {
         blue: 'text-blue-600',
         green: 'text-green-600',
+        orange: 'bg-orange-100 dark:bg-orange-900/70 text-orange-800 dark:text-orange-100',
         red: 'bg-red-100 dark:bg-red-900/70 text-red-800 dark:text-red-100',
         yellow: 'bg-yellow-100 dark:bg-yellow-900/70 text-yellow-800 dark:text-yellow-100',
         purple: 'bg-purple-100 dark:bg-purple-900/70 text-purple-800 dark:text-purple-100',
