@@ -56,6 +56,7 @@ class EvaluationController extends Controller
 
             // Filter by status if provided
             $status = $request->query('status');
+            $submissionDate = $request->query('submissionDate');
             $highlightProjectId = $request->query('highlight');
             if ($highlightProjectId) {
                 $highlightProjectId = (int) $highlightProjectId;
@@ -75,6 +76,11 @@ class EvaluationController extends Controller
                 if (isset($statusMap[$status])) {
                     $query->where('project_status_id', $statusMap[$status]);
                 }
+            }
+
+            // Filter by submission date if provided
+            if ($submissionDate) {
+                $query->whereDate('created_at', '=', $submissionDate);
             }
 
             // Search by project code or title

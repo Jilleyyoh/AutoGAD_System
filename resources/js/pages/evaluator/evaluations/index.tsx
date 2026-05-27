@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
+import { router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Search, FileText, Calendar, Clock, Eye, CheckCircle2, XCircle, AlertCircle, X } from 'lucide-react';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
@@ -37,9 +38,8 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
     const initialStatus = urlParams.get('status') || currentStatus || 'all';
     const [activeStatus, setActiveStatus] = useState(initialStatus);
     const [search, setSearch] = useState(searchQuery);
-    const [localFilters, setLocalFilters] = useState<{ from?: string; to?: string }>({
-        from: urlParams.get('from') ?? undefined,
-        to: urlParams.get('to') ?? undefined,
+    const [localFilters, setLocalFilters] = useState<{ submissionDate?: string }>({
+        submissionDate: urlParams.get('submissionDate') ?? undefined,
     });
 
     // Scroll and highlight effect
@@ -137,12 +137,11 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
     };
 
     // Date filtering & apply behavior (redirect to server with query params)
-    const applyFilters = () => {
-        const params = new URLSearchParams();
-        if (activeStatus && activeStatus !== 'all') params.set('status', activeStatus);
-        if (localFilters.from) params.set('from', localFilters.from);
-        if (localFilters.to) params.set('to', localFilters.to);
-        window.location.href = route('evaluator.evaluations.index') + (params.toString() ? '?' + params.toString() : '');
+    const applySubmissionDateFilter = () => {
+        const params: any = {};
+        if (activeStatus && activeStatus !== 'all') params.status = activeStatus;
+        if (localFilters.submissionDate) params.submissionDate = localFilters.submissionDate;
+        router.get(route('evaluator.evaluations.index'), params);
     };
 
     const filteredProjects = applyStatusFilter(
@@ -209,59 +208,39 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
                                 <Calendar className={combineTheme('w-5 h-5', themeClasses.icon.primary)} />
-                                <h2 className={combineTheme('text-lg font-semibold', themeClasses.text.primary)}>Refine by Date (Optional)</h2>
+                                <h2 className={combineTheme('text-lg font-semibold', themeClasses.text.primary)}>Refine by Submission Date</h2>
                             </div>
-                            {(localFilters.from || localFilters.to) && (
+                            {localFilters.submissionDate && (
                                 <button
                                     onClick={() => {
-                                        setLocalFilters({ from: undefined, to: undefined });
-                                        const params = new URLSearchParams();
-                                        if (activeStatus && activeStatus !== 'all') params.set('status', activeStatus);
-                                        window.location.href = route('evaluator.evaluations.index') + (params.toString() ? '?' + params.toString() : '');
+                                        setLocalFilters({ submissionDate: undefined });
+                                        const params: any = {};
+                                        if (activeStatus && activeStatus !== 'all') params.status = activeStatus;
+                                        router.get(route('evaluator.evaluations.index'), params);
                                     }}
                                     className={combineTheme('text-sm px-3 py-1 rounded-md', themeClasses.button.secondary)}
                                 >
                                     <X className="w-4 h-4 inline mr-1" />
-                                    Clear Dates
+                                    Clear Date
                                 </button>
                             )}
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>Start Date</label>
+                                <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>Submission Date</label>
                                 <input
                                     type="date"
-                                    value={localFilters.from || ''}
-                                    onChange={e => setLocalFilters({ ...localFilters, from: e.target.value || undefined })}
+                                    value={localFilters.submissionDate || ''}
+                                    onChange={e => setLocalFilters({ submissionDate: e.target.value || undefined })}
                                     className={combineTheme('block w-full px-4 py-2 rounded-lg border text-sm appearance-none cursor-pointer', themeClasses.input.base, themeClasses.input.focus)}
                                 />
-                            </div>
-
-                            <div>
-                                <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>End Date</label>
-                                <input
-                                    type="date"
-                                    value={localFilters.to || ''}
-                                    onChange={e => setLocalFilters({ ...localFilters, to: e.target.value || undefined })}
-                                    className={combineTheme('block w-full px-4 py-2 rounded-lg border text-sm appearance-none cursor-pointer', themeClasses.input.base, themeClasses.input.focus)}
-                                />
-                            </div>
-
-                            <div className="md:col-span-1 lg:col-span-1 flex items-end">
-                                <div className={combineTheme('w-full px-4 py-2 rounded-lg text-sm font-medium text-center', themeClasses.text.tertiary)}>
-                                    {localFilters.from && localFilters.to ? (
-                                        `${Math.ceil((new Date(localFilters.to).getTime() - new Date(localFilters.from).getTime()) / (1000 * 60 * 60 * 24)) + 1} days`
-                                    ) : (
-                                        'Date range optional'
-                                    )}
-                                </div>
                             </div>
 
                             <div className="flex items-end">
                                 <button
                                     type="button"
-                                    onClick={applyFilters}
+                                    onClick={applySubmissionDateFilter}
                                     className="w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all bg-[#5a189a] text-white hover:bg-[#4a0e7a]"
                                 >
                                     Apply Filters
