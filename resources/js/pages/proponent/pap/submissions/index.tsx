@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
@@ -25,7 +26,7 @@ interface Pagination<T> {
 
 interface ExtraProps {
   projects: Pagination<ProjectRow>;
-  filters: { status?: string; from?: string; to?: string };
+  filters: { status?: string; submissionDate?: string };
   statusOptions: string[];
   highlightProjectId?: number;
 }
@@ -104,11 +105,16 @@ export default function SubmissionsIndex() {
   };
 
   const applyFilters = () => {
-    const params = new URLSearchParams();
-    if (activeTab !== 'all') params.set('status', activeTab);
-    if (local.from) params.set('from', local.from);
-    if (local.to) params.set('to', local.to);
-    window.location.href = route('proponent.pap.submissions') + (params.toString() ? '?' + params.toString() : '');
+    const params: any = {};
+    if (activeTab !== 'all') params.status = activeTab;
+    router.get(route('proponent.pap.submissions'), params);
+  };
+
+  const applySubmissionDateFilter = () => {
+    const params: any = {};
+    if (activeTab !== 'all') params.status = activeTab;
+    if (local.submissionDate) params.submissionDate = local.submissionDate;
+    router.get(route('proponent.pap.submissions'), params);
   };
 
   const filteredProjects = activeTab === 'all'
@@ -136,6 +142,67 @@ export default function SubmissionsIndex() {
             <p className={combineTheme('mt-2 max-w-2xl', themeClasses.text.secondary)}>
               View and manage your project submissions across different stages
             </p>
+          </div>
+
+          {/* Search Bar */}
+          <div className="mb-8">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Search Submissions
+            </label>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by project code, title, or domain..."
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            />
+          </div>
+
+          {/* Submission Date Filter */}
+          <div className={combineTheme('p-6 shadow-sm rounded-lg border mb-8', themeClasses.card.base)}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Calendar className={combineTheme('w-5 h-5', themeClasses.icon.primary)} />
+                <h2 className={combineTheme('text-lg font-semibold', themeClasses.text.primary)}>Refine by Submission Date</h2>
+              </div>
+              {local.submissionDate && (
+                <button
+                  onClick={() => {
+                    setLocal({ ...local, submissionDate: undefined });
+                    const params: any = {};
+                    if (activeTab !== 'all') params.status = activeTab;
+                    router.get(route('proponent.pap.submissions'), params);
+                  }}
+                  className={combineTheme('text-sm px-3 py-1 rounded-md', themeClasses.button.secondary)}
+                >
+                  <X className="w-4 h-4 inline mr-1" />
+                  Clear Date
+                </button>
+              )}
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>Submission Date</label>
+                <input
+                  type="date"
+                  value={local.submissionDate || ''}
+                  onChange={e => setLocal({ ...local, submissionDate: e.target.value || undefined })}
+                  className={combineTheme('block w-full px-4 py-2 rounded-lg border text-sm appearance-none cursor-pointer', themeClasses.input.base, themeClasses.input.focus)}
+                />
+              </div>
+
+              <div className="flex items-end">
+                <button
+                  type="button"
+                  onClick={applySubmissionDateFilter}
+                  className={combineTheme('w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all', themeClasses.button.primary)}
+                  style={{ backgroundColor: '#5a189a' }}
+                >
+                  Apply Filters
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Status Filter Tabs - CENTERED */}
@@ -176,137 +243,6 @@ export default function SubmissionsIndex() {
                 })}
               </div>
             </div>
-          </div>
-
-          {/* Date Range Filters */}
-          <div className={combineTheme('p-6 shadow-sm rounded-lg border mb-6', themeClasses.card.base)}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Calendar className={combineTheme('w-5 h-5', themeClasses.icon.primary)} />
-                <h2 className={combineTheme('text-lg font-semibold', themeClasses.text.primary)}>Refine by Date (Optional)</h2>
-              </div>
-              {(local.from || local.to) && (
-                <button
-                  onClick={() => {
-                    setLocal({ ...local, from: undefined, to: undefined });
-                    const params = new URLSearchParams();
-                    if (activeTab !== 'all') params.set('status', activeTab);
-                    window.location.href = route('proponent.pap.submissions') + (params.toString() ? '?' + params.toString() : '');
-                  }}
-                  className={combineTheme('text-sm px-3 py-1 rounded-md', themeClasses.button.secondary)}
-                >
-                  <X className="w-4 h-4 inline mr-1" />
-                  Clear Dates
-                </button>
-              )}
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* From Date */}
-              <div>
-                <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>Start Date</label>
-                <div className="relative">
-                  <input
-                    type="date"
-                    value={local.from || ''}
-                    onChange={e => setLocal({ ...local, from: e.target.value || undefined })}
-                    className={combineTheme('block w-full px-4 py-2 rounded-lg border text-sm appearance-none cursor-pointer', themeClasses.input.base, themeClasses.input.focus)}
-                    style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cpath d='M16 2v4M8 2v4M3 10h18'/%3E%3C/svg%3E")`,
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'right 0.5rem center',
-                      backgroundSize: '1.25rem',
-                      paddingRight: '2.5rem',
-                    }}
-                  />
-                </div>
-                {local.from && (
-                  <p className={combineTheme('text-xs mt-1', themeClasses.text.tertiary)}>
-                    {new Date(local.from).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
-                  </p>
-                )}
-              </div>
-
-              {/* To Date */}
-              <div>
-                <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>End Date</label>
-                <div className="relative">
-                  <input
-                    type="date"
-                    value={local.to || ''}
-                    onChange={e => setLocal({ ...local, to: e.target.value || undefined })}
-                    className={combineTheme('block w-full px-4 py-2 rounded-lg border text-sm appearance-none cursor-pointer', themeClasses.input.base, themeClasses.input.focus)}
-                    style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cpath d='M16 2v4M8 2v4M3 10h18'/%3E%3C/svg%3E")`,
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'right 0.5rem center',
-                      backgroundSize: '1.25rem',
-                      paddingRight: '2.5rem',
-                    }}
-                  />
-                </div>
-                {local.to && (
-                  <p className={combineTheme('text-xs mt-1', themeClasses.text.tertiary)}>
-                    {new Date(local.to).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
-                  </p>
-                )}
-              </div>
-
-              {/* Summary */}
-              <div className="md:col-span-1 lg:col-span-1 flex items-end">
-                {local.from && local.to ? (
-                  <div className={combineTheme('w-full px-4 py-2 rounded-lg text-sm font-medium text-center', themeClasses.badge.blue)}>
-                    {Math.ceil((new Date(local.to).getTime() - new Date(local.from).getTime()) / (1000 * 60 * 60 * 24)) + 1} days
-                  </div>
-                ) : local.from || local.to ? (
-                  <div className={combineTheme('w-full px-4 py-2 rounded-lg text-sm font-medium text-center', themeClasses.badge.yellow)}>
-                    Select both dates
-                  </div>
-                ) : (
-                  <div className={combineTheme('w-full px-4 py-2 rounded-lg text-sm text-center', themeClasses.text.tertiary)}>
-                    Date range optional
-                  </div>
-                )}
-              </div>
-
-              {/* Apply Button */}
-              <div className="flex items-end">
-                <button
-                  type="button"
-                  onClick={applyFilters}
-                  className={combineTheme('w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all', themeClasses.button.primary)}
-                  style={{ backgroundColor: '#5a189a' }}
-                >
-                  Apply Filters
-                </button>
-              </div>
-            </div>
-
-            {/* Date Range Info */}
-            {(local.from || local.to) && (
-              <div className={combineTheme('mt-4 px-4 py-3 rounded-md text-sm', themeClasses.alert.info)}>
-                <span className={combineTheme('font-medium', themeClasses.text.primary)}>Filtering by: </span>
-                <span className={themeClasses.text.secondary}>
-                  {local.from && `from ${new Date(local.from).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}
-                  {local.from && local.to && ' to '}
-                  {local.to && `${new Date(local.to).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Search Bar */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Search Submissions
-            </label>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by project code, title, or domain..."
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-            />
           </div>
 
           <div className={combineTheme('shadow-md rounded-lg overflow-hidden border', themeClasses.card.base)}>

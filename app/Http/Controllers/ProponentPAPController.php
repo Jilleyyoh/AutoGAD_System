@@ -63,8 +63,7 @@ class ProponentPAPController extends Controller
         abort_unless($proponent, 403);
 
         $status = $request->query('status');
-        $from = $request->query('from');
-        $to = $request->query('to');
+        $submissionDate = $request->query('submissionDate');
         $highlightProjectId = $request->query('highlight');
         if ($highlightProjectId) {
             $highlightProjectId = (int) $highlightProjectId;
@@ -76,11 +75,8 @@ class ProponentPAPController extends Controller
         if ($status) {
             $query->whereHas('projectStatus', function($q) use ($status) { $q->where('name', $status); });
         }
-        if ($from) {
-            $query->whereDate('created_at', '>=', $from);
-        }
-        if ($to) {
-            $query->whereDate('created_at', '<=', $to);
+        if ($submissionDate) {
+            $query->whereDate('created_at', '=', $submissionDate);
         }
 
         $projects = $query->orderByDesc('created_at')->paginate(10)->through(function ($p) {
@@ -109,7 +105,7 @@ class ProponentPAPController extends Controller
       ];
 
       return Inertia::render('proponent/pap/submissions/index', [
-          'filters' => [ 'status' => $status, 'from' => $from, 'to' => $to ],
+          'filters' => [ 'status' => $status, 'submissionDate' => $submissionDate ],
           'projects' => $projects,
           // Provide keyed status options with labels for the frontend
           'statusOptions' => $statusOptions,
