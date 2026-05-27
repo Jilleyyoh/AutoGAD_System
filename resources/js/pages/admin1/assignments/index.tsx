@@ -298,6 +298,13 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
         }
     };
 
+    // Apply submission date filter
+    const applySubmissionDateFilter = () => {
+        const params: any = {};
+        if (activeTab && activeTab !== 'all') params.status = activeTab;
+        if (localFilters.submissionDate) params.submissionDate = localFilters.submissionDate;
+        router.get(route('admin1.assignments.index'), params);
+    };
 
     return (
         <AppLayout
@@ -382,9 +389,9 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                         {localFilters.submissionDate && (
                                             <button
                                                 onClick={() => {
-                                                    const params = new URLSearchParams();
-                                                    if (activeTab && activeTab !== 'all') params.set('status', activeTab);
-                                                    window.location.href = route('admin1.assignments.index') + (params.toString() ? '?' + params.toString() : '');
+                                                    const params: any = {};
+                                                    if (activeTab && activeTab !== 'all') params.status = activeTab;
+                                                    router.get(route('admin1.assignments.index'), params);
                                                 }}
                                                 className={combineTheme('text-sm px-3 py-1 rounded-md', themeClasses.button.secondary)}
                                             >
@@ -394,22 +401,28 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                         )}
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <div>
                                             <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>Submission Date</label>
                                             <input
                                                 type="date"
                                                 value={localFilters.submissionDate || ''}
                                                 onChange={e => {
-                                                    const newDate = e.target.value || undefined;
-                                                    setLocalFilters({ submissionDate: newDate });
-                                                    const params = new URLSearchParams();
-                                                    if (activeTab && activeTab !== 'all') params.set('status', activeTab);
-                                                    if (newDate) params.set('submissionDate', newDate);
-                                                    window.location.href = route('admin1.assignments.index') + (params.toString() ? '?' + params.toString() : '');
+                                                    setLocalFilters({ submissionDate: e.target.value || undefined });
                                                 }}
                                                 className={combineTheme('block w-full px-4 py-2 rounded-lg border text-sm appearance-none cursor-pointer', themeClasses.input.base, themeClasses.input.focus)}
                                             />
+                                        </div>
+
+                                        <div className="flex items-end">
+                                            <button
+                                                type="button"
+                                                onClick={applySubmissionDateFilter}
+                                                style={{ backgroundColor: '#5a189a' }}
+                                                className={combineTheme('w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all', themeClasses.button.primary)}
+                                            >
+                                                Apply Filters
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
