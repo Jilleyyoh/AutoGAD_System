@@ -39,9 +39,8 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
         const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
         const initialStatus = highlightProjectId ? 'all' : (urlParams.get('status') || 'all');
         const [activeTab, setActiveTab] = useState<string>(initialStatus);
-        const [localFilters, setLocalFilters] = useState<{ from?: string; to?: string }>({
-            from: urlParams.get('from') ?? undefined,
-            to: urlParams.get('to') ?? undefined,
+        const [localFilters, setLocalFilters] = useState<{ submissionDate?: string }>({
+            submissionDate: urlParams.get('submissionDate') ?? undefined,
         });
     const [selectedProject, setSelectedProject] = useState<ProjectAssignment | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -299,14 +298,6 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
         }
     };
 
-    // Date filtering & apply behavior (redirect to server with query params)
-    const applyFilters = () => {
-        const params = new URLSearchParams();
-        if (activeTab && activeTab !== 'all') params.set('status', activeTab);
-        if (localFilters.from) params.set('from', localFilters.from);
-        if (localFilters.to) params.set('to', localFilters.to);
-        window.location.href = route('admin1.assignments.index') + (params.toString() ? '?' + params.toString() : '');
-    };
 
     return (
         <AppLayout
@@ -381,17 +372,16 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                     />
                 </div>
 
-                                {/* Date Range Filters */}
+                                {/* Submission Date Filter */}
                                 <div className={combineTheme('p-6 shadow-sm rounded-lg border mb-6', themeClasses.card.base)}>
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="flex items-center gap-2">
                                             <Calendar className={combineTheme('w-5 h-5', themeClasses.icon.primary)} />
-                                            <h2 className={combineTheme('text-lg font-semibold', themeClasses.text.primary)}>Refine by Date (Optional)</h2>
+                                            <h2 className={combineTheme('text-lg font-semibold', themeClasses.text.primary)}>Refine by Submission Date</h2>
                                         </div>
-                                        {(localFilters.from || localFilters.to) && (
+                                        {localFilters.submissionDate && (
                                             <button
                                                 onClick={() => {
-                                                    setLocalFilters({ from: undefined, to: undefined });
                                                     const params = new URLSearchParams();
                                                     if (activeTab && activeTab !== 'all') params.set('status', activeTab);
                                                     window.location.href = route('admin1.assignments.index') + (params.toString() ? '?' + params.toString() : '');
@@ -399,51 +389,27 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                 className={combineTheme('text-sm px-3 py-1 rounded-md', themeClasses.button.secondary)}
                                             >
                                                 <X className="w-4 h-4 inline mr-1" />
-                                                Clear Dates
+                                                Clear Date
                                             </button>
                                         )}
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>Start Date</label>
+                                            <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>Submission Date</label>
                                             <input
                                                 type="date"
-                                                value={localFilters.from || ''}
-                                                onChange={e => setLocalFilters({ ...localFilters, from: e.target.value || undefined })}
+                                                value={localFilters.submissionDate || ''}
+                                                onChange={e => {
+                                                    const newDate = e.target.value || undefined;
+                                                    setLocalFilters({ submissionDate: newDate });
+                                                    const params = new URLSearchParams();
+                                                    if (activeTab && activeTab !== 'all') params.set('status', activeTab);
+                                                    if (newDate) params.set('submissionDate', newDate);
+                                                    window.location.href = route('admin1.assignments.index') + (params.toString() ? '?' + params.toString() : '');
+                                                }}
                                                 className={combineTheme('block w-full px-4 py-2 rounded-lg border text-sm appearance-none cursor-pointer', themeClasses.input.base, themeClasses.input.focus)}
                                             />
-                                        </div>
-
-                                        <div>
-                                            <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>End Date</label>
-                                            <input
-                                                type="date"
-                                                value={localFilters.to || ''}
-                                                onChange={e => setLocalFilters({ ...localFilters, to: e.target.value || undefined })}
-                                                className={combineTheme('block w-full px-4 py-2 rounded-lg border text-sm appearance-none cursor-pointer', themeClasses.input.base, themeClasses.input.focus)}
-                                            />
-                                        </div>
-
-                                        <div className="md:col-span-1 lg:col-span-1 flex items-end">
-                                            <div className={combineTheme('w-full px-4 py-2 rounded-lg text-sm font-medium text-center', themeClasses.text.tertiary)}>
-                                                {localFilters.from && localFilters.to ? (
-                                                    `${Math.ceil((new Date(localFilters.to).getTime() - new Date(localFilters.from).getTime()) / (1000 * 60 * 60 * 24)) + 1} days`
-                                                ) : (
-                                                    'Date range optional'
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-end">
-                                            <button
-                                                type="button"
-                                                onClick={applyFilters}
-                                                style={{ backgroundColor: '#5a189a' }}
-                                                className={combineTheme('w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all', themeClasses.button.primary)}
-                                            >
-                                                Apply Filters
-                                            </button>
                                         </div>
                                     </div>
                                 </div>

@@ -46,8 +46,15 @@ class AssignmentController extends Controller
                     'domainExpertise',
                     'implementationPhase',
                     'evaluator.user'
-                ])
-                ->orderBy('projects.created_at', 'desc')
+                ]);
+            
+            // Filter by submission date if provided
+            if ($request->has('submissionDate') && !empty($request->query('submissionDate'))) {
+                $submissionDate = $request->query('submissionDate');
+                $projects = $projects->whereDate('projects.created_at', '=', $submissionDate);
+            }
+            
+            $projects = $projects->orderBy('projects.created_at', 'desc')
                 ->get();
 
             \Log::info('Fetched projects for assignments', ['count' => $projects->count()]);
