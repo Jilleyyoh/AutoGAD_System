@@ -88,19 +88,6 @@ export default function Certificates({ certificates = { data: [], current_page: 
             <p className="text-gray-600 dark:text-gray-400 mt-2">View and download certificates for projects you evaluated</p>
           </div>
 
-          {/* Info Card */}
-          <div className="mb-8 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
-            <div className="flex gap-3">
-                <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Certificates</h3>
-                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
-                  View and download certificates for projects you have successfully evaluated. Certificates are generated once projects are certified by Admin2.
-                </p>
-              </div>
-            </div>
-          </div>
-
           {error && (
             <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-200">
               {error}

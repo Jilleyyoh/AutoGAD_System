@@ -71,19 +71,6 @@ export default function Index({ domains = { data: [], current_page: 1, last_page
             </Link>
           </div>
 
-          {/* Info Card */}
-          <div className="mb-8 bg-gradient-to-br from-purple-50 to-purple-50 dark:from-purple-900/10 dark:to-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-6">
-            <div className="flex gap-3">
-              <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Domains</h3>
-                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
-                  Domains represent the evaluation criteria and areas of focus for GAD projects. Each domain helps structure the evaluation framework.
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Search Section */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

@@ -186,19 +186,6 @@ export default function Index({ projects = { data: [], current_page: 1, last_pag
                         </p>
                     </div>
 
-                    {/* Info Card */}
-                    <div className="mb-8 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
-                        <div className="flex gap-3">
-                             <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
-                            <div>
-                                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Evaluations</h3>
-                                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
-                                    Evaluations allow you to review and assess submitted projects. Track your evaluation progress, provide feedback, and contribute to the approval process.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Error Message */}
                     {error && (
                         <div className={combineTheme('mb-4 p-4 border rounded', themeClasses.alert.error)}>

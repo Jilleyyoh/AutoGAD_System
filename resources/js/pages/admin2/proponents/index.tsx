@@ -95,20 +95,6 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
             </Link>
           </div>
 
-          {/* Info Card */}
-          <div className="mb-8 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
-            <div className="flex gap-3">
-              <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Proponents</h3>
-                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
-                  Proponents are individuals or organizations that submit projects for evaluation across various domains.
-                </p>
-              </div>
-            </div>
-            
-          </div>
-
           {/* Search Bar */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

@@ -34,6 +34,12 @@ interface Props {
         current_page: number;
         total: number;
         per_page: number;
+        last_page: number;
+        links: {
+            url: string | null;
+            label: string;
+            active: boolean;
+        }[];
     };
 }
 
@@ -71,19 +77,6 @@ export default function Admin2ConversationsIndex() {
                             <p className="text-gray-600 dark:text-gray-400 mt-2">
                                 Manage conversations and messages with proponents
                             </p>
-                        </div>
-                    </div>
-
-                    {/* Info Card */}
-                    <div className="mb-8 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
-                        <div className="flex gap-3">
-                            <AlertCircle className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
-                            <div>
-                                <h3 className="font-semibold text-purple-900 dark:text-purple-100">About Messages</h3>
-                                <p className="text-sm text-purple-800 dark:text-purple-200 mt-1">
-                                    Communicate with proponents regarding their project submissions and evaluation processes.
-                                </p>
-                            </div>
                         </div>
                     </div>
 
