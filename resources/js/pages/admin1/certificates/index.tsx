@@ -126,7 +126,8 @@ export default function Certificates({ certificates = { data: [], current_page: 
               <p className="text-gray-500 dark:text-gray-500 text-sm mt-2">Try adjusting your search criteria</p>
             </div>
           ) : (
-            <div className="grid gap-6">
+            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-md overflow-hidden">
+            <div className="grid gap-6 p-6">
               {filteredCertificates.map(cert => {
                 const isHighlighted = highlightCertificateId && cert.id === highlightCertificateId;
                 return (
@@ -200,9 +201,8 @@ export default function Certificates({ certificates = { data: [], current_page: 
                 );
               })}
             </div>
-          )}
-          {/* Pagination */}
-          <div className="px-6 py-4 border-t flex items-center justify-between bg-white dark:bg-gray-900 rounded-b-lg border-gray-200 dark:border-gray-800">
+            {/* Pagination */}
+            <div className="px-6 py-4 border-t flex items-center justify-between bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
             <div className="text-sm text-gray-600 dark:text-gray-400">
               Page <span className="font-semibold text-gray-900 dark:text-white">{certificates.current_page}</span> of <span className="font-semibold text-gray-900 dark:text-white">{certificates.last_page}</span>
               <span className="ml-2 text-gray-500 dark:text-gray-500">({certificates.total} total)</span>
@@ -223,7 +223,9 @@ export default function Certificates({ certificates = { data: [], current_page: 
                 </button>
               ))}
             </div>
-          </div>
+            </div>
+            </div>
+          )}
         </div>
       </div>
     </AppLayout>

@@ -265,11 +265,9 @@ export default function CertificationsIndex({
                                 </table>
                             </DragScroll>
                         )}
-                    </div>
-
-                    {/* Pagination */}
-                    {pagination.total > 0 && (
-                        <div className={combineTheme('px-6 py-4 border-t flex items-center justify-between', themeClasses.border.primary)}>
+                        {/* Pagination */}
+                        {pagination.total > 0 && (
+                            <div className="px-6 py-4 border-t flex items-center justify-between bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
                             <div className={combineTheme('text-sm', themeClasses.text.secondary)}>
                                 Page <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{pagination.current_page}</span> of <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{pagination.last_page}</span>
                                 <span className={combineTheme('ml-2', themeClasses.text.tertiary)}>({pagination.total} total)</span>
@@ -291,7 +289,8 @@ export default function CertificationsIndex({
                                 ))}
                             </div>
                         </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </div>
         </AppLayout>
