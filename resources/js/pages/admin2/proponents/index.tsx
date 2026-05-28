@@ -23,11 +23,26 @@ interface Proponent {
   updated_at: string;
 }
 
-interface Props {
-  proponents: Proponent[];
+interface PaginationLink {
+  url: string | null;
+  label: string;
+  active: boolean;
 }
 
-export default function Index({ proponents }: Props) {
+interface PaginatedData {
+  data: Proponent[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+  links: PaginationLink[];
+}
+
+interface Props {
+  proponents: PaginatedData;
+}
+
+export default function Index({ proponents = { data: [], current_page: 1, last_page: 1, per_page: 15, total: 0, links: [] } }: Props) {
   const { delete: destroy } = useForm({});
   const [proponentToDelete, setProponentToDelete] = useState<Proponent | null>(null);
   const [search, setSearch] = useState('');
@@ -40,7 +55,7 @@ export default function Index({ proponents }: Props) {
   };
 
   // Safely check proponents before rendering
-  const safeProponents = Array.isArray(proponents) ? proponents : [];
+  const safeProponents = Array.isArray(proponents.data) ? proponents.data : [];
 
   // Filter proponents based on search
   const filteredProponents = safeProponents.filter(proponent =>
@@ -116,7 +131,7 @@ export default function Index({ proponents }: Props) {
                   <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Total Proponents</p>
                   <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                 </div>
-                <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">{safeProponents.length}</p>
+                <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">{proponents.total}</p>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between mb-4">
@@ -133,6 +148,7 @@ export default function Index({ proponents }: Props) {
           {/* Proponents Table */}
           <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-md overflow-hidden">
             {safeProponents.length > 0 ? (
+              <>
               <DragScroll>
                 <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
                   <thead className="bg-gray-50 dark:bg-gray-800">
@@ -214,6 +230,30 @@ export default function Index({ proponents }: Props) {
                   </tbody>
                 </table>
               </DragScroll>
+                {/* Pagination */}
+                <div className="px-6 py-4 border-t flex items-center justify-between bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Page <span className="font-semibold text-gray-900 dark:text-white">{proponents.current_page}</span> of <span className="font-semibold text-gray-900 dark:text-white">{proponents.last_page}</span>
+                    <span className="ml-2 text-gray-500 dark:text-gray-500">({proponents.total} total)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {proponents.links.filter((l) => l.label !== '&laquo; Previous' && l.label !== 'Next &raquo;').map((l, i) => (
+                      <button
+                        key={i}
+                        disabled={!l.url}
+                        onClick={() => l.url && (window.location.href = l.url)}
+                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                          l.active
+                            ? 'bg-blue-600 dark:bg-blue-700 text-white shadow-md hover:bg-blue-700 dark:hover:bg-blue-800'
+                            : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        } ${!l.url ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                      >
+                        {l.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
             ) : (
               <div className="px-6 py-16 text-center">
                 <Users className="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-3" />

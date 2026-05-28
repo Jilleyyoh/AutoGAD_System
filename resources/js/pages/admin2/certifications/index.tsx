@@ -5,6 +5,7 @@ import AppLayout from '@/layouts/app-layout';
 import DragScroll from '@/components/drag-scroll';
 import { FileText, Download, Eye, AlertCircle, Award } from 'lucide-react';
 import { NativeSelect } from '@/components/ui/native-select';
+import { themeClasses, combineTheme } from '@/lib/theme-classes';
 
 interface ScoreInterpretation {
     min: number;
@@ -33,6 +34,8 @@ interface Pagination {
     total: number;
     current_page: number;
     last_page: number;
+    per_page: number;
+    links: { url: string | null; label: string; active: boolean }[];
 }
 
 export default function CertificationsIndex({ 
@@ -266,25 +269,27 @@ export default function CertificationsIndex({
 
                     {/* Pagination */}
                     {pagination.total > 0 && (
-                        <div className="mt-4 flex justify-center items-center gap-4">
-                            {pagination.current_page > 1 && (
-                                <Link
-                                    href={route('admin2.certifications.index', { page: pagination.current_page - 1 })}
-                                >
-                                    &lt;
-                                </Link>
-                            )}
-                            <div className="text-sm text-gray-600 dark:text-gray-400">
-                                Showing {filteredProjects.length} of {pagination.total} projects
-                                {pagination.last_page > 1 && ` (Page ${pagination.current_page} of ${pagination.last_page})`}
+                        <div className={combineTheme('px-6 py-4 border-t flex items-center justify-between', themeClasses.border.primary)}>
+                            <div className={combineTheme('text-sm', themeClasses.text.secondary)}>
+                                Page <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{pagination.current_page}</span> of <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{pagination.last_page}</span>
+                                <span className={combineTheme('ml-2', themeClasses.text.tertiary)}>({pagination.total} total)</span>
                             </div>
-                            {pagination.current_page < pagination.last_page && (
-                                <Link
-                                    href={route('admin2.certifications.index', { page: pagination.current_page + 1 })}
-                                >
-                                    &gt;
-                                </Link>
-                            )}
+                            <div className="flex items-center gap-2">
+                                {pagination.links.filter((l) => l.label !== '&laquo; Previous' && l.label !== 'Next &raquo;').map((l, i) => (
+                                    <button
+                                        key={i}
+                                        disabled={!l.url}
+                                        onClick={() => l.url && (window.location.href = l.url)}
+                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                                            l.active
+                                                ? combineTheme('text-white shadow-md', 'bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800')
+                                                : combineTheme('border', themeClasses.button.secondary)
+                                        } ${!l.url ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                                    >
+                                        {l.label}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </div>

@@ -16,13 +16,28 @@ interface Certificate {
   can_download: boolean;
 }
 
+interface PaginationLink {
+  url: string | null;
+  label: string;
+  active: boolean;
+}
+
+interface PaginatedData {
+  data: Certificate[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+  links: PaginationLink[];
+}
+
 interface Props {
-  certificates: Certificate[];
+  certificates: PaginatedData;
   error?: string;
   highlightCertificateId?: number;
 }
 
-export default function Certificates({ certificates = [], error, highlightCertificateId }: Props) {
+export default function Certificates({ certificates = { data: [], current_page: 1, last_page: 1, per_page: 15, total: 0, links: [] }, error, highlightCertificateId }: Props) {
   // Scroll and highlight effect
   useEffect(() => {
     if (highlightCertificateId) {
@@ -87,15 +102,16 @@ export default function Certificates({ certificates = [], error, highlightCertif
             </div>
           )}
 
-          {certificates.length === 0 ? (
+          {certificates.data.length === 0 ? (
             <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-12 text-center">
               <FileText className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-600 dark:text-gray-400 text-lg">No certificates yet</p>
               <p className="text-gray-500 dark:text-gray-500 text-sm mt-2">Your certificates will appear here once your projects are certified</p>
             </div>
           ) : (
+            <>
             <div className="grid gap-6">
-              {certificates.filter(cert => 
+              {certificates.data.filter(cert => 
                 cert.project_title.toLowerCase().includes(search.toLowerCase()) ||
                 cert.project_code.toLowerCase().includes(search.toLowerCase()) ||
                 cert.status.toLowerCase().includes(search.toLowerCase())
@@ -168,6 +184,30 @@ export default function Certificates({ certificates = [], error, highlightCertif
                 );
               })}
             </div>
+            {/* Pagination */}
+            <div className="px-6 py-4 border-t flex items-center justify-between bg-white dark:bg-gray-900 rounded-b-lg border-gray-200 dark:border-gray-800">
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Page <span className="font-semibold text-gray-900 dark:text-white">{certificates.current_page}</span> of <span className="font-semibold text-gray-900 dark:text-white">{certificates.last_page}</span>
+                <span className="ml-2 text-gray-500 dark:text-gray-500">({certificates.total} total)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {certificates.links.filter((l) => l.label !== '&laquo; Previous' && l.label !== 'Next &raquo;').map((l, i) => (
+                  <button
+                    key={i}
+                    disabled={!l.url}
+                    onClick={() => l.url && (window.location.href = l.url)}
+                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                      l.active
+                        ? 'bg-blue-600 dark:bg-blue-700 text-white shadow-md hover:bg-blue-700 dark:hover:bg-blue-800'
+                        : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                    } ${!l.url ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  >
+                    {l.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            </>
           )}
         </div>
       </div>

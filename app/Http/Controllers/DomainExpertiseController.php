@@ -11,7 +11,7 @@ class DomainExpertiseController extends Controller
     public function index()
     {
         return Inertia::render('admin1/domainexpertise/index', [
-            'domains' => DomainExpertise::all(),
+            'domains' => DomainExpertise::paginate(15),
         ]);
     }
 

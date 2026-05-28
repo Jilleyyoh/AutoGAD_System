@@ -58,8 +58,8 @@ class CertificateController extends Controller
                 'project.proponent.user',
             ])
             ->orderBy('issued_date', 'desc')
-            ->get()
-            ->map(function ($cert) {
+            ->paginate(15)
+            ->through(function ($cert) {
                 $version = $cert->evaluation?->questionnaireVersion;
                 $versionString = $version ? $version->version_number : 'N/A';
 
@@ -75,8 +75,7 @@ class CertificateController extends Controller
                     'organization' => $cert->project->proponent?->organization ?? 'N/A',
                     'can_download' => true,
                 ];
-            })
-            ->toArray();
+            });
 
             return Inertia::render('evaluator/certificates/index', [
                 'certificates' => $certificates,

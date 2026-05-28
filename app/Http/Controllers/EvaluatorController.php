@@ -17,10 +17,7 @@ class EvaluatorController extends Controller
     public function index()
     {
         // Query evaluators with explicit relationships
-        $evaluators = Evaluator::with(['user', 'domainExpertise'])->get();
-        
-        // Transform data to ensure it's properly formatted for the frontend
-        $formattedEvaluators = $evaluators->map(function ($evaluator) {
+        $evaluators = Evaluator::with(['user', 'domainExpertise'])->paginate(15)->through(function ($evaluator) {
             return [
                 'id' => $evaluator->id,
                 'user_id' => $evaluator->user_id,
@@ -41,10 +38,10 @@ class EvaluatorController extends Controller
         });
         
         // Log what we're sending to the frontend for debugging
-        \Log::info('Evaluators data being sent to frontend:', ['evaluators' => $formattedEvaluators]);
+        \Log::info('Evaluators data being sent to frontend:', ['evaluators' => $evaluators]);
         
         return Inertia::render('admin1/evaluator/index', [
-            'evaluators' => $formattedEvaluators,
+            'evaluators' => $evaluators,
         ]);
     }
 

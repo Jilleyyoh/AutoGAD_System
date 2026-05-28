@@ -5,6 +5,7 @@ import DragScroll from '@/components/drag-scroll';
 import { Eye, Clock, AlertCircle, CheckCircle2, XCircle, FileText, BarChart3 } from 'lucide-react';
 import { route } from 'ziggy-js';
 import { formatStatus } from '@/lib/format-label';
+import { themeClasses, combineTheme } from '@/lib/theme-classes';
 
 interface EvaluationItem {
     id: number;
@@ -29,6 +30,8 @@ interface Props {
         total: number;
         current_page: number;
         last_page: number;
+        per_page: number;
+        links: { url: string | null; label: string; active: boolean }[];
     };
 }
 
@@ -265,6 +268,30 @@ export default function Index({ evaluations, pagination }: Props) {
                                 <p>No evaluations found</p>
                             </div>
                         )}
+
+                        {/* Pagination */}
+                        <div className={combineTheme('px-6 py-4 border-t flex items-center justify-between', themeClasses.border.primary)}>
+                          <div className={combineTheme('text-sm', themeClasses.text.secondary)}>
+                            Page <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{pagination.current_page}</span> of <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{pagination.last_page}</span>
+                            <span className={combineTheme('ml-2', themeClasses.text.tertiary)}>({pagination.total} total)</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {pagination.links.filter((l) => l.label !== '&laquo; Previous' && l.label !== 'Next &raquo;').map((l, i) => (
+                              <button
+                                key={i}
+                                disabled={!l.url}
+                                onClick={() => l.url && (window.location.href = l.url)}
+                                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                                  l.active
+                                    ? combineTheme('text-white shadow-md', 'bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800')
+                                    : combineTheme('border', themeClasses.button.secondary)
+                                } ${!l.url ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                              >
+                                {l.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
