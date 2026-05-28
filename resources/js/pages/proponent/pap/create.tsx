@@ -6,6 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import { NativeSelect } from '@/components/ui/native-select';
+import { formatPhase } from '@/lib/format-label';
 
 // Types (expand as needed)
 interface SupportingDocDraft { description: string; file: File | null; }
@@ -77,7 +78,7 @@ function ProjectInformation({ data, setData, domains, phases, errors }: any) {
           >
             <option value="">{phases?.length ? 'Select phase' : 'Loading phases...'}</option>
             {phases?.map((p: any) => (
-              <option key={p.id} value={p.id}>{p.name || p.title}</option>
+              <option key={p.id} value={p.id}>{formatPhase(p.name || p.title)}</option>
             ))}
           </NativeSelect>
           {errors?.implementation_phase_id && <p className="text-sm text-red-600 dark:text-red-400 mt-1">{errors.implementation_phase_id}</p>}
@@ -128,6 +129,12 @@ function DocumentUpload({ data, setData, errors }: any) {
     setData(field as any, file);
   };
 
+  const fileInputClass = combineTheme(
+    'mt-1 block w-full text-sm px-4 py-2 rounded-lg border',
+    themeClasses.input.base,
+    'file:mr-4 file:py-2 file:px-4 file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-900 hover:file:bg-gray-200 dark:file:bg-gray-800 dark:file:text-gray-100 dark:file:border-gray-700 dark:hover:file:bg-gray-700'
+  );
+
   return (
     <div className="space-y-6">
       {['proposal','memo','manual'].map(f => (
@@ -150,11 +157,14 @@ function DocumentUpload({ data, setData, errors }: any) {
             <input
               type="file"
               onChange={e => handleFileChange(f, e.target.files?.[0] || null)}
-              className={combineTheme('mt-1 block w-full text-sm px-4 py-2 rounded-lg border', themeClasses.input.base, 'file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-300 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50')}
+              className={fileInputClass}
               accept=".pdf,.doc,.docx"
             />
           )}
           {errors?.[f] && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors[f]}</p>}
+          {f === 'proposal' && !data.proposal && (
+            <p className={combineTheme('mt-1 text-xs', themeClasses.text.tertiary)}>Proposal file is required before continuing.</p>
+          )}
         </div>
       ))}
 
@@ -185,7 +195,7 @@ function ReviewSubmit({ data, domains, phases }: { data: FormDataShape; domains:
           <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
             <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Title</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.title || 'Not provided'}</dd></div>
             <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Domain</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.domain_id ? resolveDomainName(domains.find((d: any) => d.id == data.domain_id)) : 'Not selected'}</dd></div>
-            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Phase</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.implementation_phase_id ? phases.find((p: any) => p.id == data.implementation_phase_id)?.name : 'Not selected'}</dd></div>
+            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Phase</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.implementation_phase_id ? formatPhase(phases.find((p: any) => p.id == data.implementation_phase_id)?.name) : 'Not Selected'}</dd></div>
             <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Description</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.description || 'Not provided'}</dd></div>
             <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Rationale</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.rationale || 'Not provided'}</dd></div>
             <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Objectives</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.objectives || 'Not provided'}</dd></div>
@@ -302,6 +312,8 @@ export default function Create() {
   const isValid = () => {
     return !!(data.title && data.domain_id && data.implementation_phase_id && data.description && data.proposal);
   };
+
+  const canGoNext = currentStep !== 2 || !!data.proposal;
 
   const saveDraft = async () => {
     const formData = new FormData();
@@ -430,8 +442,12 @@ export default function Create() {
               {currentStep < steps.length ? (
                 <button
                   type="button"
+                  disabled={!canGoNext}
                   onClick={handleNextStep}
-                  className="ml-auto inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md bg-[#5a189a] hover:bg-[#4a148c] text-white"
+                  className={combineTheme(
+                    'ml-auto inline-flex items-center px-4 py-2 border text-sm font-medium',
+                    canGoNext ? themeClasses.button.primary : 'bg-gray-300 text-gray-600 cursor-not-allowed dark:bg-gray-800 dark:text-gray-400'
+                  )}
                 >Next</button>
               ) : (
                 <button

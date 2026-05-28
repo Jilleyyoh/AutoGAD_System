@@ -49,8 +49,7 @@ export default function Index({ domains }: Props) {
             </div>
             <Link
               href={route('domain.create')}
-              style={{ backgroundColor: '#5a189a' }}
-              className="inline-flex items-center gap-2 px-6 py-3 hover:bg-blue-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 dark:bg-blue-700 dark:hover:bg-blue-800 whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-medium hover:bg-gray-900 transition-all duration-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 whitespace-nowrap"
             >
               <Plus className="w-5 h-5" />
               Add Domain
@@ -89,7 +88,13 @@ export default function Index({ domains }: Props) {
           <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-md overflow-hidden">
             {filteredDomains.length > 0 ? (
               <DragScroll>
-                <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <table className="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
+                  <colgroup>
+                    <col className="w-20" />
+                    <col className="w-64" />
+                    <col />
+                    <col className="w-32" />
+                  </colgroup>
                   <thead className="bg-gray-50 dark:bg-gray-800">
                     <tr>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
@@ -116,12 +121,12 @@ export default function Index({ domains }: Props) {
                           {domain.domain_name}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
-                          <div className="max-w-xs truncate" title={domain.description || 'No description'}>
+                          <div className="whitespace-normal break-words" title={domain.description || 'No description'}>
                             {domain.description || <span className="text-gray-400 dark:text-gray-500 italic">No description</span>}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          <div className="flex gap-2">
+                          <div className="flex justify-end gap-2">
                             <Link
                               href={route('domain.edit', domain.id)}
                               className="inline-flex items-center px-3 py-2 border border-amber-300 dark:border-amber-600 text-sm font-medium rounded-md text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"

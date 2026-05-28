@@ -4,6 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import DragScroll from '@/components/drag-scroll';
 import { Eye, Clock, AlertCircle, CheckCircle2, XCircle, FileText, BarChart3 } from 'lucide-react';
 import { route } from 'ziggy-js';
+import { formatStatus } from '@/lib/format-label';
 
 interface EvaluationItem {
     id: number;
@@ -72,18 +73,17 @@ export default function Index({ evaluations, pagination }: Props) {
 
     // Get status badge with icon - using new color scheme
     const getStatusBadge = (statusKey?: string) => {
-        const statusMap: { [key: string]: { bg: string; border: string; textColor: string; icon: React.ComponentType<any> } } = {
-            'for_evaluation': { bg: 'bg-blue-50 dark:bg-blue-900/10', border: 'border-blue-200 dark:border-blue-800', textColor: 'text-blue-700 dark:text-blue-300', icon: Clock },
-            'revision': { bg: 'bg-yellow-50 dark:bg-yellow-900/10', border: 'border-yellow-200 dark:border-yellow-800', textColor: 'text-yellow-700 dark:text-yellow-300', icon: AlertCircle },
-            'approved': { bg: 'bg-green-50 dark:bg-green-900/10', border: 'border-green-200 dark:border-green-800', textColor: 'text-green-700 dark:text-green-300', icon: CheckCircle2 },
-            'declined': { bg: 'bg-red-50 dark:bg-red-900/10', border: 'border-red-200 dark:border-red-800', textColor: 'text-red-700 dark:text-red-300', icon: XCircle },
-            'review': { bg: 'bg-orange-50 dark:bg-orange-900/10', border: 'border-orange-200 dark:border-orange-800', textColor: 'text-orange-700 dark:text-orange-300', icon: Eye },
-            'for_certification': { bg: 'bg-indigo-50 dark:bg-indigo-900/10', border: 'border-indigo-200 dark:border-indigo-800', textColor: 'text-indigo-700 dark:text-indigo-300', icon: Clock },
-            'certified': { bg: 'bg-purple-50 dark:bg-purple-900/10', border: 'border-purple-200 dark:border-purple-800', textColor: 'text-purple-700 dark:text-purple-300', icon: CheckCircle2 },
+        const statusMap: { [key: string]: { bg: string; border: string; textColor: string } } = {
+            'for_evaluation': { bg: 'bg-blue-50 dark:bg-blue-900/10', border: 'border-blue-200 dark:border-blue-800', textColor: 'text-blue-700 dark:text-blue-300' },
+            'revision': { bg: 'bg-yellow-50 dark:bg-yellow-900/10', border: 'border-yellow-200 dark:border-yellow-800', textColor: 'text-yellow-700 dark:text-yellow-300' },
+            'approved': { bg: 'bg-green-50 dark:bg-green-900/10', border: 'border-green-200 dark:border-green-800', textColor: 'text-green-700 dark:text-green-300' },
+            'declined': { bg: 'bg-red-50 dark:bg-red-900/10', border: 'border-red-200 dark:border-red-800', textColor: 'text-red-700 dark:text-red-300' },
+            'review': { bg: 'bg-orange-50 dark:bg-orange-900/10', border: 'border-orange-200 dark:border-orange-800', textColor: 'text-orange-700 dark:text-orange-300' },
+            'for_certification': { bg: 'bg-indigo-50 dark:bg-indigo-900/10', border: 'border-indigo-200 dark:border-indigo-800', textColor: 'text-indigo-700 dark:text-indigo-300' },
+            'certified': { bg: 'bg-purple-50 dark:bg-purple-900/10', border: 'border-purple-200 dark:border-purple-800', textColor: 'text-purple-700 dark:text-purple-300' },
         };
 
-        const status = statusMap[statusKey || ''] || { bg: 'bg-gray-50 dark:bg-gray-900/10', border: 'border-gray-200 dark:border-gray-800', textColor: 'text-gray-700 dark:text-gray-300', icon: Eye };
-        const StatusIcon = status.icon;
+        const status = statusMap[statusKey || ''] || { bg: 'bg-gray-50 dark:bg-gray-900/10', border: 'border-gray-200 dark:border-gray-800', textColor: 'text-gray-700 dark:text-gray-300' };
 
         const statusLabels: { [key: string]: string } = {
             'for_evaluation': 'For Evaluation',
@@ -96,9 +96,8 @@ export default function Index({ evaluations, pagination }: Props) {
         };
 
         return (
-            <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${status.bg} ${status.border} ${status.textColor}`}>
-                <StatusIcon className="w-4 h-4" />
-                {statusLabels[statusKey || ''] || statusKey || 'Unknown'}
+            <span className={`inline-flex px-3 py-1 rounded-full text-sm font-medium border ${status.bg} ${status.border} ${status.textColor}`}>
+                {statusLabels[statusKey || ''] || formatStatus(statusKey)}
             </span>
         );
     };

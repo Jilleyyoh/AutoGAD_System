@@ -4,7 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import DragScroll from '@/components/drag-scroll';
 import { route } from 'ziggy-js';
 import ConfirmationDialog from '@/components/ui/confirmation-dialog';
-import { Plus, Edit2, Trash2, Users, AlertCircle, Calendar, FileText } from 'lucide-react';
+import { Plus, Edit2, Trash2, Users, AlertCircle, FileText } from 'lucide-react';
 
 interface User {
   id: number;
@@ -73,7 +73,7 @@ export default function Index({ proponents }: Props) {
             </div>
             <Link
               href={route('admin2.proponents.create')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#5a189a] hover:bg-[#4a0e7a] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200 dark:bg-[#5a189a] dark:hover:bg-[#4a0e7a] whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-medium hover:bg-gray-900 transition-all duration-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 whitespace-nowrap"
             >
               <Plus className="w-5 h-5" />
               Add Proponent
@@ -141,7 +141,7 @@ export default function Index({ proponents }: Props) {
                         ID
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                        Proponent Name
+                        Name
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                         Email
@@ -188,8 +188,7 @@ export default function Index({ proponents }: Props) {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                           {proponent.contact_number || 'N/A'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
+                        <td className="px-6 py-4 whitespace-nowrap align-middle text-sm text-gray-600 dark:text-gray-400">
                           {formatDate(proponent.created_at)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">

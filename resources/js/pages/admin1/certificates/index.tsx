@@ -3,6 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { Download, FileText } from 'lucide-react';
 import { route } from 'ziggy-js';
 import { Head } from '@inertiajs/react';
+import { formatStatus } from '@/lib/format-label';
 
 interface Certificate {
   id: number;
@@ -48,10 +49,11 @@ export default function Certificates({ certificates = [], error, highlightCertif
       'Rejected': { bg: 'bg-red-50 dark:bg-red-900/10', border: 'border-red-200 dark:border-red-800', text: 'text-red-700 dark:text-red-300' },
     };
     
-    const style = statusStyles[status] || statusStyles['Pending'];
+    const normalizedStatus = String(status || 'pending').toLowerCase();
+    const style = statusStyles[normalizedStatus] || statusStyles['pending'];
     return (
       <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${style.bg} ${style.border} ${style.text}`}>
-        {status}
+        {formatStatus(status)}
       </span>
     );
   };

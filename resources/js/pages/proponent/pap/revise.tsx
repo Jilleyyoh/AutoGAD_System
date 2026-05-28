@@ -5,6 +5,7 @@ import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import { NativeSelect } from '@/components/ui/native-select';
+import { formatPhase } from '@/lib/format-label';
 
 interface SupportingDocDraft { 
   description: string; 
@@ -91,7 +92,7 @@ function RemarksAndProjectInfo({ data, setData, remarks, domains, phases, errors
                 className={combineTheme('w-full rounded-lg shadow-sm', themeClasses.input.base, themeClasses.input.focus)}
               >
                 {phases.map((p: { id: number; name: string }) => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
+                  <option key={p.id} value={p.id}>{formatPhase(p.name)}</option>
                 ))}
               </NativeSelect>
               {errors?.implementation_phase_id && <p className="text-red-600 text-sm mt-1">{errors.implementation_phase_id}</p>}
@@ -148,6 +149,12 @@ function DocumentUpdate({ data, setData, initialDocs }: any) {
     setData({ ...data, [field]: file });
   };
 
+  const fileInputClass = combineTheme(
+    'mt-2 block w-full text-sm',
+    themeClasses.input.base,
+    'file:mr-4 file:py-2 file:px-4 file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-900 hover:file:bg-gray-200 dark:file:bg-gray-800 dark:file:text-gray-100 dark:file:border-gray-700 dark:hover:file:bg-gray-700'
+  );
+
   return (
     <div className="space-y-6">
       {/* Primary Documents - Proposal, Memo, Manual */}
@@ -176,7 +183,7 @@ function DocumentUpdate({ data, setData, initialDocs }: any) {
             <input
               type="file"
               onChange={e => handleFileChange(f, e.target.files?.[0] || null)}
-              className={combineTheme('mt-2 block w-full text-sm', themeClasses.input.base, 'file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-300 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50')}
+              className={fileInputClass}
               accept=".pdf,.doc,.docx"
             />
             {(data as any)?.[f]?.name && (
@@ -230,7 +237,7 @@ function ReviewSubmit({ data, initialDocs, domainName, phaseName }: any) {
             </div>
             <div>
               <dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Phase</dt>
-              <dd className={combineTheme('mt-1 text-base', themeClasses.text.primary)}>{phaseName}</dd>
+              <dd className={combineTheme('mt-1 text-base', themeClasses.text.primary)}>{formatPhase(phaseName)}</dd>
             </div>
           </div>
           <div>

@@ -7,6 +7,7 @@ import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import axios from 'axios';
 import { route } from 'ziggy-js';
 import ConfirmationDialog from '@/components/ui/confirmation-dialog';
+import { formatPhase } from '@/lib/format-label';
 
 interface QuestionnaireVersion {
     id: number;
@@ -241,7 +242,7 @@ export default function Review({ project, evaluations, average_score, evaluation
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-500">Phase</p>
-                                <p className="mt-1 text-gray-900">{project.phase}</p>
+                                <p className="mt-1 text-gray-900">{formatPhase(project.phase)}</p>
                             </div>
                         </div>
                         {project.description && (

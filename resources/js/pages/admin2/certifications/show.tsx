@@ -13,6 +13,7 @@ import {
     Loader
 } from 'lucide-react';
 import axios from 'axios';
+import { formatPhase, formatStatus } from '@/lib/format-label';
 
 interface ProjectData {
     id: number;
@@ -283,7 +284,7 @@ export default function CertificationShow({
                                         </div>
                                         <div>
                                             <p className={combineTheme('text-sm', themeClasses.text.tertiary)}>Status</p>
-                                            <p className={combineTheme('text-base font-medium', themeClasses.text.primary)}>{project.status}</p>
+                                            <p className={combineTheme('text-base font-medium', themeClasses.text.primary)}>{formatStatus(project.status)}</p>
                                         </div>
                                     </div>
                                     <div>
@@ -307,7 +308,7 @@ export default function CertificationShow({
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <p className={combineTheme('text-sm', themeClasses.text.tertiary)}>Implementation Phase</p>
-                                            <p className={combineTheme('text-base font-medium', themeClasses.text.primary)}>{project.phase}</p>
+                                            <p className={combineTheme('text-base font-medium', themeClasses.text.primary)}>{formatPhase(project.phase)}</p>
                                         </div>
                                         <div>
                                             <p className={combineTheme('text-sm', themeClasses.text.tertiary)}>Submission Date</p>
@@ -441,7 +442,7 @@ export default function CertificationShow({
                                     </h2>
                                     <div className="space-y-2">
                                         {documents.map((doc) => (
-                                            <div key={doc.id} className={combineTheme('flex items-center justify-between p-3 border rounded-lg transition-colors', themeClasses.table.row, themeClasses.border.primary)}>
+                                            <div key={doc.id} className={combineTheme('flex items-center justify-between p-3 border rounded-lg transition-colors', themeClasses.border.primary)}>
                                                 <div className="flex-1">
                                                     <p className={combineTheme('font-medium', themeClasses.text.primary)}>{doc.file_name}</p>
                                                     <p className={combineTheme('text-xs', themeClasses.text.tertiary)}>

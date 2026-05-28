@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { X, FileText, Download, ExternalLink, Loader, ClipboardList, Eye } from 'lucide-react';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
+import { formatPhase, formatStatus } from '@/lib/format-label';
 
 interface ProjectDetails {
     id: number;
@@ -48,8 +49,10 @@ interface ProjectDetails {
         is_completed?: boolean;
     } | null;
     interpretations?: Array<{
-        min: number;
-        max: number;
+        min?: number;
+        max?: number;
+        score_min?: number;
+        score_max?: number;
         interpretation: string;
         description: string;
     }>;
@@ -176,7 +179,7 @@ export default function ViewProjectDetailsModal({
                                         <div>
                                             <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Status</p>
                                             <span className={combineTheme('inline-flex items-center px-3 py-1 mt-1 rounded-full text-sm font-medium', themeClasses.badge.blue)}>
-                                                {project.project_status.name}
+                                                {formatStatus(project.project_status.name)}
                                             </span>
                                         </div>
                                     </div>
@@ -204,7 +207,7 @@ export default function ViewProjectDetailsModal({
                                         </div>
                                         <div>
                                             <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Phase</p>
-                                            <p className={combineTheme('mt-1', themeClasses.text.primary)}>{project.implementation_phase.name}</p>
+                                            <p className={combineTheme('mt-1', themeClasses.text.primary)}>{formatPhase(project.implementation_phase.name)}</p>
                                         </div>
                                     </div>
 
@@ -249,7 +252,7 @@ export default function ViewProjectDetailsModal({
                                                 const displayName = isLink && doc.document_type === 'supporting' ? 'Supporting Documents (Link)' : doc.file_name;
                                                 
                                                 return (
-                                                    <div key={doc.id} className={combineTheme('flex items-start gap-3 p-4 border rounded-lg', themeClasses.table.row, 'hover:bg-gray-50 dark:hover:bg-slate-700')}>
+                                                    <div key={doc.id} className={combineTheme('flex items-start gap-3 p-4 border rounded-lg transition-colors', themeClasses.border.primary)}>
                                                         <FileText className={combineTheme('w-5 h-5 flex-shrink-0 mt-1', themeClasses.icon.primary)} />
                                                         <div className="flex-grow min-w-0">
                                                             <p className={combineTheme('font-semibold truncate', themeClasses.text.primary)}>{displayName}</p>
@@ -298,34 +301,20 @@ export default function ViewProjectDetailsModal({
                                     ) : project.evaluation ? (
                                         <>
                                             <div className={combineTheme('border rounded-lg p-6', themeClasses.border.primary, 'bg-blue-50 dark:bg-blue-900/30')}>
-                                                <p className={combineTheme('text-sm font-medium mb-2', themeClasses.text.tertiary)}>Total Score</p>
-                                                <div className="flex items-baseline gap-4">
-                                                    <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">{project.total_score !== null && project.total_score !== undefined ? parseFloat(String(project.total_score)).toFixed(2) : 'N/A'}</p>
+                                                <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(12rem,0.8fr)_minmax(0,1.2fr)] md:items-center">
+                                                    <div>
+                                                        <p className={combineTheme('text-sm font-medium mb-2', themeClasses.text.tertiary)}>Total Score</p>
+                                                        <p className="text-5xl font-bold text-blue-600 dark:text-blue-400">{project.total_score !== null && project.total_score !== undefined ? parseFloat(String(project.total_score)).toFixed(2) : 'N/A'}</p>
+                                                    </div>
                                                     {project.evaluation.interpretation && (
                                                         <div>
-                                                            <p className={combineTheme('font-semibold text-lg', themeClasses.text.primary)}>{project.evaluation.interpretation.interpretation}</p>
-                                                            <p className={combineTheme('text-sm mt-1', themeClasses.text.secondary)}>{project.evaluation.interpretation.description}</p>
+                                                            <p className={combineTheme('text-sm font-medium mb-2', themeClasses.text.tertiary)}>Score Interpretation</p>
+                                                            <p className={combineTheme('font-semibold text-xl', themeClasses.text.primary)}>{project.evaluation.interpretation.interpretation}</p>
+                                                            <p className={combineTheme('text-sm mt-2', themeClasses.text.secondary)}>{project.evaluation.interpretation.description}</p>
                                                         </div>
                                                     )}
                                                 </div>
                                             </div>
-
-                                            {project.interpretations && project.interpretations.length > 0 && (
-                                                <div className={combineTheme('border rounded-lg p-6', themeClasses.border.primary)}>
-                                                    <p className={combineTheme('text-sm font-medium mb-4', themeClasses.text.tertiary)}>Scoring Reference</p>
-                                                    <div className="space-y-3">
-                                                        {project.interpretations.map((interp, idx) => (
-                                                            <div key={idx} className={combineTheme('flex justify-between p-3 rounded', 'bg-gray-50 dark:bg-slate-700/50')}>
-                                                                <div>
-                                                                    <p className={combineTheme('font-medium', themeClasses.text.primary)}>{interp.interpretation}</p>
-                                                                    <p className={combineTheme('text-sm', themeClasses.text.secondary)}>{interp.description}</p>
-                                                                </div>
-                                                                <p className={combineTheme('font-mono text-sm font-semibold', themeClasses.text.tertiary)}>{interp.min} - {interp.max}</p>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
 
                                             <div className={combineTheme('border rounded-lg p-6', themeClasses.border.primary)}>
                                                 <p className={combineTheme('text-sm font-medium mb-3', themeClasses.text.tertiary)}>Final Remarks</p>

@@ -163,35 +163,16 @@ function Sidebar({
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
 
-  const delay = React.useMemo(() => -(Date.now() % 50000) / 1000, []);
-
-  const gradientStyle = `
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.custom-gradient {
-  background: linear-gradient(135deg, #300B63, #4B0082, #800080, #4B0082, #300B63);
-  background-size: 400% 400%;
-  animation: gradientShift 30s linear infinite;
-  animation-delay: ${delay}s;
-  width: 100%;
-  border-radius: 0.7rem;
-}
-`;
-
   if (collapsible === "none") {
     return (
       <div
         data-slot="sidebar"
         className={cn(
-          "custom-gradient text-white flex h-full w-(--sidebar-width) flex-col",
+          "bg-white dark:bg-black text-gray-900 dark:text-gray-100 flex h-full w-(--sidebar-width) flex-col border-r border-gray-200 dark:border-gray-800",
           className
         )}
         {...props}
       >
-        <style dangerouslySetInnerHTML={{ __html: gradientStyle }} />
         {children}
       </div>
     )
@@ -208,7 +189,7 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
-          className="custom-gradient text-white w-(--sidebar-width) p-0 [&>button]:hidden"
+          className="bg-white dark:bg-black text-gray-900 dark:text-gray-100 w-(--sidebar-width) p-0 [&>button]:hidden border-r border-gray-200 dark:border-gray-800"
           style={
             {
               "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -216,7 +197,6 @@ function Sidebar({
           }
           side={side}
         >
-          <style dangerouslySetInnerHTML={{ __html: gradientStyle }} />
           <div className="flex h-full w-full flex-col">{children}</div>
         </SheetContent>
       </Sheet>
@@ -245,7 +225,7 @@ function Sidebar({
       />
       <div
         className={cn(
-          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
+          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex bg-white dark:bg-black text-gray-900 dark:text-gray-100 border-r border-gray-200 dark:border-gray-800",
           side === "left"
             ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
             : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
@@ -259,9 +239,8 @@ function Sidebar({
       >
         <div
           data-sidebar="sidebar"
-          className="custom-gradient text-white group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          className="bg-sidebar text-sidebar-foreground group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:border"
         >
-          <style dangerouslySetInnerHTML={{ __html: gradientStyle }} />
           {children}
         </div>
       </div>
@@ -490,13 +469,13 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-purple-500/20 hover:text-white focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-purple-500/30 data-[active=true]:font-bold data-[active=true]:text-white data-[state=open]:hover:bg-purple-500/20 data-[state=open]:hover:text-white group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 data-[active=true]:[&>svg]:stroke-2",
+  "peer/menu-button flex w-full items-center gap-2 overflow-hidden p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-semibold data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 data-[active=true]:[&>svg]:stroke-2",
   {
     variants: {
       variant: {
-        default: "hover:bg-purple-500/20 hover:text-white",
+        default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
         outline:
-          "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-purple-500/20 hover:text-white hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
+          "border border-sidebar-border bg-background hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
       },
       size: {
         default: "h-8 text-sm",

@@ -148,6 +148,9 @@ class ProponentPAPController extends Controller
             ];
         });
 
+        $interpretations = \App\Models\ScoreInterpretation::orderBy('score_min')
+            ->get(['score_min', 'score_max', 'interpretation', 'description']);
+
         $documents = $project->documents->map(function ($d) {
             $path = $d->file_path;
             $download = route('proponent.pap.document.download', $d->id);
@@ -193,6 +196,7 @@ class ProponentPAPController extends Controller
                 'objectives' => $project->objectives,
                 'documents' => $documents,
                 'evaluations' => $evaluations,
+                'interpretations' => $interpretations,
                 'certificate' => $certificateData,
             ],
             'domains' => DomainExpertise::orderBy('domain_name')->get()->map(function($d){ return ['id'=>$d->id,'domain_name'=>$d->domain_name]; }),

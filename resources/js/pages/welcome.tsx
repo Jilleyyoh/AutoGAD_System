@@ -1,57 +1,10 @@
 import { dashboard, login } from '@/routes';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { BarChart3, ArrowRight } from 'lucide-react';
-import { useEffect } from 'react';
+import { ArrowRight } from 'lucide-react';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
-
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = '/build/finisher-header.es5.min.js';
-        script.onload = () => {
-            new (window as any).FinisherHeader({
-                  "count": 15,
-                    "size": {
-                      "min": 1100,
-                      "max": 1800,
-                      "pulse": 0.5    
-                },
-                "speed": {
-                    "x": {
-                        "min": 0.6,
-                        "max": 1.2
-                    },
-                    "y": {
-                        "min": 0.6,
-                        "max": 1.2
-                    }
-                },
-                "colors": {
-                    "background": "#300B63",
-                    "particles": [
-                        "#300b63",
-                        "#4b0082",
-                        "#800080",
-                        "#9932cc",
-                        "#6015c9"
-                    ]
-                },
-                "blending": "overlay",
-                "opacity": {
-                    "center": 0.6,
-                    "edge": 0.08
-                },
-                "skew": 0, // Keeping horizontal movement as requested
-                "className": "finisher-header",
-                "shapes": [
-                    "c" // Circular shapes
-                ]
-            });
-        };
-        document.head.appendChild(script);
-    }, []);
 
     return (
         <>
@@ -59,16 +12,13 @@ export default function Welcome() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-            <div className="min-h-screen bg-[#300B63] text-white flex flex-col relative z-10 finisher-header">
-                {/* Navigation */}
-                <nav className="flex items-center justify-between max-w-7xl mx-auto w-full px-6 py-6">
-                    <div className="flex items-center gap-3">
-                    </div>
+            <div className="relative z-10 flex min-h-screen flex-col bg-background text-foreground">
+                <nav className="mx-auto flex w-full max-w-7xl items-center justify-end px-6 py-6">
                     <div className="flex items-center gap-4">
                         {auth.user && (
                             <Link
                                 href={dashboard()}
-                                className="px-6 py-2 bg-purple-800 hover:bg-purple-900 text-white rounded-lg font-semibold transition"
+                                className="border border-foreground bg-foreground px-6 py-2 font-semibold text-background transition hover:bg-background hover:text-foreground"
                             >
                                 Dashboard
                             </Link>
@@ -76,21 +26,19 @@ export default function Welcome() {
                     </div>
                 </nav>
 
-                {/* Main Content */}
-                <div className="flex-1 flex items-center justify-center px-6 py-12">
-                    <div className="max-w-4xl w-full text-center">
-                        {/* Hero Section */}
+                <div className="flex flex-1 items-center justify-center px-6 py-12">
+                    <div className="w-full max-w-4xl text-center">
                         <div className="mb-12">
-                            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                                Gender and Development <span className="text-purple-300 dark:text-purple-200">Automated</span> Evaluation System
+                            <h1 className="mb-6 text-5xl leading-tight font-bold md:text-6xl">
+                                Gender and Development Automated Evaluation System
                             </h1>
-                            <p className="text-xl text-white-400 mb-8 max-w-2xl mx-auto">
+                            <p className="mx-auto mb-8 max-w-2xl text-xl text-muted-foreground">
                                 Streamline your Gender and Development project evaluation with our comprehensive, automated assessment platform designed for modern organizations.
                             </p>
                             {!auth.user && (
                                 <Link
                                     href={login()}
-                                    className="inline-flex items-center gap-2 px-8 py-3 bg-purple-400 hover:bg-purple-500 text-white rounded-lg font-semibold text-lg transition"
+                                    className="inline-flex items-center gap-2 border border-foreground bg-foreground px-8 py-3 text-lg font-semibold text-background transition hover:bg-background hover:text-foreground"
                                 >
                                     Log In
                                     <ArrowRight className="w-5 h-5" />
@@ -98,13 +46,11 @@ export default function Welcome() {
                             )}
                         </div>
 
-                        {/* Footer Watermark */}
                     </div>
                 </div>
 
-                {/* Footer */}
-                <footer className="bg-[#300B63]/20 py-8 px-6">
-                    <div className="max-w-7xl mx-auto text-center text-gray-400">
+                <footer className="border-t px-6 py-8">
+                    <div className="mx-auto max-w-7xl text-center text-muted-foreground">
                         <p>&copy; 2025 GAD Automated Evaluation System. All rights reserved.</p>
                     </div>
                 </footer>

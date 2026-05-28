@@ -5,6 +5,7 @@ import AppLayout from '@/layouts/app-layout';
 import DragScroll from '@/components/drag-scroll';
 import { route } from 'ziggy-js';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
+import { formatStatus } from '@/lib/format-label';
 import { Clock, Eye, CheckCircle2, XCircle, Calendar, X, Plus, ArrowRight } from 'lucide-react';
 
 interface ProjectRow {
@@ -198,7 +199,6 @@ export default function SubmissionsIndex() {
                   type="button"
                   onClick={applySubmissionDateFilter}
                   className={combineTheme('w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all', themeClasses.button.primary)}
-                  style={{ backgroundColor: '#5a189a' }}
                 >
                   Apply Filters
                 </button>
@@ -255,7 +255,6 @@ export default function SubmissionsIndex() {
               <Link 
                 href={route('proponent.pap.create')} 
                 className={combineTheme('inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-all', themeClasses.button.primary)}
-                style={{ backgroundColor: '#5a189a' }}
               >
                 <Plus className="w-4 h-4" />
                 Create New PAP
@@ -270,7 +269,7 @@ export default function SubmissionsIndex() {
                     <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Domain</th>
                     <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Submitted</th>
                     <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Status</th>
-                    <th className={combineTheme('px-6 py-3 text-center text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Action</th>
+                    <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Action</th>
                   </tr>
                 </thead>
                 <tbody className={combineTheme('divide-y', themeClasses.table.border)}>
@@ -294,11 +293,8 @@ export default function SubmissionsIndex() {
                         <td className={combineTheme('px-6 py-4 text-sm', themeClasses.text.secondary)}>{p.domain || '—'}</td>
                         <td className={combineTheme('px-6 py-4 text-sm whitespace-nowrap', themeClasses.text.secondary)}>{new Date(p.created_at).toLocaleDateString()}</td>
                         <td className="px-6 py-4">
-                          <span className={combineTheme('inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold', bg, border, 'border')}>
-                            <StatusIcon className="w-3 h-3" />
-                            {p.status.split('_').map((word, idx) => 
-                              idx === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word.charAt(0).toUpperCase() + word.slice(1)
-                            ).join(' ')}
+                          <span className={combineTheme('inline-flex px-3 py-1 text-xs font-semibold', bg, border, 'border')}>
+                            {formatStatus(p.status)}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-center">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Clock, Archive, CheckCircle, AlertCircle } from 'lucide-react';
 import { combineTheme, themeClasses } from '@/lib/theme-classes';
+import { formatStatus } from '@/lib/format-label';
 
 interface VersionData {
     id: number;
@@ -79,7 +80,7 @@ export default function VersionInfo({
                 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100'
             )}>
                 <AlertCircle className="w-4 h-4" />
-                {status.charAt(0).toUpperCase() + status.slice(1)}
+                {formatStatus(status)}
             </span>
         );
     };
@@ -149,7 +150,7 @@ export default function VersionInfo({
                         Status
                     </p>
                     <p className={combineTheme('mt-1 text-sm font-medium capitalize', themeClasses.text.primary)}>
-                        {version.status}
+                        {formatStatus(version.status)}
                     </p>
                 </div>
 

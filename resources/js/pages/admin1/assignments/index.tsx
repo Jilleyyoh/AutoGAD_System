@@ -6,6 +6,7 @@ import { ProjectAssignment } from '@/types/assignments';
 import AppLayout from '@/layouts/app-layout';
 import DragScroll from '@/components/drag-scroll';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
+import { formatStatus } from '@/lib/format-label';
 import AssignEvaluatorModal from './AssignEvaluatorModal';
 import { Eye, CheckCircle2, AlertCircle, Clock, X, Calendar, ClipboardList } from 'lucide-react';
 import axios from 'axios';
@@ -419,7 +420,6 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                             <button
                                                 type="button"
                                                 onClick={applySubmissionDateFilter}
-                                                style={{ backgroundColor: '#5a189a' }}
                                                 className={combineTheme('w-full px-4 py-2 text-sm font-medium rounded-lg shadow-sm transition-all', themeClasses.button.primary)}
                                             >
                                                 Apply Filters
@@ -471,7 +471,18 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                 {/* Projects Table/Grid */}
                 <div className={combineTheme('shadow-md rounded-lg border overflow-hidden', themeClasses.card.base)}>
                     <DragScroll>
-                        <table className={combineTheme('min-w-full divide-y min-h-[300px]', themeClasses.table.border)}>
+                        <table className={combineTheme('min-w-[2040px] table-fixed divide-y min-h-[300px]', themeClasses.table.border)}>
+                            <colgroup>
+                                <col className="w-44" />
+                                <col className="w-96" />
+                                <col className="w-80" />
+                                <col className="w-72" />
+                                <col className="w-48" />
+                                <col className="w-44" />
+                                <col className="w-40" />
+                                <col className="w-60" />
+                                <col className="w-36" />
+                            </colgroup>
                             <thead className={themeClasses.table.header}>
                                 <tr>
                                     <th className={combineTheme('px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider', themeClasses.text.secondary)}>
@@ -522,15 +533,19 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                 {project.project_code}
                                             </td>
                                             <td className={combineTheme('px-6 py-4 text-sm', themeClasses.text.primary)}>
-                                                <div className="max-w-xs truncate" title={project.title}>
+                                                <div className="truncate" title={project.title}>
                                                     {project.title}
                                                 </div>
                                             </td>
-                                            <td className={combineTheme('px-6 py-4 whitespace-nowrap text-sm', themeClasses.text.secondary)}>
+                                            <td className={combineTheme('px-6 py-4 text-sm', themeClasses.text.secondary)}>
+                                                <div className="truncate" title={project.proponent?.organization?.name ?? 'N/A'}>
                                                 {project.proponent?.organization?.name ?? 'N/A'}
+                                                </div>
                                             </td>
-                                            <td className={combineTheme('px-6 py-4 whitespace-nowrap text-sm', themeClasses.text.secondary)}>
+                                            <td className={combineTheme('px-6 py-4 text-sm', themeClasses.text.secondary)}>
+                                                <div className="truncate" title={project.domainExpertise?.name ?? 'N/A'}>
                                                 {project.domainExpertise?.name ?? 'N/A'}
+                                                </div>
                                             </td>
                                             <td className={combineTheme('px-6 py-4 whitespace-nowrap text-sm', themeClasses.text.secondary)}>
                                                 {project.implementationPhase?.name ?? 'N/A'}
@@ -541,11 +556,10 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">
                                                 {(() => {
                                                     const statusName = (project as any).status_name || '';
-                                                    const { color, icon: StatusIcon, bg, border } = getStatusColorAndIcon(statusName);
+                                                    const { color, bg, border } = getStatusColorAndIcon(statusName);
                                                     return (
-                                                        <span className={combineTheme('inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold w-32 justify-center', bg, border, 'border')}>
-                                                            <StatusIcon className="w-3 h-3" />
-                                                            {STATUS_LABELS[statusName] || (statusName ? statusName.split('_').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : 'Unknown')}
+                                                        <span className={combineTheme('inline-flex px-3 py-1 text-xs font-semibold w-28 justify-center', bg, border, 'border')}>
+                                                            {STATUS_LABELS[statusName] || formatStatus(statusName)}
                                                         </span>
                                                     );
                                                 })()}

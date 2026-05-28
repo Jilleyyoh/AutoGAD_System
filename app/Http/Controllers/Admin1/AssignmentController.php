@@ -431,7 +431,7 @@ class AssignmentController extends Controller
                 ];
                 
                 // Get all score interpretations for reference
-                $interpretations = \App\Models\ScoreInterpretation::all(['score_min', 'score_max', 'interpretation', 'description'])->toArray();
+                $interpretations = \App\Models\ScoreInterpretation::orderBy('score_min')->get(['score_min', 'score_max', 'interpretation', 'description'])->toArray();
             }
 
             return response()->json([
@@ -511,7 +511,7 @@ class AssignmentController extends Controller
             $latestEvaluation = $project->evaluations->first();
             
             if ($latestEvaluation) {
-                $interpretations = \App\Models\ScoreInterpretation::orderBy('score_min')->get();
+                $interpretations = \App\Models\ScoreInterpretation::orderBy('score_min')->get(['score_min', 'score_max', 'interpretation', 'description']);
                 
                 // Map status_id to status_name: 2=revision, 3=approved, 4=declined
                 $statusMap = [2 => 'revision', 3 => 'approved', 4 => 'declined'];
@@ -546,6 +546,7 @@ class AssignmentController extends Controller
                     'created_at' => $project->created_at?->format('Y-m-d H:i:s'),
                     'documents' => $documents,
                     'evaluations' => $evaluations,
+                    'interpretations' => $interpretations,
                     'current_evaluator' => $project->evaluator ? [
                         'id' => $project->evaluator->id,
                         'name' => $project->evaluator->user->name,

@@ -4,6 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Link, usePage } from '@inertiajs/react'
 import { CheckCheck, X, Check } from 'lucide-react'
 import { useState, useMemo } from 'react'
+import { formatLabel } from '@/lib/format-label'
 
 interface Notification {
   id: number
@@ -226,7 +227,7 @@ export function NotificationDropdown({
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                         getTypeColor(notification.type).bg
                       } ${getTypeColor(notification.type).text}`}>
-                        {notification.type.replace(/_/g, ' ')}
+                        {formatLabel(notification.type)}
                       </span>
                       {notification.read_at && activeTab === 'read' && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">

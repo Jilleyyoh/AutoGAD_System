@@ -6,6 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import DragScroll from '@/components/drag-scroll';
 import { Search, FileText, Calendar, Clock, Eye, CheckCircle2, XCircle, AlertCircle, X } from 'lucide-react';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
+import { formatPhase, formatStatus } from '@/lib/format-label';
 
 interface Project {
     id: number;
@@ -349,7 +350,7 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                                     {project.domain}
                                                 </td>
                                                 <td className={combineTheme('px-6 py-4 whitespace-nowrap text-sm', themeClasses.text.secondary)}>
-                                                    {project.phase}
+                                                    {formatPhase(project.phase)}
                                                 </td>
                                                 <td className={combineTheme('px-6 py-4 whitespace-nowrap text-sm', themeClasses.text.secondary)}>
                                                     {project.submission_date}
@@ -357,13 +358,10 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                                                             {(() => {
                                                                 const statusKey = String(project.status || '').toLowerCase();
-                                                                const { color, icon: StatusIcon, bg, border } = getStatusColorAndIcon(statusKey);
+                                                                const { color, bg, border } = getStatusColorAndIcon(statusKey);
                                                                 return (
-                                                                    <span className={combineTheme('inline-flex items-center justify-center gap-1 px-3 py-1 rounded-full text-xs font-semibold w-36', bg, border, 'border')}>
-                                                                        <StatusIcon className="w-3 h-3" />
-                                                                        {statusKey ? statusKey.split('_').map((word, idx) => 
-                                                                            word.charAt(0).toUpperCase() + word.slice(1)
-                                                                        ).join(' ') : 'Unknown'}
+                                                                    <span className={combineTheme('inline-flex justify-center px-3 py-1 text-xs font-semibold w-36', bg, border, 'border')}>
+                                                                        {formatStatus(statusKey)}
                                                                     </span>
                                                                 );
                                                             })()}

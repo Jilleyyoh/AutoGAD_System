@@ -1,7 +1,7 @@
 import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { Award, Users, FileText, ClipboardList, ArrowRight, Badge, Mail } from 'lucide-react';
+import { Award, Users, FileText, ClipboardList, ArrowRight } from 'lucide-react';
 import { route } from 'ziggy-js';
 
 interface Admin {
@@ -68,39 +68,6 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
             <Head title="Dashboard" />
 
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {/* Admin Profile Card */}
-                <div className="overflow-hidden shadow-md sm:rounded-lg mb-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-                    <div className="p-8 border-b border-gray-200 dark:border-gray-700 flex items-start justify-between">
-                        <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-4">
-                                <Badge className="w-6 h-6 p-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" />
-                                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
-                                    Admin 1
-                                </span>
-                            </div>
-                            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                                {currentAdmin.name}
-                            </h1>
-                            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="flex items-center gap-2">
-                                    <Mail className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-                                    <div>
-                                        <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Email</p>
-                                        <p className="text-sm font-semibold text-gray-900 dark:text-white">{currentAdmin.email}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <FileText className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-                                    <div>
-                                        <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Title</p>
-                                        <p className="text-sm font-semibold text-gray-900 dark:text-white">{currentAdmin.title}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {/* Header Section */}
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
@@ -111,6 +78,32 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                     </p>
                 </div>
 
+                {/* Admin Profile Card */}
+                <div className="overflow-hidden mb-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+                    <div className="p-8 border-b border-gray-200 dark:border-gray-700 flex items-start justify-between">
+                        <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-4">
+                                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
+                                    Admin 1
+                                </span>
+                            </div>
+                            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                                {currentAdmin.name}
+                            </h1>
+                            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Email</p>
+                                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{currentAdmin.email}</p>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Title</p>
+                                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{currentAdmin.title}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Management Modules Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {managementItems.map((item) => {
@@ -119,7 +112,7 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                             <Link
                                 key={item.title}
                                 href={item.href}
-                                className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-900 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700"
+                                className="group relative overflow-hidden bg-white dark:bg-gray-900 transition-all duration-300 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700"
                             >
                                 {/* Gradient Background */}
                                 <div className={`absolute inset-0 bg-gradient-to-br ${item.accent} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
@@ -159,67 +152,39 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                     })}
                 </div>
 
-                {/* Overview Section */}
-                <div className="space-y-6">
-                    {/* Information Cards */}
-                    <div className="bg-gradient-to-br from-purple-50 to-purple-50 dark:from-purple-900/10 dark:to-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-6">
-                        <h2 className="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-4 flex items-center gap-2">
-                            About System Configuration
-                        </h2>
-                        <div className="space-y-3 text-purple-800 dark:text-purple-200 text-sm">
-                            <p>
-                                <strong>Admin 1</strong> is responsible for setting up the complete evaluation framework that powers the GAD System.
-                            </p>
-                            <ul className="list-disc list-inside space-y-2 ml-2">
-                                <li>
-                                    <strong>Domain Expertise:</strong> Define evaluation criteria and domains relevant to your organization's goals
-                                </li>
-                                <li>
-                                    <strong>Evaluators:</strong> Register and manage evaluators who will assess submitted projects and activities
-                                </li>
-                                <li>
-                                    <strong>Questionnaire:</strong> Design comprehensive evaluation forms and rating scales
-                                </li>
-                                <li>
-                                    <strong>Assignments:</strong> Assign projects to evaluators and monitor the evaluation process
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    {/* Key Actions Section */}
-                    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Quick Setup Checklist</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {[
-                                {
-                                    step: '1',
-                                    title: 'Set up Domain Expertise',
-                                    description: 'Define evaluation criteria and domains',
-                                    icon: Award,
-                                },
-                                {
-                                    step: '2',
-                                    title: 'Register Evaluators',
-                                    description: 'Add evaluators to the system',
-                                    icon: Users,
-                                },
-                                {
-                                    step: '3',
-                                    title: 'Create Questionnaire',
-                                    description: 'Design evaluation forms',
-                                    icon: FileText,
-                                },
-                                {
-                                    step: '4',
-                                    title: 'Make Assignments',
-                                    description: 'Assign projects to evaluators',
-                                    icon: ClipboardList,
-                                },
-                            ].map((item) => {
-                                const Icon = item.icon;
+                {/* Quick Setup Checklist */}
+                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Quick Setup Checklist</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {[
+                            {
+                                step: '1',
+                                title: 'Set up Domain Expertise',
+                                description: 'Define evaluation criteria and domains',
+                                icon: Award,
+                            },
+                            {
+                                step: '2',
+                                title: 'Register Evaluators',
+                                description: 'Add evaluators to the system',
+                                icon: Users,
+                            },
+                            {
+                                step: '3',
+                                title: 'Create Questionnaire',
+                                description: 'Design evaluation forms',
+                                icon: FileText,
+                            },
+                            {
+                                step: '4',
+                                title: 'Make Assignments',
+                                description: 'Assign projects to evaluators',
+                                icon: ClipboardList,
+                            },
+                        ].map((item) => {
+                            const Icon = item.icon;
                                 return (
-                                    <div key={item.step} className="flex gap-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                                    <div key={item.step} className="flex gap-4 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                                         <div className="flex-shrink-0">
                                             <div className="flex items-center justify-center h-10 w-10 rounded-full bg-[#5a189a] text-white font-semibold text-sm">
                                                 {item.step}
@@ -236,7 +201,7 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                     </div>
 
                     {/* System Info */}
-                    <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
+                    <div className="mt-6 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6">
                         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">System Overview</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="text-center">
@@ -254,7 +219,6 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                         </div>
                     </div>
                 </div>
-            </div>
         </AppLayout>
     );
 }

@@ -18,26 +18,26 @@ const AlertContext = createContext<AlertContextValue | null>(null);
 const toneStyles: Record<AlertTone, { icon: typeof Info; ring: string; iconClass: string; title: string }> = {
     error: {
         icon: AlertCircle,
-        ring: 'border-red-200 bg-red-50 text-red-900 dark:border-red-800 dark:bg-red-950/70 dark:text-red-100',
-        iconClass: 'text-red-600 dark:text-red-300',
+        ring: 'border-border bg-background text-foreground',
+        iconClass: 'text-foreground',
         title: 'Action needed',
     },
     warning: {
         icon: TriangleAlert,
-        ring: 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/70 dark:text-amber-100',
-        iconClass: 'text-amber-600 dark:text-amber-300',
+        ring: 'border-border bg-background text-foreground',
+        iconClass: 'text-foreground',
         title: 'Please check',
     },
     success: {
         icon: CheckCircle2,
-        ring: 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-100',
-        iconClass: 'text-emerald-600 dark:text-emerald-300',
+        ring: 'border-border bg-background text-foreground',
+        iconClass: 'text-foreground',
         title: 'Success',
     },
     info: {
         icon: Info,
-        ring: 'border-blue-200 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950/70 dark:text-blue-100',
-        iconClass: 'text-blue-600 dark:text-blue-300',
+        ring: 'border-border bg-background text-foreground',
+        iconClass: 'text-foreground',
         title: 'Notice',
     },
 };
@@ -117,7 +117,7 @@ export function AppAlertsProvider({ children }: { children: ReactNode }) {
                             key={alert.id}
                             role="alert"
                             aria-live="polite"
-                            className={`pointer-events-auto flex items-start gap-3 rounded-lg border px-4 py-3 shadow-lg shadow-slate-900/10 backdrop-blur dark:shadow-black/30 ${style.ring}`}
+                            className={`pointer-events-auto flex items-start gap-3 border px-4 py-3 ${style.ring}`}
                         >
                             <Icon className={`mt-0.5 h-5 w-5 shrink-0 ${style.iconClass}`} />
                             <div className="min-w-0 flex-1">
@@ -127,7 +127,7 @@ export function AppAlertsProvider({ children }: { children: ReactNode }) {
                             <button
                                 type="button"
                                 onClick={() => dismiss(alert.id)}
-                                className="rounded-md p-1 opacity-70 transition hover:bg-black/5 hover:opacity-100 dark:hover:bg-white/10"
+                                className="p-1 opacity-70 transition hover:bg-muted hover:opacity-100"
                                 aria-label="Dismiss alert"
                             >
                                 <X className="h-4 w-4" />

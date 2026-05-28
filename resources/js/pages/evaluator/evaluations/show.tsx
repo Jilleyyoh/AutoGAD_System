@@ -6,6 +6,7 @@ import { Save, Send, CheckCircle2, Award, FileText, Clock } from 'lucide-react';
 import axios from 'axios';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import ConfirmationDialog from '@/components/ui/confirmation-dialog';
+import { formatPhase } from '@/lib/format-label';
 
 interface ProjectData {
     id: number;
@@ -572,7 +573,7 @@ export default function Show({
                                             </div>
                                             <div>
                                                 <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Implementation Phase</p>
-                                                <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.phase}</p>
+                                                <p className={combineTheme('text-base', themeClasses.text.primary)}>{formatPhase(project.phase)}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -868,7 +869,7 @@ export default function Show({
                                         {documents.map(doc => (
                                             <div
                                                 key={doc.id}
-                                                className={combineTheme('flex items-start gap-4 p-4 border rounded-lg', themeClasses.border.primary, 'hover:bg-gray-50 dark:hover:bg-slate-700')}
+                                                className={combineTheme('flex items-start gap-4 p-4 border rounded-lg transition-colors', themeClasses.border.primary)}
                                             >
                                                 <div className="flex-grow">
                                                     {doc.drive_link ? (

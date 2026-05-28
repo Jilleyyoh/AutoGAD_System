@@ -17,13 +17,13 @@ export function NavUser() {
             <SidebarMenuItem>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton size="lg" className="group text-sidebar-accent-foreground data-[state=open]:bg-purple-500/30 data-[state=open]:text-white">
+                        <SidebarMenuButton size="lg" className="group h-13 border border-transparent px-5 text-sidebar-foreground data-[state=open]:border-sidebar-border data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                             <UserInfo user={auth.user} tone="sidebar" />
-                            <ChevronsUpDown className="ml-auto size-4 text-white" />
+                            <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                        className="w-(--radix-dropdown-menu-trigger-width)"
                         align="end"
                         side={isMobile ? 'bottom' : state === 'collapsed' ? 'left' : 'bottom'}
                     >

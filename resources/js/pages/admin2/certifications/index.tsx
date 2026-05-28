@@ -202,7 +202,7 @@ export default function CertificationsIndex({
                                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Score</th>
                                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Completion Date</th>
-                                            <th className="px-6 py-3 text-right text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -222,13 +222,11 @@ export default function CertificationsIndex({
                                                 </td>
                                                 <td className="px-6 py-4 text-sm">
                                                     {project.is_certified ? (
-                                                        <span className="flex items-center gap-1 text-green-600 dark:text-green-400 font-medium">
-                                                            <Award className="w-4 h-4" />
+                                                        <span className="text-green-600 dark:text-green-400 font-medium">
                                                             Certified
                                                         </span>
                                                     ) : (
-                                                        <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-medium">
-                                                            <AlertCircle className="w-4 h-4" />
+                                                        <span className="text-amber-600 dark:text-amber-400 font-medium">
                                                             Pending
                                                         </span>
                                                     )}

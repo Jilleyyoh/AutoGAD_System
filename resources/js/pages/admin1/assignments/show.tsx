@@ -4,6 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import { ClipboardList, FileText, Eye, Award } from 'lucide-react';
+import { formatPhase, formatStatus } from '@/lib/format-label';
 
 interface DocumentItem {
   id: number;
@@ -26,6 +27,15 @@ interface EvaluationItem {
   created_at: string;
 }
 
+interface ScoreInterpretation {
+  min?: number;
+  max?: number;
+  score_min?: number;
+  score_max?: number;
+  interpretation: string;
+  description: string;
+}
+
 interface ProjectDetail {
   id: number;
   project_code: string;
@@ -45,6 +55,7 @@ interface ProjectDetail {
     name: string;
     email: string;
   } | null;
+  interpretations?: ScoreInterpretation[];
 }
 
 interface ExtraProps {
@@ -67,7 +78,7 @@ export default function AssignmentShow() {
   const { project } = usePage<any>().props as ExtraProps;
   const [activeTab, setActiveTab] = useState('info');
 
-  const statusLabel = project.status.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
+  const statusLabel = formatStatus(project.status);
 
   return (
     <AppLayout
@@ -161,7 +172,7 @@ export default function AssignmentShow() {
                       Implementation Phase
                     </div>
                     <div className={combineTheme('font-medium', themeClasses.text.primary)}>
-                      {project.implementation_phase || '—'}
+                      {formatPhase(project.implementation_phase || '—')}
                     </div>
                   </div>
                 </div>
@@ -225,10 +236,7 @@ export default function AssignmentShow() {
                       return (
                         <li
                           key={doc.id}
-                          className={combineTheme(
-                            'py-3 flex items-center justify-between text-sm',
-                            themeClasses.table.row
-                          )}
+                          className="py-3 flex items-center justify-between text-sm"
                         >
                           <div className="flex-1">
                             <div className={combineTheme('font-medium', themeClasses.text.primary)}>
@@ -292,21 +300,26 @@ export default function AssignmentShow() {
                             'bg-blue-50 dark:bg-blue-900/30'
                           )}
                         >
-                          <p className={combineTheme('text-sm font-medium mb-2', themeClasses.text.tertiary)}>
-                            Total Score
-                          </p>
-                          <div className="flex items-baseline gap-4">
-                            <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">
-                              {ev.total_score !== null && ev.total_score !== undefined
-                                ? parseFloat(String(ev.total_score)).toFixed(2)
-                                : 'N/A'}
-                            </p>
+                          <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(12rem,0.8fr)_minmax(0,1.2fr)] md:items-center">
+                            <div>
+                              <p className={combineTheme('text-sm font-medium mb-2', themeClasses.text.tertiary)}>
+                                Total Score
+                              </p>
+                              <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                                {ev.total_score !== null && ev.total_score !== undefined
+                                  ? parseFloat(String(ev.total_score)).toFixed(2)
+                                  : 'N/A'}
+                              </p>
+                            </div>
                             {ev.interpretation && (
                               <div>
-                                <p className={combineTheme('font-semibold text-lg', themeClasses.text.primary)}>
+                                <p className={combineTheme('text-sm font-medium mb-2', themeClasses.text.tertiary)}>
+                                  Score Interpretation
+                                </p>
+                                <p className={combineTheme('font-semibold text-xl', themeClasses.text.primary)}>
                                   {ev.interpretation.interpretation}
                                 </p>
-                                <p className={combineTheme('text-sm mt-1', themeClasses.text.secondary)}>
+                                <p className={combineTheme('text-sm mt-2', themeClasses.text.secondary)}>
                                   {ev.interpretation.description}
                                 </p>
                               </div>
@@ -330,7 +343,7 @@ export default function AssignmentShow() {
                                     : themeClasses.status.unknown
                             }`}
                           >
-                            {ev.status_name ? ev.status_name.charAt(0).toUpperCase() + ev.status_name.slice(1) : 'Unknown'}
+                            {formatStatus(ev.status_name)}
                           </span>
                         </div>
 
