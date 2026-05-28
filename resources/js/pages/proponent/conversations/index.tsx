@@ -215,32 +215,6 @@ export default function ConversationsIndex() {
                         )}
                     </div>
 
-                    {/* Pagination */}
-                    {conversations.total > 0 && (
-                        <div className={combineTheme('px-6 py-4 border-t flex items-center justify-between', themeClasses.border.primary)}>
-                            <div className={combineTheme('text-sm', themeClasses.text.secondary)}>
-                                Page <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{conversations.current_page}</span> of <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{conversations.total > 0 ? Math.ceil(conversations.total / conversations.per_page) : 1}</span>
-                                <span className={combineTheme('ml-2', themeClasses.text.tertiary)}>({conversations.total} total)</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                {conversations.links && conversations.links.filter((l: any) => l.label !== '&laquo; Previous' && l.label !== 'Next &raquo;').map((l: any, i: number) => (
-                                    <button
-                                        key={i}
-                                        disabled={!l.url}
-                                        onClick={() => l.url && (window.location.href = l.url)}
-                                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
-                                            l.active
-                                                ? combineTheme('text-white shadow-md', 'bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800')
-                                                : combineTheme('border', themeClasses.button.secondary)
-                                        } ${!l.url ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                                    >
-                                        {l.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
                     {/* New Message Modal */}
                     {showModal && (
                         <div
