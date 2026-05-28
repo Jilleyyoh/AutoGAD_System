@@ -88,6 +88,14 @@ class EvaluationController extends Controller
                     'total' => $projects->total(),
                     'current_page' => $projects->currentPage(),
                     'last_page' => $projects->lastPage(),
+                    'per_page' => $projects->perPage(),
+                    'links' => collect($projects->getUrlRange(1, $projects->lastPage()))->map(function($url, $page) use ($projects) {
+                        return [
+                            'url' => $url,
+                            'label' => (string)$page,
+                            'active' => $page == $projects->currentPage(),
+                        ];
+                    })->values()->all(),
                 ],
             ]);
         } catch (\Exception $e) {

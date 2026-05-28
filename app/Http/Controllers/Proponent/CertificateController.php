@@ -59,8 +59,8 @@ class CertificateController extends Controller
                 'status',  // Need full status for comparison
             ])
             ->orderBy('issued_date', 'desc')
-            ->get()
-            ->map(function ($cert) {
+            ->paginate(15)
+            ->through(function ($cert) {
                 // Certificates can always be downloaded (generated on-the-fly)
                 $version = $cert->evaluation?->questionnaireVersion;
                 $versionString = $version ? $version->version_number : 'N/A';
@@ -76,8 +76,7 @@ class CertificateController extends Controller
                     'questionnaire_version' => $versionString,
                     'can_download' => true,
                 ];
-            })
-            ->toArray();
+            });
 
             return Inertia::render('proponent/certificates/index', [
                 'certificates' => $certificates,

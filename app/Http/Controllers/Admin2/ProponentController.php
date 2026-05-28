@@ -13,7 +13,7 @@ class ProponentController
 {
     public function index()
     {
-        $proponents = Proponent::with(['user'])->get();
+        $proponents = Proponent::with(['user'])->paginate(15);
         return Inertia::render('admin2/proponents/index', [
             'proponents' => $proponents
         ]);

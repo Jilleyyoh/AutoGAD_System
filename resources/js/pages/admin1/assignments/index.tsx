@@ -12,7 +12,14 @@ import { Eye, CheckCircle2, AlertCircle, Clock, X, Calendar, ClipboardList } fro
 import axios from 'axios';
 
 interface Props {
-    projects: ProjectAssignment[];
+    projects: {
+        data: ProjectAssignment[];
+        current_page: number;
+        last_page: number;
+        per_page: number;
+        total: number;
+        links: { url: string | null; label: string; active: boolean }[];
+    };
     highlightProjectId?: number;
 }
 
@@ -33,7 +40,7 @@ const STATUS_LABELS: { [key: string]: string } = {
 
 export default function Index({ projects: initialProjects, highlightProjectId }: Props) {
     const { flash } = usePage().props as any;
-    const [projects, setProjects] = useState<ProjectAssignment[]>(initialProjects);
+    const [projects, setProjects] = useState<ProjectAssignment[]>(initialProjects.data);
     
 
         // Seed active tab from URL `status` query param if present, otherwise 'all'
@@ -655,6 +662,30 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                             </tbody>
                         </table>
                     </DragScroll>
+
+                    {/* Pagination */}
+                    <div className={combineTheme('px-6 py-4 border-t flex items-center justify-between', themeClasses.border.primary)}>
+                        <div className={combineTheme('text-sm', themeClasses.text.secondary)}>
+                            Page <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{initialProjects.current_page}</span> of <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{initialProjects.last_page}</span>
+                            <span className={combineTheme('ml-2', themeClasses.text.tertiary)}>({initialProjects.total} total)</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            {initialProjects.links.filter((l) => l.label !== '&laquo; Previous' && l.label !== 'Next &raquo;').map((l, i) => (
+                                <button
+                                    key={i}
+                                    disabled={!l.url}
+                                    onClick={() => l.url && (window.location.href = l.url)}
+                                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                                        l.active
+                                            ? combineTheme('text-white shadow-md', 'bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800')
+                                            : combineTheme('border', themeClasses.button.secondary)
+                                    } ${!l.url ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                                >
+                                    {l.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
 

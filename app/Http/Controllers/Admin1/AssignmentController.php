@@ -55,12 +55,7 @@ class AssignmentController extends Controller
             }
             
             $projects = $projects->orderBy('projects.created_at', 'desc')
-                ->get();
-
-            \Log::info('Fetched projects for assignments', ['count' => $projects->count()]);
-
-            return Inertia::render('admin1/assignments/index', [
-                'projects' => $projects->map(function ($project) {
+                ->paginate(10)->through(function ($project) {
                     $statusName = $project->projectStatus?->name ?? null;
                     if ($statusName === 'for_correction') {
                         $statusName = 'revision';
@@ -118,7 +113,12 @@ class AssignmentController extends Controller
                     }
 
                     return $data;
-                })->toArray(),
+                });
+
+            \Log::info('Fetched projects for assignments', ['count' => $projects->count()]);
+
+            return Inertia::render('admin1/assignments/index', [
+                'projects' => $projects,
                 'highlightProjectId' => $highlightProjectId
             ]);
         } catch (\Exception $e) {
@@ -397,7 +397,7 @@ class AssignmentController extends Controller
                 'projectStatus',
                 'evaluator.user',
                 'documents.documentType',
-                'evaluations' => function ($q) { $q->whereIn('status_id', [2, 3, 4])->latest(); }
+                'evaluations' => function ($q) { $q->latest(); }
             ])->findOrFail($projectId);
 
             $documents = $project->documents->map(function ($doc) {
@@ -508,13 +508,22 @@ class AssignmentController extends Controller
 
             // Get evaluation data
             $evaluations = [];
+            $interpretations = [];
             $latestEvaluation = $project->evaluations->first();
             
             if ($latestEvaluation) {
                 $interpretations = \App\Models\ScoreInterpretation::orderBy('score_min')->get(['score_min', 'score_max', 'interpretation', 'description']);
                 
-                // Map status_id to status_name: 2=revision, 3=approved, 4=declined
-                $statusMap = [2 => 'revision', 3 => 'approved', 4 => 'declined'];
+                // Map status_id to status_name for all statuses used in the assignments flow
+                $statusMap = [
+                    1 => 'for_evaluation',
+                    2 => 'revision',
+                    3 => 'approved',
+                    4 => 'declined',
+                    5 => 'for_certification',
+                    6 => 'review',
+                    7 => 'certified',
+                ];
                 $statusName = $statusMap[$latestEvaluation->status_id] ?? 'unknown';
                 
                 $evaluations[] = [

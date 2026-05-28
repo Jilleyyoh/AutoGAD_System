@@ -26,15 +26,30 @@ interface Project {
     } | null;
 }
 
+interface PaginationLink {
+    url: string | null;
+    label: string;
+    active: boolean;
+}
+
+interface PaginatedData {
+    data: Project[];
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    links: PaginationLink[];
+}
+
 interface Props {
-    projects: Project[];
+    projects: PaginatedData;
     currentStatus: string;
     searchQuery: string;
     highlightProjectId?: number;
     error?: string;
 }
 
-export default function Index({ projects, currentStatus = 'all', searchQuery = '', highlightProjectId, error }: Props) {
+export default function Index({ projects = { data: [], current_page: 1, last_page: 1, per_page: 15, total: 0, links: [] }, currentStatus = 'all', searchQuery = '', highlightProjectId, error }: Props) {
     // Seed active status and date filters from URL so filters persist across reloads
     const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
     const initialStatus = urlParams.get('status') || currentStatus || 'all';
@@ -58,14 +73,14 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
     const getStatusCounts = () => {
         const normalize = (s?: string) => (s || '').toString().toLowerCase();
         return {
-            all: projects.length,
-            for_evaluation: projects.filter(p => normalize((p as any).status) === 'for_evaluation' || p.status_id === 1).length,
-            revision: projects.filter(p => ['revision','revised','revision'].includes(normalize((p as any).status)) || p.status_id === 2).length,
-            approved: projects.filter(p => normalize((p as any).status) === 'approved' || normalize((p as any).status) === 'completed' || p.status_id === 3).length,
-            declined: projects.filter(p => normalize((p as any).status) === 'declined' || p.status_id === 4).length,
-            review: projects.filter(p => normalize((p as any).status) === 'review' || p.status_id === 6).length,
-            for_certification: projects.filter(p => normalize((p as any).status) === 'for_certification' || p.status_id === 5).length,
-            certified: projects.filter(p => normalize((p as any).status) === 'certified' || p.status_id === 7).length,
+            all: projects.data.length,
+            for_evaluation: projects.data.filter(p => normalize((p as any).status) === 'for_evaluation' || p.status_id === 1).length,
+            revision: projects.data.filter(p => ['revision','revised','revision'].includes(normalize((p as any).status)) || p.status_id === 2).length,
+            approved: projects.data.filter(p => normalize((p as any).status) === 'approved' || normalize((p as any).status) === 'completed' || p.status_id === 3).length,
+            declined: projects.data.filter(p => normalize((p as any).status) === 'declined' || p.status_id === 4).length,
+            review: projects.data.filter(p => normalize((p as any).status) === 'review' || p.status_id === 6).length,
+            for_certification: projects.data.filter(p => normalize((p as any).status) === 'for_certification' || p.status_id === 5).length,
+            certified: projects.data.filter(p => normalize((p as any).status) === 'certified' || p.status_id === 7).length,
         };
     };
 
@@ -148,11 +163,11 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
 
     const filteredProjects = applyStatusFilter(
         search
-            ? projects.filter(p =>
+            ? projects.data.filter(p =>
                 p.project_code.toLowerCase().includes(search.toLowerCase()) ||
                 p.title.toLowerCase().includes(search.toLowerCase())
             )
-            : projects
+            : projects.data
     );
 
     return (
@@ -457,6 +472,29 @@ export default function Index({ projects, currentStatus = 'all', searchQuery = '
                                 <p className="text-lg">No projects found</p>
                             </div>
                         )}
+                        {/* Pagination */}
+                        <div className={combineTheme('px-6 py-4 border-t flex items-center justify-between', themeClasses.border.primary)}>
+                          <div className={combineTheme('text-sm', themeClasses.text.secondary)}>
+                            Page <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{projects.current_page}</span> of <span className={combineTheme('font-semibold', themeClasses.text.primary)}>{projects.last_page}</span>
+                            <span className={combineTheme('ml-2', themeClasses.text.tertiary)}>({projects.total} total)</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {projects.links.filter((l) => l.label !== '&laquo; Previous' && l.label !== 'Next &raquo;').map((l, i) => (
+                              <button
+                                key={i}
+                                disabled={!l.url}
+                                onClick={() => l.url && (window.location.href = l.url)}
+                                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                                  l.active
+                                    ? combineTheme('text-white shadow-md', 'bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800')
+                                    : combineTheme('border', themeClasses.button.secondary)
+                                } ${!l.url ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                              >
+                                {l.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                     </div>
                 </div>
             </div>

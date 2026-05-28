@@ -28,11 +28,26 @@ interface Evaluator {
   updated_at: string;
 }
 
-interface Props {
-  evaluators: Evaluator[];
+interface PaginationLink {
+  url: string | null;
+  label: string;
+  active: boolean;
 }
 
-export default function Index({ evaluators }: Props) {
+interface PaginatedData {
+  data: Evaluator[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+  links: PaginationLink[];
+}
+
+interface Props {
+  evaluators: PaginatedData;
+}
+
+export default function Index({ evaluators = { data: [], current_page: 1, last_page: 1, per_page: 15, total: 0, links: [] } }: Props) {
   const { delete: destroy } = useForm({});
   const [evaluatorToDelete, setEvaluatorToDelete] = useState<Evaluator | null>(null);
   const [search, setSearch] = useState('');
@@ -45,7 +60,7 @@ export default function Index({ evaluators }: Props) {
   };
 
   // Safely check evaluators before rendering
-  const safeEvaluators = Array.isArray(evaluators) ? evaluators : [];
+  const safeEvaluators = Array.isArray(evaluators.data) ? evaluators.data : [];
 
   // Get domain by ID (for display purposes)
   const getDomainName = (evaluator: Evaluator) => {
@@ -121,6 +136,7 @@ export default function Index({ evaluators }: Props) {
           {/* Evaluators Table */}
           <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-md overflow-hidden">
             {filteredEvaluators.length > 0 ? (
+              <>
               <DragScroll>
                 <table className="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
                   <colgroup>
@@ -198,6 +214,30 @@ export default function Index({ evaluators }: Props) {
                   </tbody>
                 </table>
               </DragScroll>
+                {/* Pagination */}
+                <div className="px-6 py-4 border-t flex items-center justify-between bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Page <span className="font-semibold text-gray-900 dark:text-white">{evaluators.current_page}</span> of <span className="font-semibold text-gray-900 dark:text-white">{evaluators.last_page}</span>
+                    <span className="ml-2 text-gray-500 dark:text-gray-500">({evaluators.total} total)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {evaluators.links.filter((l) => l.label !== '&laquo; Previous' && l.label !== 'Next &raquo;').map((l, i) => (
+                      <button
+                        key={i}
+                        disabled={!l.url}
+                        onClick={() => l.url && (window.location.href = l.url)}
+                        className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                          l.active
+                            ? 'bg-blue-600 dark:bg-blue-700 text-white shadow-md hover:bg-blue-700 dark:hover:bg-blue-800'
+                            : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        } ${!l.url ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                      >
+                        {l.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
             ) : (
               <div className="px-6 py-16 text-center">
                 <Users className="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-3" />

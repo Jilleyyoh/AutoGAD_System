@@ -92,7 +92,7 @@ class EvaluationController extends Controller
                 });
             }
 
-            $projects = $query->get()->map(function ($project) use ($evaluator) {
+            $projects = $query->paginate(15)->through(function ($project) use ($evaluator) {
                 // If this evaluator previously created an evaluation for the project,
                 // it will be present in the eager-loaded evaluations relationship.
                 $evaluation = $project->evaluations->first();
@@ -129,7 +129,7 @@ class EvaluationController extends Controller
                         'has_progress' => $hasProgress,
                     ] : null,
                 ];
-            })->toArray();
+            });
 
             return Inertia::render('evaluator/evaluations/index', [
                 'projects' => $projects,
