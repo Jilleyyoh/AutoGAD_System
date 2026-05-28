@@ -95,6 +95,15 @@ export default function ViewProjectDetailsModal({
     const [error, setError] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState('info');
 
+    const formatDocumentLabel = (value?: string | null) => {
+        if (!value) return 'Document';
+        return value
+            .replace(/[_-]+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .replace(/\b\w/g, (match) => match.toUpperCase());
+    };
+
     useEffect(() => {
         if (isOpen && projectId) {
             setActiveTab('info');
@@ -119,7 +128,13 @@ export default function ViewProjectDetailsModal({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/30 dark:bg-black/40 backdrop-blur-sm z-50 overflow-y-auto flex items-center justify-center p-4">
+        <div
+            className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4"
+            style={{
+                backgroundColor: 'rgba(0, 0, 0, 0.35)',
+                backdropFilter: 'blur(2px) brightness(0.98)',
+            }}
+        >
             <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
                 <div className={combineTheme('rounded-lg shadow-2xl border', themeClasses.card.base, 'border-gray-200 dark:border-slate-700')}>
                     {/* Header */}
@@ -249,14 +264,17 @@ export default function ViewProjectDetailsModal({
                                         <div className="space-y-3">
                                             {project.documents.map(doc => {
                                                 const isLink = !!doc.drive_link;
-                                                const displayName = isLink && doc.document_type === 'supporting' ? 'Supporting Documents (Link)' : doc.file_name;
+                                                const displayType = isLink && doc.document_type === 'supporting'
+                                                    ? 'Supporting Documents (Link)'
+                                                    : formatDocumentLabel(doc.document_type);
+                                                const displayName = doc.document_type ? displayType : formatDocumentLabel(doc.file_name);
                                                 
                                                 return (
                                                     <div key={doc.id} className={combineTheme('flex items-start gap-3 p-4 border rounded-lg transition-colors', themeClasses.border.primary)}>
                                                         <FileText className={combineTheme('w-5 h-5 flex-shrink-0 mt-1', themeClasses.icon.primary)} />
                                                         <div className="flex-grow min-w-0">
                                                             <p className={combineTheme('font-semibold truncate', themeClasses.text.primary)}>{displayName}</p>
-                                                            {!isLink && <p className={combineTheme('text-sm', themeClasses.text.tertiary)}>{doc.document_type}</p>}
+                                                            {!isLink && <p className={combineTheme('text-sm', themeClasses.text.tertiary)}>{displayType}</p>}
                                                             {doc.description && <p className={combineTheme('text-sm mt-1', themeClasses.text.tertiary)}>{doc.description}</p>}
                                                             {isLink && doc.drive_link && (
                                                                 <a

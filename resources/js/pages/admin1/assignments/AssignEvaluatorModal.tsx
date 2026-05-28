@@ -44,7 +44,14 @@ export default function AssignEvaluatorModal({ isOpen, onClose, project, evaluat
 
     return (
         <Dialog open={isOpen} onClose={onClose} className="relative z-50">
-            <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+            <div
+                className="fixed inset-0"
+                aria-hidden="true"
+                style={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+                    backdropFilter: 'blur(2px) brightness(0.98)',
+                }}
+            />
 
             <div className="fixed inset-0 flex items-center justify-center p-4">
                 <Dialog.Panel className="mx-auto max-w-md rounded-lg bg-white p-6 w-full shadow-lg">

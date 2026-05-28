@@ -151,6 +151,15 @@ export default function Show({
     const [isCompleted] = useState(evaluation.is_completed);
     const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
 
+    const formatDocumentLabel = (value?: string | null) => {
+        if (!value) return 'Document';
+        return value
+            .replace(/[_-]+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .replace(/\b\w/g, (match) => match.toUpperCase());
+    };
+
     // Initialize scores and remarks from current data
     React.useEffect(() => {
         const initialScores: { [key: number]: number | null } = {};
@@ -894,7 +903,7 @@ export default function Show({
                                                                 {doc.file_name}
                                                             </h3>
                                                             <p className={combineTheme('text-sm mt-1', themeClasses.text.secondary)}>
-                                                                {doc.document_type}
+                                                                {formatDocumentLabel(doc.document_type)}
                                                             </p>
                                                             {doc.description && (
                                                                 <p className={combineTheme('text-sm mt-2', themeClasses.text.secondary)}>

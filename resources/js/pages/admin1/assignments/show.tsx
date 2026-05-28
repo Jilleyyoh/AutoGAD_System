@@ -80,6 +80,15 @@ export default function AssignmentShow() {
 
   const statusLabel = formatStatus(project.status);
 
+  const formatDocumentLabel = (value?: string | null) => {
+    if (!value) return 'Document';
+    return value
+      .replace(/[_-]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/\b\w/g, (match) => match.toUpperCase());
+  };
+
   return (
     <AppLayout
       breadcrumbs={[
@@ -227,11 +236,13 @@ export default function AssignmentShow() {
                     No documents uploaded.
                   </p>
                 ) : (
-                  <ul className={combineTheme('divide-y', themeClasses.table.border)}>
+                  <ul className={combineTheme('', themeClasses.table.border)}>
                     {project.documents.map(doc => {
                       const isLink = !!doc.drive_link;
-                      const displayType = isLink && doc.type === 'supporting' ? 'Supporting Documents (Link)' : doc.type || 'Document';
-                      const displayName = isLink ? displayType : doc.original_name;
+                      const displayType = isLink && doc.type === 'supporting'
+                        ? 'Supporting Documents (Link)'
+                        : formatDocumentLabel(doc.type);
+                      const displayName = doc.type ? displayType : (doc.original_name || displayType);
                       
                       return (
                         <li
@@ -254,7 +265,7 @@ export default function AssignmentShow() {
                             ) : (
                               doc.type && (
                                 <div className={combineTheme('text-xs mt-0.5', themeClasses.text.tertiary)}>
-                                  {doc.type}
+                                  {displayType}
                                 </div>
                               )
                             )}

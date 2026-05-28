@@ -95,6 +95,15 @@ export default function SubmissionShow() {
 
   const statusLabel = formatStatus(project.status);
 
+  const formatDocumentLabel = (value?: string | null) => {
+    if (!value) return 'Document';
+    return value
+      .replace(/[_-]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/\b\w/g, (match) => match.toUpperCase());
+  };
+
   return (
     <AppLayout breadcrumbs={[
       { title: 'Dashboard', href: route('proponent.dashboard') },
@@ -179,11 +188,13 @@ export default function SubmissionShow() {
                 {project.documents.length === 0 && (
                   <p className={combineTheme('text-sm', themeClasses.text.secondary)}>No documents uploaded.</p>
                 )}
-                <ul className={combineTheme('divide-y', themeClasses.table.border)}>
+                <ul className={combineTheme('', themeClasses.table.border)}>
                   {project.documents.map(doc => {
                     const isLink = !!doc.drive_link;
-                    const displayType = isLink && doc.type === 'supporting' ? 'Supporting Documents (Link)' : doc.type || 'Document';
-                    const displayName = isLink ? displayType : doc.original_name;
+                    const displayType = isLink && doc.type === 'supporting'
+                      ? 'Supporting Documents (Link)'
+                      : formatDocumentLabel(doc.type);
+                    const displayName = doc.type ? displayType : (doc.original_name || displayType);
                     
                     return (
                       <li key={doc.id} className="py-3 flex items-center justify-between text-sm">

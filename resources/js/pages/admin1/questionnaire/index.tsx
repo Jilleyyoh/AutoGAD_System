@@ -1057,7 +1057,13 @@ export default function Index({ settings, categories = [], interpretations = [],
 
       {/* Category Modal */}
       {showCategoryModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            backdropFilter: 'blur(2px) brightness(0.98)',
+          }}
+        >
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 w-full max-w-lg shadow-xl">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -1147,7 +1153,13 @@ export default function Index({ settings, categories = [], interpretations = [],
 
       {/* Item/Question Modal */}
       {showItemModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            backdropFilter: 'blur(2px) brightness(0.98)',
+          }}
+        >
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 w-full max-w-lg max-h-96 overflow-y-auto shadow-xl">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               <Edit2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -1247,7 +1259,13 @@ export default function Index({ settings, categories = [], interpretations = [],
 
       {/* Interpretation Modal */}
       {showInterpretationModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            backdropFilter: 'blur(2px) brightness(0.98)',
+          }}
+        >
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 w-full max-w-lg shadow-xl">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               <Zap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
