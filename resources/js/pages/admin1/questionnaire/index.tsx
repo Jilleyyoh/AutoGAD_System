@@ -530,6 +530,7 @@ export default function Index({ settings, categories = [], interpretations = [],
           {activeTab === 'settings' && (
             <div className="p-8">
               <div className="max-w-6xl mx-auto">
+                
                 {/* Active Version Banner */}
                 {versions && versions.length > 0 && (
                   <div className="mb-6 p-4 rounded-lg border bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800">
@@ -712,7 +713,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                                     </p>
                                   )}
 
-                                  <div className="grid grid-cols-3 gap-4 mt-3 text-sm">
+                                  <div className="grid grid-cols-4 gap-4 mt-3 text-sm">
                                     <div>
                                       <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
                                         Created
@@ -729,7 +730,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                                     </div>
                                     <div>
                                       <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                        Categories
+                                        CATEGORIES
                                       </p>
                                       <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
                                         {version.snapshot.categories.length}
@@ -737,41 +738,23 @@ export default function Index({ settings, categories = [], interpretations = [],
                                     </div>
                                     <div>
                                       <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                        Questions
+                                        QUESTIONS
                                       </p>
                                       <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
                                         {version.snapshot.questions?.length || version.snapshot.question_count || 0}
                                       </p>
                                     </div>
+                                    <div>
+                                      <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
+                                        EVALUATIONS USING THIS VERSION
+                                      </p>
+                                      <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
+                                        {version.evaluation_count || 0}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
-
-                                {/* Action Buttons */}
-                                <div className="flex gap-2">
-                                  <button
-                                    onClick={() => setSelectedVersion(selectedVersion?.id === version.id ? null : version)}
-                                    className={combineTheme(
-                                      'px-3 py-1 rounded text-sm font-medium',
-                                      'bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300'
-                                    )}
-                                  >
-                                    {selectedVersion?.id === version.id ? 'Hide' : 'View'}
-                                  </button>
-                                </div>
                               </div>
-
-                              {/* Selected Version Detail */}
-                              {selectedVersion?.id === version.id && (
-                                <div className={combineTheme(
-                                  'mt-4 pt-4 border-t',
-                                  themeClasses.table.border
-                                )}>
-                                  <VersionInfo
-                                    version={version}
-                                    showEvaluationCount={true}
-                                  />
-                                </div>
-                              )}
                             </div>
                           ))
                         )}
