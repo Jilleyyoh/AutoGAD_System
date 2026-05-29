@@ -653,8 +653,51 @@ export default function Show({
                                                 </div>
                                             </div>
                                         )}
+
+                                        {/* Action Buttons or Completion Message */}
+                                        
+                                            {isCompleted && (
+                                                <div className={combineTheme('border-2 rounded-2xl p-8', 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/40 border-green-300 dark:border-green-700 shadow-lg')}>
+                                                    <div className="flex items-center gap-6">
+                                                        <div className="flex-shrink-0">
+                                                            <div className="w-16 h-16 rounded-2xl bg-green-600 dark:bg-green-500 text-white flex items-center justify-center">
+                                                                <CheckCircle2 className="w-8 h-8" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <h3 className={combineTheme('text-2xl font-bold mb-2', 'text-green-900 dark:text-green-100')}>
+                                                                ✓ Evaluation Successfully Submitted
+                                                            </h3>
+                                                            <p className={combineTheme('text-base leading-relaxed mb-2', 'text-green-800 dark:text-green-100')}>
+                                                                This evaluation has been completed and locked for data integrity. All scores and remarks have been saved permanently and can no longer be modified.
+                                                            </p>
+                                                            {evaluation.completion_date && (
+                                                                <div className="flex items-center gap-2 mt-4">
+                                                                    <Clock className="w-4 h-4 text-green-600 dark:text-green-400" />
+                                                                    <span className={combineTheme('text-sm font-medium', 'text-green-700 dark:text-green-200')}>
+                                                                        Submitted: {new Date(evaluation.completion_date).toLocaleString()}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                        <div className="flex-shrink-0">
+                                                            <div className={combineTheme('px-6 py-3 rounded-xl text-center', 'bg-green-100 dark:bg-green-800/50')}>
+                                                                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                                                                    {totalScore.toFixed(2)}
+                                                                </div>
+                                                                <div className={combineTheme('text-sm', 'text-green-700 dark:text-green-300')}>
+                                                                    Final Score
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        
+
                                     </div>
                                 </div>
+                                
                             )}
                             {/* Questionnaire Tab */}
                             {activeTab === 'questionnaire' && (
@@ -1288,46 +1331,6 @@ export default function Show({
                     </div>
                 </div>
 
-                {/* Action Buttons or Completion Message */}
-                <div className="px-8 pb-8">
-                    {isCompleted && (
-                        <div className={combineTheme('border-2 rounded-2xl p-8', 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/40 border-green-300 dark:border-green-700 shadow-lg')}>
-                            <div className="flex items-center gap-6">
-                                <div className="flex-shrink-0">
-                                    <div className="w-16 h-16 rounded-2xl bg-green-600 dark:bg-green-500 text-white flex items-center justify-center">
-                                        <CheckCircle2 className="w-8 h-8" />
-                                    </div>
-                                </div>
-                                <div className="flex-1">
-                                    <h3 className={combineTheme('text-2xl font-bold mb-2', 'text-green-900 dark:text-green-100')}>
-                                        ✓ Evaluation Successfully Submitted
-                                    </h3>
-                                    <p className={combineTheme('text-base leading-relaxed mb-2', 'text-green-800 dark:text-green-100')}>
-                                        This evaluation has been completed and locked for data integrity. All scores and remarks have been saved permanently and can no longer be modified.
-                                    </p>
-                                    {evaluation.completion_date && (
-                                        <div className="flex items-center gap-2 mt-4">
-                                            <Clock className="w-4 h-4 text-green-600 dark:text-green-400" />
-                                            <span className={combineTheme('text-sm font-medium', 'text-green-700 dark:text-green-200')}>
-                                                Submitted: {new Date(evaluation.completion_date).toLocaleString()}
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="flex-shrink-0">
-                                    <div className={combineTheme('px-6 py-3 rounded-xl text-center', 'bg-green-100 dark:bg-green-800/50')}>
-                                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                                            {totalScore.toFixed(2)}
-                                        </div>
-                                        <div className={combineTheme('text-sm', 'text-green-700 dark:text-green-300')}>
-                                            Final Score
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
             </div>
                     </>
                 )}
