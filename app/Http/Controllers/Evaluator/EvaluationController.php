@@ -595,15 +595,15 @@ class EvaluationController extends Controller
                         $evaluation->scores()->updateOrCreate(
                             ['questionnaire_item_id' => $scoreData['item_id']],
                             [
-                                'score' => $scoreData['score'],
+                                'score' => round((float)$scoreData['score'], 2),
                                 'remarks' => $scoreData['remarks'] ?? null,
                             ]
                         );
                     }
                 }
 
-                // Calculate total score
-                $totalScore = $evaluation->scores()->sum('score');
+                // Calculate total score (rounded to 2 decimals to prevent floating-point errors)
+                $totalScore = round($evaluation->scores()->sum('score'), 2);
                 
                 // Get max score from bound questionnaire version snapshot (version-accurate)
                 $maxScore = EvaluationQuestionnaireTransformer::getMaxScoreFromSnapshot($evaluation);
@@ -722,8 +722,9 @@ class EvaluationController extends Controller
                 // BEFORE LOCKING: Recompute and confirm interpretation is correct
                 // This ensures data integrity even if saveScores was skipped
                 if ($evaluation->total_score !== null) {
-                    $interpretation = ScoreInterpretation::where('score_min', '<=', $evaluation->total_score)
-                        ->where('score_max', '>=', $evaluation->total_score)
+                    $roundedScore = round((float)$evaluation->total_score, 2);
+                    $interpretation = ScoreInterpretation::where('score_min', '<=', $roundedScore)
+                        ->where('score_max', '>=', $roundedScore)
                         ->first();
 
                     // If max_score wasn't set during saveScores (edge case), set it now from snapshot

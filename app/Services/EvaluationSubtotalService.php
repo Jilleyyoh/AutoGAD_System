@@ -74,14 +74,16 @@ class EvaluationSubtotalService
                             ->value('score');
                         
                         if ($score !== null) {
-                            $actualScore += floatval($score);
+                            $actualScore += (float)$score;
                         }
                     }
+                    // Round after accumulation to prevent floating-point precision errors
+                    $actualScore = round($actualScore, 2);
 
-                    // Calculate percentage
+                    // Calculate percentage (rounded to 2 decimals)
                     $maxScore = floatval($category['max_score'] ?? 0);
                     $scorePercentage = $maxScore > 0 
-                        ? ($actualScore / $maxScore) * 100 
+                        ? round(($actualScore / $maxScore) * 100, 2)
                         : 0;
 
                     // Create or update subtotal record
