@@ -74,7 +74,7 @@ interface QuestionnaireVersion {
 }
 
 interface Props {
-    project: ProjectData;
+    project: ProjectData | null;
     evaluation: {
         id: number;
         total_score?: number;
@@ -82,11 +82,13 @@ interface Props {
         final_remarks?: string;
         completion_date?: string;
         is_completed: boolean;
-    };
+    } | null;
     questionnaire_version?: QuestionnaireVersion;
     categories: QuestionnaireCategory[];
     documents: Document[];
     interpretations: ScoreInterpretation[];
+    error?: string;
+    error_code?: string;
     version_integrity?: {
         version_id: number | null;
         version_number: string;
@@ -143,12 +145,12 @@ export default function Show({
     const [activeTab, setActiveTab] = useState('info');
     const [scores, setScores] = useState<{ [key: number]: number | null }>({});
     const [remarks, setRemarks] = useState<{ [key: number]: string }>({});
-    const [finalRemarks, setFinalRemarks] = useState(evaluation.final_remarks || '');
+    const [finalRemarks, setFinalRemarks] = useState(evaluation?.final_remarks || '');
     const [finalAction, setFinalAction] = useState<'approve' | 'revision' | 'decline' | null>(null);
     const [saving, setSaving] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-    const [isCompleted] = useState(evaluation.is_completed);
+    const [isCompleted] = useState(evaluation?.is_completed || false);
     const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
 
     const formatDocumentLabel = (value?: string | null) => {
@@ -211,10 +213,10 @@ export default function Show({
         }
         
         // Otherwise use the saved database value
-        return evaluation.total_score !== null && evaluation.total_score !== undefined 
+        return evaluation && evaluation.total_score !== null && evaluation.total_score !== undefined 
             ? parseFloat(String(evaluation.total_score)) 
             : 0;
-    }, [categoryScores, scores, evaluation.total_score]);
+    }, [categoryScores, scores, evaluation?.total_score]);
 
     // Calculate total max score across all categories
     const maxTotalScore = useMemo(() => {
@@ -306,6 +308,8 @@ export default function Show({
 
     // Save evaluation
     const handleSave = async () => {
+        if (!project) return;
+        
         setSaving(true);
         try {
             const scoreData = categories
@@ -354,6 +358,8 @@ export default function Show({
     };
 
     const handleSubmit = async () => {
+        if (!project) return;
+        
         setSubmitting(true);
         try {
             // First save the scores
@@ -401,12 +407,44 @@ export default function Show({
     ];
 
     return (
-        <AppLayout  breadcrumbs={[{ title: 'Dashboard', href: route('evaluator.dashboard') }, { title: 'Evaluations', href: route('evaluator.evaluations.index') }, { title: 'Evaluate', href: route('evaluator.evaluations.show', project.id) }]}>
-            <Head title={`Evaluate: ${project.project_code}`} />
+        <AppLayout  breadcrumbs={[{ title: 'Dashboard', href: route('evaluator.dashboard') }, { title: 'Evaluations', href: route('evaluator.evaluations.index') }, { title: 'Evaluate', href: project ? route('evaluator.evaluations.show', project.id) : '#' }]}>
+            <Head title={`Evaluate: ${project?.project_code || 'Questionnaire'}`} />
 
             <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
-                {/* Header Section */}
-                <div className={combineTheme('border-b bg-white dark:bg-slate-800', themeClasses.border.primary)}>
+                {/* Error State Display */}
+                {(!project || !evaluation) && (
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        <div className="rounded-lg border border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20 p-8">
+                            <div className="flex items-start gap-4">
+                                <div className="flex-shrink-0">
+                                    <svg className="h-6 w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4v2m0-12a9 9 0 110 18 9 9 0 010-18z" />
+                                    </svg>
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-lg font-medium text-red-900 dark:text-red-100 mb-2">
+                                        Questionnaire Unavailable
+                                    </h3>
+                                    <p className="text-sm text-red-800 dark:text-red-200 mb-4">
+                                        {`The questionnaire is unavailable. Please contact the administrator.`}
+                                    </p>
+                                    <Link
+                                        href={route('evaluator.evaluations.index')}
+                                        className="inline-flex items-center px-4 py-2 rounded-lg bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-800 transition-colors text-sm font-medium"
+                                    >
+                                        Back to Evaluations
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Normal Content - Only render if no error */}
+                {project && evaluation && (
+                    <>
+                        {/* Header Section */}
+                        <div className={combineTheme('border-b bg-white dark:bg-slate-800', themeClasses.border.primary)}>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                         <div className="flex items-center justify-between">
                             {/* Back button and title */}
@@ -1291,7 +1329,9 @@ export default function Show({
                     )}
                 </div>
             </div>
-        </div>
+                    </>
+                )}
+            </div>
             <ConfirmationDialog
                 isOpen={showSubmitConfirm}
                 onClose={() => setShowSubmitConfirm(false)}

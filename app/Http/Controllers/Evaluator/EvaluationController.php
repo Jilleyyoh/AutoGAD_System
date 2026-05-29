@@ -9,6 +9,7 @@ use App\Models\QuestionnaireCategory;
 use App\Models\ScoreInterpretation;
 use App\Models\ProjectDocument;
 use App\Models\Certificate;
+use App\Models\QuestionnaireSetting;
 use App\Services\QuestionnaireVersionService;
 use App\Services\EvaluationQuestionnaireTransformer;
 use App\Services\EvaluationVersionManagementService;
@@ -414,7 +415,64 @@ class EvaluationController extends Controller
                     'version_data' => $boundVersion->snapshot,
                 ]);
                 
-                abort(500, 'Questionnaire version has no valid snapshot. Please contact administrator.');
+                // Return user-friendly error instead of abort
+                return Inertia::render('evaluator/evaluations/show', [
+                    'project' => null,
+                    'evaluation' => null,
+                    'questionnaire_version' => null,
+                    'categories' => [],
+                    'documents' => [],
+                    'interpretations' => [],
+                    'error' => 'The questionnaire is unavailable. Please contact the administrator.',
+                    'error_code' => 'EMPTY_QUESTIONNAIRE',
+                ]);
+            }
+
+            // Validate that questionnaire has at least one question across all categories
+            $totalQuestions = 0;
+            foreach ($categories as $category) {
+                $totalQuestions += count($category['items'] ?? []);
+            }
+
+            if ($totalQuestions === 0) {
+                Log::warning('Questionnaire has no questions configured', [
+                    'evaluation_id' => $evaluation->id,
+                    'questionnaire_version_id' => $evaluation->questionnaire_version_id,
+                ]);
+
+                return Inertia::render('evaluator/evaluations/show', [
+                    'project' => null,
+                    'evaluation' => null,
+                    'questionnaire_version' => null,
+                    'categories' => [],
+                    'documents' => [],
+                    'interpretations' => [],
+                    'error' => 'The questionnaire is unavailable. Please contact the administrator.',
+                    'error_code' => 'NO_QUESTIONS',
+                ]);
+            }
+
+            // Validate questionnaire settings (check if admin has configured version/passing score)
+            $questionnaireVersion = QuestionnaireSetting::getValue('questionnaire_version', null);
+            $passingScore = QuestionnaireSetting::getValue('passing_score', null);
+
+            if (!$questionnaireVersion || $passingScore === null) {
+                Log::warning('Questionnaire settings not properly configured by administrator', [
+                    'evaluation_id' => $evaluation->id,
+                    'has_version' => !empty($questionnaireVersion),
+                    'has_passing_score' => $passingScore !== null,
+                ]);
+
+                return Inertia::render('evaluator/evaluations/show', [
+                    'project' => null,
+                    'evaluation' => null,
+                    'questionnaire_version' => null,
+                    'categories' => [],
+                    'documents' => [],
+                    'interpretations' => [],
+                    'error' => 'The questionnaire is unavailable. Please contact the administrator.',
+                    'error_code' => 'MISSING_SETTINGS',
+                ]);
             }
 
             // Get score interpretation
