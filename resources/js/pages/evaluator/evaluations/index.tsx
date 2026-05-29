@@ -319,7 +319,7 @@ export default function Index({ projects = { data: [], current_page: 1, last_pag
                                             <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.tertiary)}>
                                                 Status
                                             </th>
-                                            <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.tertiary)}>
+                                            <th className={combineTheme('px-6 py-3 text-center text-xs font-medium uppercase tracking-wider', themeClasses.text.tertiary)}>
                                                 Action
                                             </th>
                                         </tr>
@@ -368,7 +368,7 @@ export default function Index({ projects = { data: [], current_page: 1, last_pag
                                                                 );
                                                             })()}
                                                         </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                                                             {(() => {
                                                                 const normalized = project.status === 'certified' ? 'completed' : String(project.status || '').toLowerCase();
 

@@ -297,26 +297,23 @@ export default function SubmissionsIndex() {
                             {formatStatus(p.status)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-center">
-                          {p.status === 'revision' ? (
+                        <td className="px-6 py-4 text-left">
+                          <div className="flex items-center gap-2">
                             <Link 
                               href={route('proponent.pap.submissions.show', p.id)} 
-                              className={combineTheme('inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all', themeClasses.button.primary)}
+                              className={combineTheme('inline-flex items-center justify-center p-1.5 rounded-md text-sm font-medium transition-all', themeClasses.button.secondary)}
                             >
                               <Eye className="w-4 h-4" />
-                              Revise
-                              <ArrowRight className="w-3 h-3" />
                             </Link>
-                          ) : (
-                            <Link 
-                              href={route('proponent.pap.submissions.show', p.id)} 
-                              className={combineTheme('inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all', themeClasses.button.secondary)}
-                            >
-                              <Eye className="w-4 h-4" />
-                              View
-                              <ArrowRight className="w-3 h-3" />
-                            </Link>
-                          )}
+                            {p.status === 'revision' && (
+                              <Link 
+                                href={route('proponent.pap.submissions.show', p.id)} 
+                                className={combineTheme('inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all', themeClasses.button.primary)}
+                              >
+                                Revise
+                              </Link>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     );

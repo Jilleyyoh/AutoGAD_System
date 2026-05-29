@@ -200,7 +200,7 @@ export default function Index({ evaluations, pagination }: Props) {
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider min-w-[250px]">Admin 2 Remarks</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Submission Date and Time</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Action</th>
+                                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -227,21 +227,21 @@ export default function Index({ evaluations, pagination }: Props) {
                                                 )}
                                             </td>
                                             <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{item.completion_date ? item.completion_date : '—'}</td>
-                                            <td className="px-6 py-4 text-sm">
+                                            <td className="px-6 py-4 text-sm text-center">
+                                            <div className="flex items-center justify-center gap-2">
                                                 {item.status === 'review' ? (
-                                                    <span className="inline-flex items-center gap-2 font-medium opacity-50 cursor-not-allowed text-gray-400 dark:text-gray-600">
-                                                        <Eye className="w-4 h-4" />
-                                                        Awaiting Evaluator
-                                                    </span>
+                                                <span className={combineTheme('inline-flex items-center justify-center p-1.5 rounded-md text-sm font-medium transition-all opacity-50 cursor-not-allowed', themeClasses.button.secondary)}>
+                                                    <Eye className="w-4 h-4" />
+                                                </span>
                                                 ) : (
-                                                    <Link
-                                                        href={`/admin2/evaluations/${item.project_id}/review`}
-                                                        className="inline-flex items-center gap-2 font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-                                                    >
-                                                        <Eye className="w-4 h-4" />
-                                                        Review
-                                                    </Link>
+                                                <Link
+                                                    href={`/admin2/evaluations/${item.project_id}/review`}
+                                                    className={combineTheme('inline-flex items-center justify-center p-1.5 rounded-md text-sm font-medium transition-all', themeClasses.button.secondary)}
+                                                >
+                                                    <Eye className="w-4 h-4" />
+                                                </Link>
                                                 )}
+                                            </div>
                                             </td>
                                         </tr>
                                     ))}
