@@ -36,13 +36,13 @@ class ScoreDistributionService
         // Convert to float to avoid precision issues
         $max = (float)$maxScore;
         
-        // Standard three-point pattern: 0, half, full
+        // Standard three-point pattern: 0, half, full (rounded to 2 decimals)
         $half = $max / 2;
         
-        // Format to 8 decimal places (matching DB precision) then trim trailing zeros
+        // Format to 2 decimal places for database consistency
         $scoreZero = "0";
-        $scoreHalf = rtrim(rtrim(number_format($half, 8, '.', ''), '0'), '.');
-        $scoreFull = rtrim(rtrim(number_format($max, 8, '.', ''), '0'), '.');
+        $scoreHalf = round($half, 2);
+        $scoreFull = round($max, 2);
         
         return "{$scoreZero},{$scoreHalf},{$scoreFull}";
     }

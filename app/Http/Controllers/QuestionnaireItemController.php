@@ -69,6 +69,30 @@ class QuestionnaireItemController extends Controller
             $item->update(['item_number' => $newItemNumber]);
         }
     }
+
+    /**
+     * Round score options to 2 decimal places for consistency.
+     * 
+     * Converts comma-separated score strings like "0,1.665,3.33" to "0,1.67,3.33"
+     * ensuring all values are properly rounded to 2 decimals for database storage.
+     * 
+     * @param string $scoreOptionsString
+     * @return string
+     */
+    private function roundScoreOptions(string $scoreOptionsString): string
+    {
+        if (empty($scoreOptionsString)) {
+            return '0,0.5,1.0';
+        }
+
+        $options = explode(',', trim($scoreOptionsString));
+        $rounded = array_map(function ($option) {
+            return (string) round((float) trim($option), 2);
+        }, $options);
+
+        return implode(',', $rounded);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -94,7 +118,7 @@ class QuestionnaireItemController extends Controller
         $itemNumber = $this->generateItemNumber($request->category_id, $request->display_order);
         
         // Determine score_options and max_score
-        $scoreOptions = $request->score_options ?? '0,0.5,1.0';
+        $scoreOptions = $this->roundScoreOptions($request->score_options ?? '0,0.5,1.0');
         $maxScore = 1.00; // Default
 
         QuestionnaireItem::create([
@@ -169,7 +193,7 @@ class QuestionnaireItemController extends Controller
             'category_id' => $newCategoryId,
             'item_number' => $itemNumber,
             'question' => $request->question,
-            'score_options' => $request->score_options,
+            'score_options' => $this->roundScoreOptions($request->score_options),
             'display_order' => $newDisplayOrder,
             'is_active' => $request->boolean('is_active', true),
             'version' => $currentVersion,

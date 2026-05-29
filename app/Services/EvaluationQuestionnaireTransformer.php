@@ -109,7 +109,9 @@ class EvaluationQuestionnaireTransformer
             return [];
         }
 
-        return array_map('floatval', explode(',', $scoreOptionsString));
+        return array_map(function ($option) {
+            return round((float)$option, 2);
+        }, explode(',', $scoreOptionsString));
     }
 
     /**

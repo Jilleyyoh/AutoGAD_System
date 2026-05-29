@@ -31,6 +31,29 @@ use Illuminate\Support\Facades\DB;
 class QuestionnaireSettingController extends Controller
 {
     /**
+     * Format score options to 2 decimal places for consistent display.
+     * 
+     * Converts values like "0,1.66666667,3.33333333" to "0,1.67,3.33"
+     * ensuring the admin interface displays properly rounded score options.
+     * 
+     * @param string $scoreOptionsString
+     * @return string
+     */
+    private function formatScoreOptions(string $scoreOptionsString): string
+    {
+        if (empty($scoreOptionsString)) {
+            return '';
+        }
+
+        $options = explode(',', trim($scoreOptionsString));
+        $rounded = array_map(function ($option) {
+            return (string) round((float) trim($option), 2);
+        }, $options);
+
+        return implode(',', $rounded);
+    }
+
+    /**
      * Display the questionnaire management page.
      * 
      * This is the main settings hub showing:
@@ -64,6 +87,15 @@ class QuestionnaireSettingController extends Controller
         ->where('is_active', true)
         ->orderBy('display_order')
         ->get();
+
+        // Format score_options to 2 decimals for display consistency
+        $categories = $categories->map(function ($category) {
+            $category->items = $category->items->map(function ($item) {
+                $item->score_options = $this->formatScoreOptions($item->score_options);
+                return $item;
+            });
+            return $category;
+        });
 
         // Get score interpretations ordered by minimum score
         $interpretations = ScoreInterpretation::orderBy('score_min')->get();
@@ -392,14 +424,14 @@ class QuestionnaireSettingController extends Controller
             $scorePerQuestion = $categoryMax / $questionCount;
             $halfScore = $scorePerQuestion / 2;
 
-            // Create score options string
-            $scoreOptions = "0," . round($halfScore, 8) . "," . round($scorePerQuestion, 8);
+            // Create score options string (rounded to 2 decimals for consistency with evaluation scoring)
+            $scoreOptions = "0," . round($halfScore, 2) . "," . round($scorePerQuestion, 2);
 
             // Update ALL questions with the calculated score
             $updatedCount = 0;
             foreach ($activeQuestions as $question) {
                 $oldScore = (float) $question->max_score;
-                $newScore = round($scorePerQuestion, 8);
+                $newScore = round($scorePerQuestion, 2);
                 
                 // Only update if value actually changed (optimization)
                 if (abs($oldScore - $newScore) > 0.0001 || $question->score_options !== $scoreOptions) {
