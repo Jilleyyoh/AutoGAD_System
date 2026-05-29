@@ -192,7 +192,7 @@ export default function CertificationsIndex({
                                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Score</th>
                                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Completion Date</th>
-                                            <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -224,8 +224,8 @@ export default function CertificationsIndex({
                                                 <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
                                                     {project.completion_date}
                                                 </td>
-                                                <td className="px-6 py-4 text-center">
-                                                    <div className="flex justify-center gap-2">
+                                                <td className="px-6 py-4 text-left">
+                                                    <div className="flex justify-left gap-2">
                                                         <a
                                                             href={route('admin2.certifications.show', project.id)}
                                                             className={combineTheme('inline-flex items-center justify-center p-1.5 rounded-md text-sm font-medium transition-all', themeClasses.button.secondary)}
@@ -233,7 +233,7 @@ export default function CertificationsIndex({
                                                         >
                                                             <Eye className="w-5 h-5" />
                                                         </a>
-
+                                                     <div className="flex justify-center gap-2">
                                                         {project.is_certified && project.certificate_id && (
                                                             <a
                                                                 href={route('admin2.certifications.download', project.certificate_id)}
@@ -245,6 +245,8 @@ export default function CertificationsIndex({
                                                                 <Download className="w-5 h-5" />
                                                             </a>
                                                         )}
+                                                     </div>
+                                                        
                                                         
                                                     </div>
                                                 </td>
