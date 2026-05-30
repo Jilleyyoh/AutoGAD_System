@@ -179,13 +179,6 @@ export default function Index({ domains = { data: [], current_page: 1, last_page
               <div className="px-6 py-16 text-center">
                 <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">No domains yet</p>
                 <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Create your first domain to get started</p>
-                <Link
-                  href={route('domain.create')}
-                  className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                  Create Domain
-                </Link>
               </div>
             )}
           </div>

@@ -245,13 +245,6 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
                 <Users className="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-3" />
                 <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">No proponents yet</p>
                 <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Start by adding your first proponent</p>
-                <Link
-                  href={route('admin2.proponents.create')}
-                  className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                  Create Proponent
-                </Link>
               </div>
             )}
           </div>
