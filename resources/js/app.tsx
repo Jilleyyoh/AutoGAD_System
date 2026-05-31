@@ -6,10 +6,10 @@ import { createRoot } from 'react-dom/client';
 import { AppAlertsProvider } from './components/app-alerts';
 import { initializeTheme } from './hooks/use-appearance';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'AutoGAD';
 
 createInertiaApp({
-    title: (title) => title ? `${title} - ${appName}` : appName,
+    title: (title) => title || appName,
     resolve: (name) => {
         // Normalize the name to lowercase to handle case-sensitivity issues
         const normalizedName = name.toLowerCase();

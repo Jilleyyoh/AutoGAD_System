@@ -49,7 +49,7 @@ export default function Index({ domains = { data: [], current_page: 1, last_page
         { title: 'Domain Expertise', href: route('domain.index') }
       ]}
     >
-      <Head title="Domain Expertise" />
+      <Head title="Manage Domain Expertise" />
       <div className="min-h-screen bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Header Section */}

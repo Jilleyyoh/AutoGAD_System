@@ -65,7 +65,7 @@ export default function Dashboard({ admin, stats }: Props) {
             ]}
             sidebarOpen={false}
         >
-            <Head title="Admin 2 - Evaluation Management" />
+            <Head title="Dashboard" />
 
             <div className="min-h-screen bg-white dark:bg-black">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

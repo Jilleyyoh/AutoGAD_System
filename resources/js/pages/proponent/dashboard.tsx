@@ -76,7 +76,7 @@ export default function Dashboard({ projects, proponent }: Props) {
         { title: 'Dashboard', href: '/proponent/dashboard' }
       ]}
     >
-      <Head title="Proponent Dashboard" />
+      <Head title="Dashboard" />
 
       <div className={combineTheme('min-h-screen', themeClasses.bg.tertiary)}>
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">

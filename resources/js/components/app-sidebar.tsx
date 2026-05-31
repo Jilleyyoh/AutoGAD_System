@@ -26,7 +26,7 @@ export function AppSidebar() {
             { title: 'Messages', href: route('proponent.conversations.index'), icon: MessageSquare },
         ] : []),
         ...(isEvaluator ? [
-            { title: 'My Evaluations', href: route('evaluator.evaluations.index'), icon: CheckSquare },
+            { title: 'Evaluations', href: route('evaluator.evaluations.index'), icon: CheckSquare },
             { title: 'Certificates', href: route('evaluator.certificates.index'), icon: Award },
         ] : []),
         ...(isAdmin2 ? [

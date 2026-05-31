@@ -30,7 +30,7 @@
             }
         </style>
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'AutoGAD') }}</title>
 
         {{-- CSRF Token for API requests --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">

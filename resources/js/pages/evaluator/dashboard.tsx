@@ -26,7 +26,7 @@ interface Props {
 
 const accessItems = [
     {
-        title: 'My Evaluations',
+        title: 'Evaluations',
         description: 'View assigned projects and start evaluations',
         icon: ClipboardList,
         href: route('evaluator.evaluations.index'),
@@ -62,7 +62,7 @@ const accessItems = [
 export default function Dashboard({ evaluator, stats }: Props) {
     return (
         <AppLayout breadcrumbs={[{ title: 'Dashboard', href: route('evaluator.dashboard') }]}>
-            <Head title="Evaluator Dashboard" />
+            <Head title="Dashboard" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className={combineTheme('px-4 sm:px-0', themeClasses.text.primary)}>

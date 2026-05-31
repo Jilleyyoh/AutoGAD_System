@@ -134,6 +134,7 @@ export default function SubmissionsIndex() {
 
   return (
     <AppLayout breadcrumbs={[{ title: 'Dashboard', href: route('proponent.dashboard') }, { title: 'Track Submissions', href: route('proponent.pap.submissions') }]}>
+      <Head title="Track Submissions" />
       <div className="min-h-screen bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Header */}

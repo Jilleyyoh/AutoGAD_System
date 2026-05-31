@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { AlertCircle, Download, FileText, Search } from 'lucide-react';
 import { route } from 'ziggy-js';
@@ -81,6 +82,7 @@ export default function Certificates({ certificates = { data: [], current_page: 
 
   return (
     <AppLayout breadcrumbs={[{ title: 'Dashboard', href: route('evaluator.dashboard') }, { title: 'Certificates', href: route('evaluator.certificates.index') }]}>
+      <Head title="Certificates" />
       <div className="min-h-screen bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="mb-8">

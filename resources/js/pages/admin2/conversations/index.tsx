@@ -64,7 +64,7 @@ export default function Admin2ConversationsIndex() {
             ]}
             sidebarOpen={false}
         >
-            <Head title="Conversations" />
+            <Head title="Messages" />
             
             <div className="min-h-screen bg-white dark:bg-black">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

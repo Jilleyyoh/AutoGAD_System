@@ -4163,10 +4163,10 @@ For issues or questions:
    - Now uses flexible theme classes for all styling
    - Cards are no longer white in dark mode - now use slate-800
    - All text colors adapt properly to both themes
-   - Gradient cards (My Evaluations, Statistics) have cohesive dark mode colors
+   - Gradient cards (Evaluations, Statistics) have cohesive dark mode colors
    - Feature cards have consistent styling
 
-### 3. **My Evaluations Page**
+### 3. **Evaluations Page**
    - Location: `resources/js/pages/evaluator/evaluations/index.tsx`
    - Table now uses dark mode card styling
    - Search bar, tabs, and buttons all adapt to theme
