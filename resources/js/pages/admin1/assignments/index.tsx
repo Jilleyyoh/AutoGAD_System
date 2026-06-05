@@ -571,66 +571,59 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                 )}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                                <div className="flex gap-2">
-                                                    <button
-                                                        onClick={() => handleViewDetails(project)}
-                                                        className={combineTheme('inline-flex items-center px-3 py-2 border text-sm font-medium rounded-md transition-colors', themeClasses.button.secondary)}
-                                                        title="View Project Details"
-                                                    >
-                                                        <Eye className="w-4 h-4" />
-                                                    </button>
-                                                    {/* Hide/disable Assign button for terminal statuses: Revision (2), Declined (4), For Certification (5), Review (6), Certified (7) */}
-                                                    {(() => {
-                                                        if (![2,3,4,5,6,7].includes(project.status)) {
-                                                            // If project is currently 'revision' we want to send it back to proponent
-                                                            if ((project as any).status_name === 'revision') {
+                                                <div className="flex w-full items-center justify-end gap-2">
+                                                    <div className="w-32 shrink-0">
+                                                        {/* Hide/disable Assign button for terminal statuses: Revision (2), Declined (4), For Certification (5), Review (6), Certified (7) */}
+                                                        {(() => {
+                                                            const statusName = (project as any).status_name || '';
+
+                                                            if (statusName === 'revision') {
+                                                                // If project is currently 'revision' we want to send it back to proponent
                                                                 return (
                                                                     <button
                                                                         onClick={() => handleReassignToProponent(project)}
                                                                         disabled={loadingEvaluators}
-                                                                        className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-32 justify-center', themeClasses.button.primary)}
+                                                                        className={combineTheme('inline-flex w-full items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed', themeClasses.button.primary)}
                                                                     >
                                                                         {loadingEvaluators ? 'Processing...' : 'Reassign to Proponent'}
                                                                     </button>
                                                                 );
                                                             }
 
-                                                            if ((project as any).status_name === 'revised') {
+                                                            if (statusName === 'revised') {
                                                                 return (
                                                                     <button
                                                                         onClick={() => handleSelectEvaluator(project)}
                                                                         disabled={loadingEvaluators}
-                                                                        className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-32 justify-center', themeClasses.button.primary)}
+                                                                        className={combineTheme('inline-flex w-full items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed', themeClasses.button.primary)}
                                                                     >
                                                                         {loadingEvaluators ? 'Loading...' : 'Reassign'}
                                                                     </button>
                                                                 );
                                                             }
 
-                                                            return (
-                                                                <button
-                                                                    onClick={() => handleSelectEvaluator(project)}
-                                                                    disabled={loadingEvaluators}
-                                                                    className={combineTheme('inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-32 justify-center', themeClasses.button.primary)}
-                                                                >
-                                                                    {loadingEvaluators ? 'Loading...' : (project.evaluator ? 'Reassign' : 'Assign')}
-                                                                </button>
-                                                            );
-                                                        }
+                                                            if (![2,3,4,5,6,7].includes(project.status)) {
+                                                                return (
+                                                                    <button
+                                                                        onClick={() => handleSelectEvaluator(project)}
+                                                                        disabled={loadingEvaluators}
+                                                                        className={combineTheme('inline-flex w-full items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed', themeClasses.button.primary)}
+                                                                    >
+                                                                        {loadingEvaluators ? 'Loading...' : (project.evaluator ? 'Reassign' : 'Assign')}
+                                                                    </button>
+                                                                );
+                                                            }
 
-                                                        return (
-                                                            <span className={combineTheme('inline-flex items-center px-4 py-2 text-sm font-medium rounded-md w-32 justify-center', 
-                                                                project.status === 2 ? themeClasses.badge.yellow : 
-                                                                project.status === 4 ? themeClasses.badge.red : 
-                                                                project.status === 6 ? themeClasses.badge.orange : 
-                                                                themeClasses.badge.green)}>
-                                                                {project.status === 2 ? 'Under Revision' : 
-                                                                 project.status === 4 ? 'Declined' : 
-                                                                 project.status === 6 ? 'In Review' : 
-                                                                 'Completed'}
-                                                            </span>
-                                                        );
-                                                    })()}
+                                                            return <div className="h-10" aria-hidden="true" />;
+                                                        })()}
+                                                    </div>
+                                                    <button
+                                                        onClick={() => handleViewDetails(project)}
+                                                        className={combineTheme('inline-flex w-24 items-center justify-center px-3 py-2 border text-sm font-medium rounded-md transition-colors', themeClasses.button.secondary)}
+                                                        title="View Project Details"
+                                                    >
+                                                        <Eye className="w-4 h-4" />
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
