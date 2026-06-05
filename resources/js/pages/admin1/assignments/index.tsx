@@ -436,9 +436,9 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                     <button
                                         key={tab.key}
                                         onClick={() => setActiveTab(tab.key)}
-                                        className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md font-medium text-xs transition-all duration-200 ${
+                                        className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md border-2 border-transparent font-medium text-xs transition-all duration-200 transform-gpu active:scale-[0.98] ${
                                             isActive
-                                                ? `${bg} ${border} border-2 text-${color}-700 dark:text-${color}-300 shadow-md`
+                                                ? `${bg} ${border} text-${color}-700 dark:text-${color}-300 shadow-md`
                                                 : combineTheme('text-gray-600 hover:text-gray-900 border border-transparent', themeClasses.text.secondary, 'dark:hover:text-gray-300')
                                         }`}
                                     >
