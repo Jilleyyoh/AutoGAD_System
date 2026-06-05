@@ -7,6 +7,7 @@ import AppLayout from '@/layouts/app-layout';
 import DragScroll from '@/components/drag-scroll';
 import { themeClasses, combineTheme } from '@/lib/theme-classes';
 import { formatStatus } from '@/lib/format-label';
+import { formatPhase } from '@/lib/format-label';
 import AssignEvaluatorModal from './AssignEvaluatorModal';
 import { Eye, CheckCircle2, AlertCircle, Clock, X, Calendar, ClipboardList } from 'lucide-react';
 import axios from 'axios';
@@ -542,7 +543,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                                 </div>
                                             </td>
                                             <td className={combineTheme('px-6 py-4 whitespace-nowrap text-sm', themeClasses.text.secondary)}>
-                                                {project.implementationPhase?.name ?? 'N/A'}
+                                                {formatPhase(project.implementationPhase?.name ?? project.implementationPhase)}
                                             </td>
                                             <td className={combineTheme('px-6 py-4 whitespace-nowrap text-sm', themeClasses.text.secondary)}>
                                                 {new Date(project.submission_date).toLocaleDateString()}
