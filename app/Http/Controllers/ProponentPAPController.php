@@ -337,6 +337,9 @@ class ProponentPAPController extends Controller
             ]);
         }
 
+        // Clear draft session after successful submission
+        session()->forget('pap_draft');
+
         Log::info('Redirecting to PAP show', ['project_id' => $project->id]);
         return redirect()->route('proponent.pap.show', $project->id)
             ->with('success', 'Project Approval Proposal submitted successfully.');
