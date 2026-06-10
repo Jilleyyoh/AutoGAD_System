@@ -11,8 +11,7 @@ export default function Create({ proponentRoleId }: Props) {
   const { data, setData, post, processing, errors } = useForm({
     name: '',
     email: '',
-    password: '',
-    password_confirmation: '',
+    birthdate: '',
     organization: '',
     position: '',
     contact_number: '',
@@ -84,39 +83,26 @@ export default function Create({ proponentRoleId }: Props) {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Password
+                <label htmlFor="birthdate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Date of Birth
                 </label>
                 <input
-                  type="password"
-                  id="password"
-                  value={data.password}
-                  onChange={(e) => setData('password', e.target.value)}
+                  type="date"
+                  id="birthdate"
+                  value={data.birthdate}
+                  onChange={(e) => setData('birthdate', e.target.value)}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
-                  placeholder="Enter password"
                   required
                 />
-                {errors.password && (
-                  <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.password}</p>
+                {errors.birthdate && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.birthdate}</p>
                 )}
               </div>
 
-              <div>
-                <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  id="password_confirmation"
-                  value={data.password_confirmation}
-                  onChange={(e) => setData('password_confirmation', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
-                  placeholder="Confirm password"
-                  required
-                />
-                {errors.password_confirmation && (
-                  <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.password_confirmation}</p>
-                )}
+              <div className="bg-blue-50 dark:bg-slate-800 p-3 rounded-md">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  ℹ️ Password will be automatically set to the registered date (MM-DD-YYYY format) upon account creation.
+                </p>
               </div>
 
               <div>

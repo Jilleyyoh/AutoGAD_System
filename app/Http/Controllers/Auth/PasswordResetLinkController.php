@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,12 +19,11 @@ class PasswordResetLinkController extends Controller
     {
         return Inertia::render('auth/forgot-password', [
             'status' => $request->session()->get('status'),
-            'dev_reset_url' => $request->session()->get('dev_reset_url'),
         ]);
     }
 
     /**
-     * Handle an incoming password reset link request.
+     * Handle an incoming password reset request via email and birthdate verification.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -32,31 +31,24 @@ class PasswordResetLinkController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
+            'birthdate' => 'required|date_format:Y-m-d',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        // Convert the request birthdate to match the database format
+        $user = User::where('email', $request->email)
+            ->whereDate('birthdate', $request->birthdate)
+            ->first();
 
         if (!$user) {
             return back()->withErrors([
-                'email' => 'This email is not registered in the system. Please contact your administrator.',
+                'email' => 'Email and birthdate do not match any registered account.',
             ]);
         }
 
-        if (app()->environment('local')) {
-            // Skip sending email entirely in local — just generate the token directly
-            $token = app('auth.password.broker')->createToken($user);
+        // Reset password to registered date (MM-DD-YYYY format)
+        $registeredDate = $user->created_at->format('m-d-Y');
+        $user->update(['password' => Hash::make($registeredDate)]);
 
-            $resetUrl = url(route('password.reset', [
-                'token' => $token,
-                'email' => $request->email,
-            ], false));
-
-            return back()->with('dev_reset_url', $resetUrl);
-        }
-
-        // Production: send the actual reset email
-        Password::sendResetLink($request->only('email'));
-
-        return back()->with('status', __('Password reset link sent! Please check your email.'));
+        return back()->with('status', "Your password has been reset. Your default password is your registered date: {$registeredDate}. Please use this to log in.");
     }
 }

@@ -28,6 +28,7 @@ class EvaluatorController extends Controller
                     'id' => $evaluator->user->id,
                     'name' => $evaluator->user->name,
                     'email' => $evaluator->user->email,
+                    'birthdate' => $evaluator->user->birthdate,
                 ] : null,
                 'domainExpertise' => $evaluator->domainExpertise ? [
                     'id' => $evaluator->domainExpertise->id,
@@ -72,18 +73,22 @@ class EvaluatorController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'birthdate' => 'required|date_format:Y-m-d',
             'domain_expertise_id' => 'required|exists:domain_expertises,id',
         ]);
 
         // Get the evaluator role ID (fixed as 2)
         $evaluatorRoleId = 2;
 
+        // Auto-generate password as registered date (MM-DD-YYYY format)
+        $registeredDate = now()->format('m-d-Y');
+
         // Create the user with explicit role_id
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'birthdate' => $request->birthdate,
+            'password' => bcrypt($registeredDate),
             'role_id' => $evaluatorRoleId,
         ]);
 
@@ -94,7 +99,7 @@ class EvaluatorController extends Controller
         ]);
 
         return redirect()->route('evaluators.index')
-                        ->with('success', 'New evaluator created successfully.');
+                        ->with('success', 'New evaluator created successfully. Default password is the registered date: ' . $registeredDate);
     }
 
     /**
@@ -122,6 +127,7 @@ class EvaluatorController extends Controller
                 'id' => $evaluator->user->id,
                 'name' => $evaluator->user->name,
                 'email' => $evaluator->user->email,
+                'birthdate' => $evaluator->user->birthdate,
             ],
             'domainExpertise' => $currentDomain ? [
                 'id' => $currentDomain->id,
@@ -147,13 +153,9 @@ class EvaluatorController extends Controller
         $validationRules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $evaluator->user_id,
+            'birthdate' => 'required|date_format:Y-m-d',
             'domain_expertise_id' => 'required|exists:domain_expertises,id',
         ];
-
-        // Add password validation rules only if password is provided
-        if ($request->filled('password')) {
-            $validationRules['password'] = 'required|min:8|confirmed';
-        }
 
         $request->validate($validationRules);
 
@@ -161,12 +163,8 @@ class EvaluatorController extends Controller
         $userData = [
             'name' => $request->name,
             'email' => $request->email,
+            'birthdate' => $request->birthdate,
         ];
-
-        // Add password to update data if provided
-        if ($request->filled('password')) {
-            $userData['password'] = bcrypt($request->password);
-        }
 
         // Update user information
         $user = $evaluator->user;

@@ -13,7 +13,23 @@ class ProponentController
 {
     public function index()
     {
-        $proponents = Proponent::with(['user'])->paginate(15);
+        $proponents = Proponent::with(['user'])->paginate(15)->through(function ($proponent) {
+            return [
+                'id' => $proponent->id,
+                'user_id' => $proponent->user_id,
+                'organization' => $proponent->organization,
+                'position' => $proponent->position,
+                'contact_number' => $proponent->contact_number,
+                'created_at' => $proponent->created_at,
+                'updated_at' => $proponent->updated_at,
+                'user' => $proponent->user ? [
+                    'id' => $proponent->user->id,
+                    'name' => $proponent->user->name,
+                    'email' => $proponent->user->email,
+                    'birthdate' => $proponent->user->birthdate,
+                ] : null,
+            ];
+        });
         return Inertia::render('admin2/proponents/index', [
             'proponents' => $proponents
         ]);
@@ -29,7 +45,7 @@ class ProponentController
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'birthdate' => 'required|date_format:Y-m-d',
             'organization' => 'required|string|max:150',
             'position' => 'nullable|string|max:100',
             'contact_number' => 'nullable|string|max:20',
@@ -38,11 +54,15 @@ class ProponentController
         // Get proponent role (role_id = 1)
         $role = Role::where('name', 'proponent')->firstOrFail();
 
+        // Auto-generate password as registered date (MM-DD-YYYY format)
+        $registeredDate = now()->format('m-d-Y');
+
         // Create user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'birthdate' => $request->birthdate,
+            'password' => Hash::make($registeredDate),
             'role_id' => $role->id,
         ]);
 
@@ -54,7 +74,7 @@ class ProponentController
             'contact_number' => $request->contact_number,
         ]);
 
-        return redirect()->route('admin2.proponents.index')->with('success', 'Proponent created successfully.');
+        return redirect()->route('admin2.proponents.index')->with('success', 'Proponent created successfully. Default password is the registered date: ' . $registeredDate);
     }
 
     public function edit(Proponent $proponent)
@@ -69,6 +89,7 @@ class ProponentController
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email,' . $proponent->user_id,
+            'birthdate' => 'required|date_format:Y-m-d',
             'organization' => 'required|string|max:150',
             'position' => 'nullable|string|max:100',
             'contact_number' => 'nullable|string|max:20',
@@ -78,6 +99,7 @@ class ProponentController
         $proponent->user->update([
             'name' => $request->name,
             'email' => $request->email,
+            'birthdate' => $request->birthdate,
         ]);
 
         // Update proponent profile

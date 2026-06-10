@@ -7,6 +7,7 @@ interface User {
   id: number;
   name: string;
   email: string;
+  birthdate?: string;
 }
 
 interface Proponent {
@@ -31,8 +32,7 @@ export default function Edit({ proponent }: Props) {
   const { data, setData, patch, processing, errors } = useForm({
     name: proponent.user.name,
     email: proponent.user.email,
-    password: '',
-    password_confirmation: '',
+    birthdate: proponent.user.birthdate || '',
     organization: proponent.organization || '',
     position: proponent.position || '',
     contact_number: proponent.contact_number || '',
@@ -87,33 +87,15 @@ export default function Edit({ proponent }: Props) {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  New Password <span className="text-sm text-gray-500">(leave blank to keep current password)</span>
-                </label>
+                <label htmlFor="birthdate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Date of Birth</label>
                 <input
-                  type="password"
-                  id="password"
-                  value={data.password}
-                  onChange={(e) => setData('password', e.target.value)}
+                  type="date"
+                  id="birthdate"
+                  value={data.birthdate}
+                  onChange={(e) => setData('birthdate', e.target.value)}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
-                  placeholder="Enter new password"
                 />
-                {errors.password && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.password}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Confirm New Password
-                </label>
-                <input
-                  type="password"
-                  id="password_confirmation"
-                  value={data.password_confirmation}
-                  onChange={(e) => setData('password_confirmation', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
-                  placeholder="Confirm new password"
-                />
-                {errors.password_confirmation && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.password_confirmation}</p>}
+                {errors.birthdate && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.birthdate}</p>}
               </div>
 
               <div>

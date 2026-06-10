@@ -10,6 +10,7 @@ interface User {
   id: number;
   name: string;
   email: string;
+  birthdate?: string;
 }
 
 interface DomainExpertise {
@@ -57,6 +58,16 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
     if (!dateString) return '';
     const date = new Date(dateString);
     return date.toLocaleDateString();
+  };
+
+  // Format birthdate to MM-DD-YYYY
+  const formatBirthdate = (birthdateString: string) => {
+    if (!birthdateString) return 'N/A';
+    const date = new Date(birthdateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}-${day}-${year}`;
   };
 
   // Safely check evaluators before rendering
@@ -131,6 +142,7 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
                     <col className="w-56" />
                     <col className="w-72" />
                     <col />
+                    <col className="w-32" />
                     <col className="w-36" />
                     <col className="w-32" />
                   </colgroup>
@@ -147,6 +159,9 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                         Domain
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        Birthdate
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                         Registered
@@ -174,6 +189,9 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
                           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
                             {getDomainName(evaluator)}
                           </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                          {formatBirthdate(evaluator.user?.birthdate || '')}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap align-middle text-sm text-gray-600 dark:text-gray-400">
                           {formatDate(evaluator.created_at)}

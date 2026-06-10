@@ -9,43 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
-export default function ForgotPassword({ status, dev_reset_url }: { status?: string; dev_reset_url?: string }) {
+export default function ForgotPassword({ status }: { status?: string }) {
     return (
-        <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
+        <AuthLayout title="Reset password" description="Enter your email and birthdate to reset your password">
             <Head title="Forgot password">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-
-            {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
-
-            {dev_reset_url && (
-                <div className="mb-4 rounded-lg border border-yellow-400 bg-yellow-50 p-4 text-sm">
-                    <p className="font-semibold text-yellow-800">
-                        ⚠️ Dev Mode — Email not sent
-                    </p>
-
-                    <p className="mt-1 text-yellow-700">
-                        Since <code>MAIL_MAILER=log</code>, no real email was sent.
-                        Use this link to reset the password:
-                    </p>
-
-                    <a
-                        href={dev_reset_url}
-                        className="mt-2 block break-all text-purple-600 underline hover:text-purple-800"
-                    >
-                        {dev_reset_url}
-                    </a>
-
-                    <p className="mt-2 text-xs text-yellow-600">
-                        This will not appear in production.
-                    </p>
-                </div>
-            )}
 
             <div className="space-y-6">
                 <Form {...store.form()}>
@@ -67,15 +37,41 @@ export default function ForgotPassword({ status, dev_reset_url }: { status?: str
                                 <InputError message={errors.email} />
                             </div>
 
+                            <div className="grid gap-2">
+                                <Label htmlFor="birthdate" className="text-white">
+                                    Date of birth
+                                </Label>
+                                <Input
+                                    id="birthdate"
+                                    type="date"
+                                    name="birthdate"
+                                    autoComplete="off"
+                                    placeholder="YYYY-MM-DD"
+                                    className="border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus-visible:border-purple-500 focus-visible:ring-purple-500"
+                                />
+                                <InputError message={errors.birthdate} />
+                            </div>
+
                             <div className="my-6 flex items-center justify-start">
                                 <button
                                     className="w-full px-4 py-2 bg-purple-400 hover:bg-purple-500 text-white rounded-lg font-semibold transition inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:pointer-events-none"
                                     disabled={processing}
                                 >
                                     {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                                    Email password reset link
+                                    Reset password
                                 </button>
                             </div>
+
+                            {status && (
+                                <div className="rounded-lg border border-green-400 bg-green-50 p-4 text-sm">
+                                    <p className="font-semibold text-green-800">
+                                        ✓ Password Reset Successful
+                                    </p>
+                                    <p className="mt-2 text-green-700">
+                                        {status}
+                                    </p>
+                                </div>
+                            )}
                         </>
                     )}
                 </Form>

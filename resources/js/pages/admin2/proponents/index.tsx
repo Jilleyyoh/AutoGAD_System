@@ -10,6 +10,7 @@ interface User {
   id: number;
   name: string;
   email: string;
+  birthdate?: string;
 }
 
 interface Proponent {
@@ -52,6 +53,16 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
     if (!dateString) return '';
     const date = new Date(dateString);
     return date.toLocaleDateString();
+  };
+
+  // Format birthdate to MM-DD-YYYY
+  const formatBirthdate = (birthdateString: string) => {
+    if (!birthdateString) return 'N/A';
+    const date = new Date(birthdateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}-${day}-${year}`;
   };
 
   // Safely check proponents before rendering
@@ -158,6 +169,9 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
                         Contact
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        Birthdate
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                         Registered
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
@@ -189,6 +203,9 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                           {proponent.contact_number || 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                          {formatBirthdate(proponent.user?.birthdate || '')}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap align-middle text-sm text-gray-600 dark:text-gray-400">
                           {formatDate(proponent.created_at)}
