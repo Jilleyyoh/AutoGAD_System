@@ -107,7 +107,7 @@ export default function Create({ domains, evaluatorRoleId }: Props) {
 
               <div className="bg-blue-50 dark:bg-slate-800 p-3 rounded-md">
                 <p className="text-sm text-blue-800 dark:text-blue-200">
-                  ℹ️ Password will be automatically set to the registered date (MM-DD-YYYY format) upon account creation.
+                  Password will be automatically set to the registered date (MM-DD-YYYY format) upon account creation.
                 </p>
               </div>
 

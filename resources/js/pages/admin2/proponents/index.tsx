@@ -159,7 +159,7 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                         Email
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[300px]">
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                         Organization
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
@@ -233,6 +233,7 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
                   </tbody>
                 </table>
               </DragScroll>
+              
                 {/* Pagination */}
                 <div className="px-6 py-4 border-t flex items-center justify-between bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
                   <div className="text-sm text-gray-600 dark:text-gray-400">
