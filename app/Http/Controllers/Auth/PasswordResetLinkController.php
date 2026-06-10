@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -18,6 +19,7 @@ class PasswordResetLinkController extends Controller
     {
         return Inertia::render('auth/forgot-password', [
             'status' => $request->session()->get('status'),
+            'dev_reset_url' => $request->session()->get('dev_reset_url'),
         ]);
     }
 
@@ -32,10 +34,29 @@ class PasswordResetLinkController extends Controller
             'email' => 'required|email',
         ]);
 
-        Password::sendResetLink(
-            $request->only('email')
-        );
+        $user = User::where('email', $request->email)->first();
 
-        return back()->with('status', __('A reset link will be sent if the account exists.'));
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'This email is not registered in the system. Please contact your administrator.',
+            ]);
+        }
+
+        if (app()->environment('local')) {
+            // Skip sending email entirely in local — just generate the token directly
+            $token = app('auth.password.broker')->createToken($user);
+
+            $resetUrl = url(route('password.reset', [
+                'token' => $token,
+                'email' => $request->email,
+            ], false));
+
+            return back()->with('dev_reset_url', $resetUrl);
+        }
+
+        // Production: send the actual reset email
+        Password::sendResetLink($request->only('email'));
+
+        return back()->with('status', __('Password reset link sent! Please check your email.'));
     }
 }
