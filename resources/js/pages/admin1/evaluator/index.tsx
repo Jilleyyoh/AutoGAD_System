@@ -140,9 +140,9 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
                   <colgroup>
                     <col className="w-20" />
                     <col className="w-56" />
-                    <col className="w-72" />
-                    <col />
-                    <col className="w-32" />
+                    <col className="w-70" />
+                    <col className="w-48"/>
+                    <col className="w-36" />
                     <col className="w-36" />
                     <col className="w-32" />
                   </colgroup>
@@ -219,6 +219,7 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
                   </tbody>
                 </table>
               </DragScroll>
+
                 {/* Pagination */}
                 <div className="px-6 py-4 border-t flex items-center justify-between bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
                   <div className="text-sm text-gray-600 dark:text-gray-400">
