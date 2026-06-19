@@ -262,15 +262,23 @@ export default function SubmissionsIndex() {
               </Link>
             </div>
             <DragScroll>
-              <table className={combineTheme('min-w-full divide-y', themeClasses.table.border)}>
+              <table className={combineTheme('min-w-full divide-y table-fixed', themeClasses.table.border)}>
+                <colgroup>
+                  <col className="w-44" />
+                  <col className="w-64" />
+                  <col className="w-48" />
+                  <col className="w-28" />
+                  <col className="w-36" />
+                  <col className="w-24" />
+                </colgroup>
                 <thead className={themeClasses.table.header}>
                   <tr>
-                    <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Code</th>
-                    <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Title</th>
-                    <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Domain</th>
-                    <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Submitted</th>
-                    <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Status</th>
-                    <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Action</th>
+                    <th className={combineTheme('px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap', themeClasses.text.secondary)}>Code</th>
+                    <th className={combineTheme('px-4 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Title</th>
+                    <th className={combineTheme('px-4 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Domain</th>
+                    <th className={combineTheme('px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap', themeClasses.text.secondary)}>Submitted</th>
+                    <th className={combineTheme('px-4 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Status</th>
+                    <th className={combineTheme('px-4 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Action</th>
                   </tr>
                 </thead>
                 <tbody className={combineTheme('divide-y', themeClasses.table.border)}>
@@ -287,18 +295,20 @@ export default function SubmissionsIndex() {
                             : themeClasses.table.row
                         )}
                       >
-                        <td className={combineTheme('px-6 py-4 text-sm font-mono font-semibold', themeClasses.text.primary)}>{p.project_code}</td>
-                        <td className={combineTheme('px-6 py-4 text-sm max-w-xs', themeClasses.text.primary)}>
-                          <span title={p.title} className="truncate">{p.title}</span>
+                        <td className={combineTheme('px-4 py-4 text-sm font-mono font-semibold whitespace-nowrap', themeClasses.text.primary)}>{p.project_code}</td>
+                        <td className={combineTheme('px-4 py-4 text-sm', themeClasses.text.primary)}>
+                          <span title={p.title} className="block truncate">{p.title}</span>
                         </td>
-                        <td className={combineTheme('px-6 py-4 text-sm', themeClasses.text.secondary)}>{p.domain || '—'}</td>
-                        <td className={combineTheme('px-6 py-4 text-sm whitespace-nowrap', themeClasses.text.secondary)}>{new Date(p.created_at).toLocaleDateString()}</td>
-                        <td className="px-6 py-4">
-                          <span className={combineTheme('inline-flex px-3 py-1 text-xs font-semibold', bg, border, 'border')}>
+                        <td className={combineTheme('px-4 py-4 text-sm', themeClasses.text.secondary)}>
+                          <span className="block truncate" title={p.domain || ''}>{p.domain || '—'}</span>
+                        </td>
+                        <td className={combineTheme('px-4 py-4 text-sm whitespace-nowrap', themeClasses.text.secondary)}>{new Date(p.created_at).toLocaleDateString()}</td>
+                        <td className="px-4 py-4">
+                          <span className={combineTheme('inline-flex px-2 py-1 text-xs font-semibold whitespace-nowrap rounded-sm', bg, border, 'border')}>
                             {formatStatus(p.status)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-left">
+                        <td className="px-4 py-4 text-left">
                           <div className="flex items-center gap-2">
                             <Link 
                               href={route('proponent.pap.submissions.show', p.id)} 

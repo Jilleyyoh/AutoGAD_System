@@ -269,8 +269,13 @@ class ProponentPAPController extends Controller
     // Ensure a "for_evaluation" project status exists and use it as the default
     $pendingStatus = ProjectStatus::firstOrCreate(['name' => 'for_evaluation']);
 
-        // Generate a simple project code (customize as needed)
-        $projectCode = 'PRJ-' . now()->format('YmdHis') . '-' . substr(bin2hex(random_bytes(3)), 0, 6);
+        // Generate a clean sequential project code: PRJ-YYYY-NNN
+        $year = now()->format('Y');
+        $lastCode = Project::where('project_code', 'like', "PRJ-{$year}-%")
+            ->orderByDesc('project_code')
+            ->value('project_code');
+        $lastNumber = $lastCode ? (int) substr($lastCode, strrpos($lastCode, '-') + 1) : 0;
+        $projectCode = 'PRJ-' . $year . '-' . str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
 
         $project = \DB::transaction(function () use ($validated, $projectCode, $pendingStatus, $proponent) {
             return Project::create([
