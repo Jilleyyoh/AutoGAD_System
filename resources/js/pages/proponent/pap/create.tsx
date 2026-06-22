@@ -123,20 +123,9 @@ function ProjectInformation({ data, setData, domains, phases, errors }: any) {
   );
 }
 
-const MAX_FILE_SIZE_MB = 10;
-const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
-
 // Step 2 sub-form
 function DocumentUpload({ data, setData, errors }: any) {
-  const [fileErrors, setFileErrors] = useState<Record<string, string>>({});
-
   const handleFileChange = (field: string, file: File | null) => {
-    if (file && file.size > MAX_FILE_SIZE_BYTES) {
-      setFileErrors(prev => ({ ...prev, [field]: `File is too large. Maximum size is ${MAX_FILE_SIZE_MB} MB. Your file is ${(file.size / 1024 / 1024).toFixed(1)} MB.` }));
-      setData(field as any, null);
-      return;
-    }
-    setFileErrors(prev => { const next = { ...prev }; delete next[field]; return next; });
     setData(field as any, file);
   };
 
@@ -146,52 +135,36 @@ function DocumentUpload({ data, setData, errors }: any) {
     'file:mr-4 file:py-2 file:px-4 file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-900 hover:file:bg-gray-200 dark:file:bg-gray-800 dark:file:text-gray-100 dark:file:border-gray-700 dark:hover:file:bg-gray-700'
   );
 
-  const FIELD_LABELS: Record<string, string> = {
-    proposal: 'Proposal',
-    memo:     'Memorandum',
-    manual:   'Project Manual',
-  };
-
   return (
     <div className="space-y-6">
-      {(['proposal', 'memo', 'manual'] as const).map(f => (
+      {['proposal','memo','manual'].map(f => (
         <div key={f}>
-          <label className={combineTheme('block text-sm font-medium mb-1', themeClasses.text.primary)}>
-            {FIELD_LABELS[f]} {f === 'proposal' && <span className="text-red-500">*</span>}
+          <label className={combineTheme('block text-sm font-medium capitalize', themeClasses.text.primary)}>
+            {f} {f === 'proposal' && <span className="text-red-500">*</span>}
           </label>
           {data[f] ? (
             <div className={combineTheme('mt-1 block w-full text-sm px-4 py-2 rounded-lg border bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex justify-between items-center', themeClasses.input.base)}>
-              <span className="truncate max-w-xs">{data[f].name}</span>
+              <span>{data[f].name}</span>
               <button
                 type="button"
-                onClick={() => {
-                  setData(f as any, null);
-                  setFileErrors(prev => { const next = { ...prev }; delete next[f]; return next; });
-                }}
-                className="ml-2 flex-shrink-0 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm font-medium"
+                onClick={() => setData(f as any, null)}
+                className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm font-medium"
               >
                 Remove
               </button>
             </div>
           ) : (
             <input
-              key={data[f] === null ? `${f}-empty` : f}
               type="file"
               onChange={e => handleFileChange(f, e.target.files?.[0] || null)}
-              className={combineTheme(fileInputClass, fileErrors[f] ? 'border-red-400 dark:border-red-500' : '')}
+              className={fileInputClass}
               accept=".pdf,.doc,.docx"
             />
           )}
-          {/* Client-side size error takes priority */}
-          {fileErrors[f] ? (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
-              <span>⚠️</span> {fileErrors[f]}
-            </p>
-          ) : errors?.[f] ? (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors[f]}</p>
-          ) : f === 'proposal' && !data.proposal ? (
+          {errors?.[f] && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors[f]}</p>}
+          {f === 'proposal' && !data.proposal && (
             <p className={combineTheme('mt-1 text-xs', themeClasses.text.tertiary)}>Proposal file is required before continuing.</p>
-          ) : null}
+          )}
         </div>
       ))}
 
@@ -305,7 +278,7 @@ export default function Create() {
           setData('supporting_documents', draft.supporting_documents || []);
           setData('supporting_documents_link', draft.supporting_documents_link || '');
         }
-      } catch (_) { }
+      } catch (_) {}
       // eslint-disable-next-line react-hooks/exhaustive-deps
     })();
   }, []);
@@ -320,7 +293,7 @@ export default function Create() {
             setDomainsState(incoming);
           }
         })
-        .catch(() => {/* silent */ });
+        .catch(() => {/* silent */});
     }
   }, [domainsState.length]);
 
@@ -340,8 +313,6 @@ export default function Create() {
     return !!(data.title && data.domain_id && data.implementation_phase_id && data.description && data.proposal);
   };
 
-  // Step 2 Next is only allowed when a proposal is selected (proposal is the only required file).
-  // Previous is always allowed — never block going back.
   const canGoNext = currentStep !== 2 || !!data.proposal;
 
   const saveDraft = async () => {
@@ -376,10 +347,9 @@ export default function Create() {
     setCurrentStep(s => Math.min(s + 1, steps.length));
   };
 
-  // Previous never needs saveDraft to succeed — just go back immediately
-  const handlePrevStep = () => {
+  const handlePrevStep = async () => {
+    await saveDraft();
     setCurrentStep(s => Math.max(1, s - 1));
-    saveDraft().catch(() => {/* silent */ });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -406,12 +376,13 @@ export default function Create() {
                 {steps.map((step, index) => (
                   <React.Fragment key={step.name}>
                     <div className="flex flex-col items-center">
-                      <div className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full ${currentStep === step.number
+                      <div className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full ${
+                        currentStep === step.number
                           ? 'bg-[#5a189a] text-white'
                           : currentStep > step.number
-                            ? 'bg-[#9d4edd] text-white'
-                            : 'bg-gray-300 dark:bg-slate-600 text-gray-500 dark:text-gray-400'
-                        }`}>
+                          ? 'bg-[#9d4edd] text-white'
+                          : 'bg-gray-300 dark:bg-slate-600 text-gray-500 dark:text-gray-400'
+                      }`}>
                         {currentStep > step.number ? (
                           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -420,13 +391,16 @@ export default function Create() {
                           <span>{step.number}</span>
                         )}
                       </div>
-                      <span className={`mt-2 text-sm ${currentStep === step.number ? 'font-bold' : 'font-medium'
-                        } ${currentStep >= step.number ? 'text-[#5a189a] dark:text-[#5a189a]' : combineTheme('', themeClasses.text.secondary)
-                        }`}>{step.name}</span>
+                      <span className={`mt-2 text-sm ${
+                        currentStep === step.number ? 'font-bold' : 'font-medium'
+                      } ${
+                        currentStep >= step.number ? 'text-[#5a189a] dark:text-[#5a189a]' : combineTheme('', themeClasses.text.secondary)
+                      }`}>{step.name}</span>
                     </div>
                     {index < steps.length - 1 && (
-                      <div className={`flex-1 mx-4 border-t-2 ${currentStep > step.number ? 'border-[#9d4edd]' : 'border-gray-300 dark:border-slate-600'
-                        }`} />
+                      <div className={`flex-1 mx-4 border-t-2 ${
+                        currentStep > step.number ? 'border-[#9d4edd]' : 'border-gray-300 dark:border-slate-600'
+                      }`} />
                     )}
                   </React.Fragment>
                 ))}

@@ -7,11 +7,11 @@ use Illuminate\Database\Seeder;
 class QuestionnaireItemSeeder extends Seeder
 {
     /**
-     * Items are seeded inside QuestionnaireCategorySeeder to keep them
-     * together with their parent categories and maintain insertion order.
+     * Run the database seeds.
      */
     public function run(): void
     {
-        $this->command->info('✅ Questionnaire items are seeded via QuestionnaireCategorySeeder');
+        // No sample data - Admin 1 will create questionnaire items through the interface
+        $this->command->info('✅ Questionnaire items seeder ready (no sample data)');
     }
 }
