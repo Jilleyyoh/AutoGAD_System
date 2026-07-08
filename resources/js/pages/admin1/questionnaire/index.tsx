@@ -823,13 +823,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                   <div className="text-center py-12">
                     <Zap className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                     <p className="text-gray-600 dark:text-gray-400 font-medium mb-4">No score interpretations yet</p>
-                    <button
-                      onClick={handleAddInterpretation}
-                      className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold inline-flex items-center gap-2"
-                    >
-                      <Plus className="w-4 h-4" />
-                      Create your first interpretation
-                    </button>
+                    
                   </div>
                 )}
               </div>
