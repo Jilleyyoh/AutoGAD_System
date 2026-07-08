@@ -365,6 +365,8 @@ class ProponentPAPController extends Controller
             'project_code' => $project->project_code,
             'title' => $project->project_title,
             'description' => $project->project_description,
+            'rationale' => $project->rationale,
+            'objectives' => $project->objectives,
             'phase' => $project->implementationPhase?->name,
             'status' => $statusName,
             'status_id' => $project->status_id,
