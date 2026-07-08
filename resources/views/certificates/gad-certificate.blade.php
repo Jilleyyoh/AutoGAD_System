@@ -26,7 +26,33 @@
         .certificate {
             width: 100%;
             padding: 0;
-            background: white;
+            background: transparent;
+            position: relative;
+            z-index: 0;
+            min-height: 100%;
+        }
+
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 1000px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .watermark img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .certificate-content {
+            position: relative;
+            z-index: 1;
+            background: transparent;
         }
 
         /* Header Section */
@@ -65,8 +91,8 @@
         .section-title {
             font-size: 12px;
             font-weight: bold;
-            color: white;
-            background-color: #34495e;
+            color: black;
+            background-color:transparent;
             padding: 5px 8px;
             margin-bottom: 8px;
             border-radius: 3px;
@@ -85,7 +111,7 @@
             grid-template-columns: 140px 1fr;
             gap: 8px;
             padding: 5px;
-            background: #f8f9fa;
+            background: transparent;
             border-radius: 2px;
         }
 
@@ -105,10 +131,9 @@
 
         /* Evaluation Results Summary */
         .score-summary {
-            background: #ecf0f1;
+            background: #transparent;
             padding: 10px;
             border-radius: 3px;
-            border-left: 4px solid #3498db;
             margin-bottom: 8px;
         }
 
@@ -133,7 +158,7 @@
             font-size: 12px;
             font-weight: bold;
             color: #2980b9;
-            background: #d4efff;
+            background: transparent;
             padding: 5px;
             border-radius: 2px;
             text-align: center;
@@ -148,26 +173,26 @@
         }
 
         .evaluations-table th {
-            background: #34495e;
-            color: white;
+            background: transparent;
+            color: #2c3e50;
             font-weight: bold;
             padding: 5px;
             text-align: left;
-            border: 1px solid #2c3e50;
+            border: 1px solid #bdc3c7;
         }
 
         .evaluations-table td {
             border: 1px solid #bdc3c7;
             padding: 5px;
-            background: white;
+            background: transparent;
         }
 
         .evaluations-table tbody tr:nth-child(even) td {
-            background: #f8f9fa;
+            background: transparent;
         }
 
         .evaluations-table tbody tr:hover td {
-            background: #ecf0f1;
+            background: transparent;
         }
 
         .category-cell {
@@ -208,13 +233,13 @@
         }
 
         .interpretation-table th {
-            background: #34495e;
-            color: white;
+            background: transparent;
+            color: #2c3e50;
             font-weight: bold;
         }
 
         .interpretation-table tr:nth-child(even) {
-            background: #f8f9fa;
+            background: transparent;
         }
 
         /* Signature Section */
@@ -267,7 +292,12 @@
     </style>
 </head>
 <body>
+    <div class="watermark">
+        <img src="{{ public_path('images/Watermark-GAD_Logo.png') }}" alt="GAD watermark">
+    </div>
+
     <div class="certificate">
+        <div class="certificate-content">
         <!-- Header -->
         <div class="header">
             <div class="header-title">GENDER AND DEVELOPMENT CERTIFICATION</div>
@@ -446,6 +476,7 @@
         <div class="footer">
             <p>This certificate is issued by the Gender and Development Office</p>
             <p>&copy; {{ date('Y') }} All rights reserved</p>
+        </div>
         </div>
     </div>
 </body>
