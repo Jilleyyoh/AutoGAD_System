@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DomainExpertiseController;
 use App\Http\Controllers\EvaluatorController;
-use App\Http\Controllers\ProponentController;
 use App\Http\Controllers\Admin1\NotificationsController as Admin1NotificationsController;
 
 Route::get('/', function () {
@@ -123,20 +122,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return Inertia::render('admin2/dashboard');
         })->name('admin2.dashboard');
 
-        // Admin 2: Proponent CRUD
-        Route::prefix('admin2')->group(function () {
-            Route::resource('proponents', ProponentController::class)
-                ->names([
-                    'index' => 'admin2.proponents.index',
-                    'create' => 'admin2.proponents.create',
-                    'store' => 'admin2.proponents.store',
-                    'edit' => 'admin2.proponents.edit',
-                    'update' => 'admin2.proponents.update',
-                    'destroy' => 'admin2.proponents.destroy',
-                ])->parameters([
-                    'proponents' => 'proponent'
-                ]);
-        });
     });
 
 });

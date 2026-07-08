@@ -29,7 +29,7 @@ export default function Edit({ proponent }: Props) {
   // Log the data to help with debugging
   console.log('Edit Proponent:', proponent);
   
-  const { data, setData, patch, processing, errors } = useForm({
+  const { data, setData, put, processing, errors } = useForm({
     name: proponent.user.name,
     email: proponent.user.email,
     birthdate: proponent.user.birthdate || '',
@@ -41,7 +41,7 @@ export default function Edit({ proponent }: Props) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     console.log('Submitting form data:', data);
-    patch(route('admin2.proponents.update', proponent.id));
+    put(route('admin2.proponents.update', proponent.id));
   }
 
   return (
@@ -93,6 +93,7 @@ export default function Edit({ proponent }: Props) {
                   id="birthdate"
                   value={data.birthdate}
                   onChange={(e) => setData('birthdate', e.target.value)}
+                  required
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                 />
                 {errors.birthdate && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.birthdate}</p>}
