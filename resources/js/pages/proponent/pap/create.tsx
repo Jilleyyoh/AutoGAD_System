@@ -306,7 +306,7 @@ export default function Create() {
   const steps = [
     { number: 1, name: 'Project Information' },
     { number: 2, name: 'Document Upload' },
-    { number: 3, name: 'Review & Submit' },
+    { number: 3, name: 'Review' },
   ];
 
   const isValid = () => {
@@ -454,7 +454,7 @@ export default function Create() {
                   type="submit"
                   disabled={processing || !agreement || !isValid()}
                   className={combineTheme('ml-auto inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white', processing || !agreement || !isValid() ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed' : 'bg-[#5a189a] hover:bg-[#4a148c] dark:bg-[#5a189a] dark:hover:bg-[#4a148c]')}
-                >{processing ? 'Submitting...' : 'Submit PAP'}</button>
+                >{processing ? 'Submitting...' : 'Submit'}</button>
               )}
             </div>
           </form>
