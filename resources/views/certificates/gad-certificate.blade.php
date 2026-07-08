@@ -302,7 +302,7 @@
         <div class="header">
             <div class="header-title">GENDER AND DEVELOPMENT CERTIFICATION</div>
             <div class="header-subtitle">Automated Gender and Development Evaluation System</div>
-            <div class="certificate-id">Certificate No.: {{ $certificate_number }}</div>
+            <div class="certificate-id">Certificate No.: {{ preg_match('/\d{4}$/', (string) $certificate_number, $matches) ? substr((string) $certificate_number, 0, -4) . str_repeat('*', 4) : $certificate_number }}</div>
         </div>
 
         <!-- Project Information Section -->
