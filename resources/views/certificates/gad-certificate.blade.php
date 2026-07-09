@@ -66,7 +66,7 @@
         .header-title {
             font-size: 28px;
             font-weight: bold;
-            color: #2c3e50;
+            color: #431148;
             margin-bottom: 5px;
         }
 
@@ -79,7 +79,7 @@
         .certificate-id {
             font-size: 14px;
             font-weight: bold;
-            color: #2980b9;
+            color: #431148;
         }
 
         /* Sections */
@@ -117,11 +117,13 @@
 
         .info-label {
             font-weight: bold;
-            color: #2c3e50;
+            color: black;
+            font-size: 13px;
         }
 
         .info-value {
-            color: #34495e;
+            color: black;
+            font-size: 13px;
         }
 
         /* Full-width row */
@@ -132,36 +134,44 @@
         /* Evaluation Results Summary */
         .score-summary {
             background: #transparent;
-            padding: 10px;
+            padding: 5px;
             border-radius: 3px;
             margin-bottom: 8px;
         }
 
         .score-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 140px 1fr;
             gap: 20px;
             margin-bottom: 5px;
         }
 
         .score-label {
             font-weight: bold;
-            color: #2c3e50;
+            color: black;
+            font-size: 13px;
         }
 
         .score-value {
             font-weight: bold;
-            color: #27ae60;
+            color: black;
+            font-size: 13px;
         }
 
         .interpretation-box {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             color: #2980b9;
             background: transparent;
             padding: 5px;
             border-radius: 2px;
             text-align: center;
+        }
+
+        /* Signature Section */
+        .signature-section {
+            margin-top: 20px;
+            page-break-inside: avoid;
         }
 
         /* Detailed Evaluations Table */
@@ -241,44 +251,7 @@
         .interpretation-table tr:nth-child(even) {
             background: transparent;
         }
-
-        /* Signature Section */
-        .signature-section {
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            page-break-inside: avoid;
-        }
-
-        .signature-block {
-            text-align: center;
-        }
-
-        .signature-line {
-            border-top: 2px solid #2c3e50;
-            margin: 30px 0 5px 0;
-            width: 100%;
-        }
-
-        .signature-name {
-            font-weight: bold;
-            color: #2c3e50;
-            font-size: 11px;
-            margin-top: 5px;
-        }
-
-        .signature-title {
-            font-size: 10px;
-            color: #7f8c8d;
-            margin-top: 2px;
-        }
-
-        .issue-date {
-            font-size: 9px;
-            color: #95a5a6;
-            margin-top: 3px;
-        }
+        
 
         /* Footer */
         .footer {
@@ -291,6 +264,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="watermark">
         <img src="{{ public_path('images/Watermark-GAD_Logo.png') }}" alt="GAD watermark">
@@ -301,65 +275,82 @@
         <!-- Header -->
         <div class="header">
             <div class="header-title">GENDER AND DEVELOPMENT CERTIFICATION</div>
-            <div class="header-subtitle">Automated Gender and Development Evaluation System</div>
+            <div class="header-subtitle">Gender-Inclusive Knowledge Management System</div>
             <div class="certificate-id">Certificate No.: {{ preg_match('/\d{4}$/', (string) $certificate_number, $matches) ? substr((string) $certificate_number, 0, -4) . str_repeat('*', 4) : $certificate_number }}</div>
         </div>
 
         <!-- Project Information Section -->
         <div class="section">
-            <div class="section-title">PROJECT INFORMATION</div>
-            <div class="info-grid">
-                <div class="info-row">
-                    <span class="info-label">Project Code:</span>
-                    <span class="info-value">{{ $project_code }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Cluster:</span>
-                    <span class="info-value">{{ $domain }}</span>
-                </div>
-                <div class="info-row info-full">
+            <div class="info-grid" style="grid-template-columns: 1fr;">
+                <div class="info-row" style="grid-template-columns: 1fr;">
                     <span class="info-label">Title:</span>
-                    <span class="info-value">{{ $project_title }}</span>
+                    <span class="info-value" style="font-weight: bold; font-size: 14px;">{{ $project_title }}</span>
                 </div>
-                <div class="info-row info-full">
-                    <span class="info-label">Description:</span>
-                    <span class="info-value">{{ $project_description }}</span>
+                <div class="info-row" style="grid-template-columns: 1fr;">
+                    <span class="info-label">Proponent:</span>
+                    <span class="info-value">{{ $proponent_name }}</span>
                 </div>
-                <div class="info-row">
+                <div class="info-row" style="grid-template-columns: 1fr;">
                     <span class="info-label">Organization:</span>
                     <span class="info-value">{{ $organization }}</span>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Implementation Phase:</span>
-                    <span class="info-value">{{ $phase }}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Submission Date:</span>
-                    <span class="info-value">{{ $submission_date }}</span>
+                <div class="info-row" style="grid-template-columns: 1fr;">
+                    <span class="info-label">Description:</span>
+                    <span class="info-value">{{ $project_description }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Evaluation Results Summary -->
         <div class="section">
-            <div class="section-title">EVALUATION RESULTS</div>
-            <div class="score-summary">
-                <div class="score-row">
-                    <span class="score-label">Average Evaluation Score:</span>
-                    <span class="score-value">{{ $average_score }}/{{ $max_score }}</span>
+            <div class="score-summary" style="padding: 5px;">
+                <div class="score-row" style="grid-template-columns: 140px 1fr; gap: 60px;">
+                    <span>
+                        <span class="score-label">Score:</span>
+                        <span class="score-value">{{ $average_score }}/{{ $max_score }}</span>
+                    </span>
+                    <span>
+                        <span class="score-label">Remarks:</span>
+                        <span style="font-size: 13px;">{{ $interpretation }}</span>
+                    </span>
                 </div>
-                <div class="score-row">
-                    <span class="score-label">Number of Evaluators:</span>
-                    <span class="score-value">{{ $evaluation_count }}</span>
-                </div>
-                <div style="margin-top: 5px;">
-                    <div class="interpretation-box">{{ $interpretation }}</div>
-                </div>
-                @if($remarks)
-                <div style="margin-top: 5px; padding: 5px; background: #fef5e7; border-radius: 2px; font-size: 10px;">
-                    <strong>Remarks:</strong> {{ $remarks }}
-                </div>
-                @endif
+            </div>
+        </div>
+
+        <!-- Signature Section -->
+        <div class="signature-section">
+            <h3 style="font-size: 12px; font-weight: bold; color: black; margin-bottom: 10px;">
+                REVIEWED BY THE COMMITTEE:
+            </h3>
+            <table style="width: 100%; border-collapse: collapse; page-break-inside: avoid;">
+                <tbody>
+                    <!-- Domain Evaluators -->
+                    @foreach($domain_evaluators as $evaluator)
+                    <tr>
+                        <td style="width: 25%; padding: 10px 8px; font-size: 10px; color: black;">Evaluator</td>
+                        <td style="width: 35%; padding: 10px 8px; font-size: 13px; font-weight: bold; color: black;">{{ $evaluator['name'] }}</td>
+                        <td style="width: 40%; padding: 10px 8px;">
+                            <div style="border-bottom: 1px solid #2c3e50; width: 80%; height: 20px;"></div>
+                        </td>
+                    </tr>
+                    @endforeach
+
+                    <!-- Approving Officers -->
+                    @foreach($admin_signatures as $admin)
+                    <tr>
+                        <td style="width: 25%; padding: 10px 8px; font-size: 10px; color: black;">Approving Officer</td>
+                        <td style="width: 35%; padding: 10px 8px; font-size: 13px; font-weight: bold; color: black;">{{ $admin['name'] }}</td>
+                        <td style="width: 40%; padding: 10px 8px;">
+                            <div style="border-bottom: 1px solid #2c3e50; width: 80%; height: 20px;"></div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <!-- Issue Date -->
+            <div style="text-align: left; padding: 10px; margin-top: 10px;">
+                <div style="font-size: 13px; font-weight: bold; color: black;">Issue Date: {{ $issue_date }}</div>
             </div>
         </div>
 
@@ -409,16 +400,16 @@
             <table class="interpretation-table">
                 <thead>
                     <tr>
-                        <th>Interpretation</th>
                         <th>Score Range</th>
+                        <th>Interpretation</th>
                         <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($interpretations as $interp)
                     <tr>
-                        <td>{{ $interp['interpretation'] }}</td>
                         <td>{{ number_format($interp['min'], 2) }} - {{ number_format($interp['max'], 2) }}</td>
+                        <td>{{ $interp['interpretation'] }}</td>
                         <td>{{ $interp['description'] ?? '-' }}</td>
                     </tr>
                     @endforeach
@@ -426,51 +417,6 @@
             </table>
         </div>
 
-        <!-- Signature Section -->
-        <div class="signature-section">
-            <table style="width: 100%; border-collapse: collapse; page-break-inside: avoid;">
-                <!-- Domain Evaluators -->
-                <tr>
-                    @foreach($domain_evaluators as $evaluator)
-                    <td style="width: 50%; text-align: center; padding: 20px 10px; vertical-align: top;">
-                        <div style="border-top: 2px solid #2c3e50; margin-bottom: 8px;"></div>
-                        <div style="font-weight: bold; font-size: 11px; color: #2c3e50; margin-top: 2px;">{{ $evaluator['name'] }}</div>
-                        <div style="font-size: 10px; color: #7f8c8d;">Cluster Evaluator</div>
-                    </td>
-                    @if($loop->iteration % 2 == 0)
-                    </tr><tr>
-                    @endif
-                    @endforeach
-                    @if(count($domain_evaluators) % 2 != 0)
-                    <td style="width: 50%;"></td>
-                    @endif
-                </tr>
-
-                <!-- Approving Officers -->
-                <tr>
-                    @foreach($admin_signatures as $admin)
-                    <td style="width: 50%; text-align: center; padding: 20px 10px; vertical-align: top;">
-                        <div style="border-top: 2px solid #2c3e50; margin-bottom: 8px;"></div>
-                        <div style="font-weight: bold; font-size: 11px; color: #2c3e50; margin-top: 2px;">{{ $admin['name'] }}</div>
-                        <div style="font-size: 10px; color: #7f8c8d;">Approving Officer</div>
-                    </td>
-                    @if($loop->iteration % 2 == 0)
-                    </tr><tr>
-                    @endif
-                    @endforeach
-                    @if(count($admin_signatures) % 2 != 0)
-                    <td style="width: 50%;"></td>
-                    @endif
-                </tr>
-
-                <!-- Issue Date -->
-                <tr>
-                    <td colspan="2" style="text-align: center; padding: 10px;">
-                        <div style="font-size: 9px; color: #34495e;">{{ $issue_date }}</div>
-                    </td>
-                </tr>
-            </table>
-        </div>
 
         <!-- Footer -->
         <div class="footer">
