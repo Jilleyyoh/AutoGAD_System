@@ -274,9 +274,8 @@
         <div class="certificate-content">
         <!-- Header -->
         <div class="header">
-            <div class="header-title">GENDER AND DEVELOPMENT CERTIFICATION</div>
+            <div class="header-title">GENDER MAINSTREAMING REVIEW FORM</div>
             <div class="header-subtitle">Gender-Inclusive Knowledge Management System</div>
-            <div class="certificate-id">Certificate No.: {{ preg_match('/\d{4}$/', (string) $certificate_number, $matches) ? substr((string) $certificate_number, 0, -4) . str_repeat('*', 4) : $certificate_number }}</div>
         </div>
 
         <!-- Project Information Section -->
@@ -417,12 +416,66 @@
             </table>
         </div>
 
+        <!-- Certification Page (always last) -->
+        <div style="page-break-before: always;">
+            <div class="certificate-content">
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>This certificate is issued by the Gender and Development Office</p>
-            <p>&copy; {{ date('Y') }} All rights reserved</p>
+             <!-- Header -->
+            <div class="header">
+                <div class="header-title">GENDER AND DEVELOPMENT</div>
+                <div class="header-subtitle">Gender-Inclusive Knowledge Management System</div>
+                <div class="certificate-id">Certificate No.: {{ preg_match('/\d{4}$/', (string) $certificate_number, $matches) ? substr((string) $certificate_number, 0, -4) . str_repeat('*', 4) : $certificate_number }}</div>
+            </div>
+
+                <div style="text-align: center; margin-top: 60px; margin-bottom: 40px;">
+                    <h1 style="font-size: 22px; font-weight: bold; letter-spacing: 8px; color: black;">
+                        C E R T I F I C A T I O N
+                    </h1>
+                </div>
+
+                <div style="font-size: 13px; line-height: 1.8; color: black; text-align: justify; padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">
+                        This is to certify that the undersigned Committee reviewed and evaluated the submission
+                        "<strong>{{ $project_title }}</strong>" submitted by <strong>{{ $proponent_name }}</strong>
+                        of <strong>{{ $organization }}</strong>, under the Gender and Development (GAD) of the
+                        University of Southeastern Philippines.
+                    </p>
+
+                    <p style="margin-bottom: 15px;">
+                        This is to certify further that the undersigned Committee assessed the submission based on
+                        the established GAD evaluation criteria and determined that it obtained an average score of
+                        <strong>{{ $average_score }}/{{ $max_score }}</strong>, with an interpretation of
+                        <strong>{{ $interpretation }}</strong>
+                    </p>
+
+                    <p style="margin-bottom: 15px;">
+                        This certification further ensures that the submitted materials adopt gender-responsive and
+                        inclusive principles, in accordance with the standards practiced by the University.
+                    </p>
+
+                    <p style="margin-bottom: 40px;">
+                        Issued on the <strong>{{ $issue_date }}</strong> at the University of Southeastern Philippines,
+                        Iñigo St., Bo. Obrero, Davao City.
+                    </p>
+                </div>
+
+                <!-- Signatory -->
+                <div style="margin-top: 60px; text-align: left;">
+                    <div style="width: 250px; margin-left: 10px;">
+                        <div style="border-bottom: 1px solid black; height: 20px; margin-bottom: 8px;"></div>
+                        <div style="font-weight: bold; font-size: 13px; color: black;">GENESESLY R. TAHOY</div>
+                        <div style="font-size: 11px; color: black;">GAD Director</div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="footer">
+                    <p>This certificate is issued by the Gender and Development Office</p>
+                    <p>&copy; {{ date('Y') }} All rights reserved</p>
+                </div>
+            </div>
         </div>
+
         </div>
     </div>
 </body>

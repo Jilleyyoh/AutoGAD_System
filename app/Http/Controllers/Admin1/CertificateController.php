@@ -83,6 +83,7 @@ class CertificateController extends Controller
     /**
      * Download certificate PDF (Admin1 can download any certificate)
      */
+   
     public function download($certificateId)
     {
         try {
@@ -99,7 +100,7 @@ class CertificateController extends Controller
                 'project.projectStatus',
                 'project.evaluations' => function ($query) {
                     $query->where('status_id', 3)
-                          ->with('evaluator.user', 'interpretation', 'scores.questionnaireItem.category', 'questionnaireVersion');
+                        ->with('evaluator.user', 'interpretation', 'scores', 'questionnaireVersion');
                 },
                 'issuedBy'
             ])->findOrFail($certificateId);
@@ -129,31 +130,54 @@ class CertificateController extends Controller
                     ];
                 })->toArray();
 
-            // Build detailed evaluations data
+            // Build detailed evaluations data using FROZEN snapshot data, not live questionnaire tables
             $evaluations = $certificate->project->evaluations->map(function ($evaluation) {
-                // Get scores by category
-                $scoresByCategory = $evaluation->scores()
-                    ->with('questionnaireItem.category')
-                    ->get()
-                    ->groupBy('questionnaireItem.category_id')
-                    ->map(function ($categoryScores) {
-                        $categoryId = $categoryScores->first()->questionnaireItem->category_id;
-                        $categoryName = $categoryScores->first()->questionnaireItem->category?->category_name;
-                        $categoryTotal = $categoryScores->sum('score');
+                // Get the frozen snapshot for this evaluation's version
+                $snapshot = $evaluation->questionnaireVersion?->snapshot;
 
-                        return [
-                            'category_id' => $categoryId,
-                            'category_name' => $categoryName,
-                            'subtotal' => (float)$categoryTotal,
-                            'items' => $categoryScores->map(function ($score) {
-                                return [
-                                    'question' => $score->questionnaireItem->question,
-                                    'score' => (float)$score->score,
-                                    'remarks' => $score->remarks,
-                                ];
-                            })->toArray(),
-                        ];
-                    })->values()->toArray();
+                // Fallback: if for some reason there's no version/snapshot, skip gracefully
+                if (!$snapshot) {
+                    return [
+                        'id' => $evaluation->id,
+                        'evaluator_name' => $evaluation->evaluator->user->name,
+                        'evaluator_email' => $evaluation->evaluator->user->email,
+                        'total_score' => $evaluation->total_score ? (float)$evaluation->total_score : null,
+                        'interpretation' => $evaluation->interpretation?->interpretation,
+                        'final_remarks' => $evaluation->final_remarks,
+                        'completion_date' => $evaluation->completion_date?->format('F d, Y'),
+                        'scores_by_category' => [],
+                    ];
+                }
+
+                // Index frozen questions and categories by ID for fast lookup
+                $frozenQuestions = collect($snapshot['questions'] ?? [])->keyBy('id');
+                $frozenCategories = collect($snapshot['categories'] ?? [])->keyBy('id');
+
+                // Get this evaluation's actual scores
+                $scores = $evaluation->scores;
+
+                // Group scores by the FROZEN question's category_id (not live relationship)
+                $scoresByCategory = $scores->groupBy(function ($score) use ($frozenQuestions) {
+                    $frozenQuestion = $frozenQuestions->get($score->questionnaire_item_id);
+                    return $frozenQuestion['category_id'] ?? 'unknown';
+                })->map(function ($categoryScores, $categoryId) use ($frozenCategories, $frozenQuestions) {
+                    $frozenCategory = $frozenCategories->get($categoryId);
+                    $categoryTotal = $categoryScores->sum('score');
+
+                    return [
+                        'category_id' => $categoryId,
+                        'category_name' => $frozenCategory['category_name'] ?? 'Unknown Category',
+                        'subtotal' => (float)$categoryTotal,
+                        'items' => $categoryScores->map(function ($score) use ($frozenQuestions) {
+                            $frozenQuestion = $frozenQuestions->get($score->questionnaire_item_id);
+                            return [
+                                'question' => $frozenQuestion['question'] ?? '(Question no longer available)',
+                                'score' => (float)$score->score,
+                                'remarks' => $score->remarks,
+                            ];
+                        })->values()->toArray(),
+                    ];
+                })->values()->toArray();
 
                 return [
                     'id' => $evaluation->id,
@@ -202,7 +226,7 @@ class CertificateController extends Controller
             ->toArray();
 
             // Get maximum score from questionnaire
-            $maxScore = QuestionnaireCategory::where('is_active', true)->sum('max_score');
+            $maxScore = $certificate->project->evaluations->first()?->questionnaireVersion?->snapshot['total_max_score'] ?? 0;
 
             // Prepare data for PDF
             $data = [

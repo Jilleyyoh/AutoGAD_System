@@ -248,6 +248,30 @@ class QuestionnaireItemController extends Controller
         $categoryId = $item->category_id;
         $displayOrder = $item->display_order;
 
+        // Check if this item has ever been used in an evaluation
+        $hasHistory = \App\Models\EvaluationScore::where('questionnaire_item_id', $item->id)->exists();
+
+        if ($hasHistory) {
+            // Can't hard-delete - deactivate instead to protect historical evaluations
+            $item->update(['is_active' => false]);
+
+            // Close the gap for remaining ACTIVE items in this category
+            QuestionnaireItem::where('category_id', $categoryId)
+                ->where('is_active', true)
+                ->where('display_order', '>', $displayOrder)
+                ->decrement('display_order');
+
+            // Regenerate item numbers for the category
+            $this->regenerateItemNumbers($categoryId);
+
+            // AUTOMATIC: Recalculate distribution excluding this now-inactive question
+            \App\Services\ScoreDistributionService::checkAndRecalculateIfNeeded($categoryId);
+
+            return redirect()->route('questionnaire.index')
+                ->with('success', 'Question has been used in past evaluations and was deactivated (hidden) instead of deleted, to preserve historical records.');
+        }
+
+        // Safe to hard-delete - no evaluation history exists
         // Close gap in display_order
         QuestionnaireItem::where('category_id', $categoryId)
             ->where('display_order', '>', $displayOrder)

@@ -117,14 +117,40 @@ class QuestionnaireCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    /**
+     * Remove the specified resource from storage.
+     * 
+     * If the category (or any of its questions) has evaluation history,
+     * deactivate instead of hard-delete to preserve historical accuracy.
+     */
     public function destroy(QuestionnaireCategory $category)
     {
         $displayOrder = $category->display_order;
 
-        // Delete all questions in this category first
-        QuestionnaireItem::where('category_id', $category->id)->delete();
+        // Check if any question in this category has evaluation history
+        $itemIds = QuestionnaireItem::where('category_id', $category->id)->pluck('id');
+        $hasHistory = \App\Models\EvaluationScore::whereIn('questionnaire_item_id', $itemIds)->exists();
 
-        // Delete the category
+        if ($hasHistory) {
+            // Deactivate category and all its items instead of deleting
+            $category->update(['is_active' => false]);
+            QuestionnaireItem::where('category_id', $category->id)->update(['is_active' => false]);
+
+            // Close the gap for remaining ACTIVE categories
+            QuestionnaireCategory::where('is_active', true)
+                ->where('display_order', '>', $displayOrder)
+                ->decrement('display_order');
+
+            // Regenerate item numbers for all active categories, since their
+            // display_order (used as the "X" in "X.Y" item numbers) may have shifted
+            $this->regenerateAllItemNumbers();
+
+            return redirect()->route('questionnaire.index')
+                ->with('success', 'This category has questions used in past evaluations, so it was deactivated (hidden) instead of deleted, to preserve historical records.');
+        }
+
+        // Safe to hard-delete - no evaluation history exists for any question here
+        QuestionnaireItem::where('category_id', $category->id)->delete();
         $category->delete();
 
         // Close the gap left behind
@@ -133,5 +159,19 @@ class QuestionnaireCategoryController extends Controller
 
         return redirect()->route('questionnaire.index')
             ->with('success', 'Category and all its questions deleted successfully.');
+    }
+
+    private function regenerateAllItemNumbers()
+    {
+        $categories = QuestionnaireCategory::where('is_active', true)->get();
+        foreach ($categories as $category) {
+            $items = QuestionnaireItem::where('category_id', $category->id)
+                ->orderBy('display_order')
+                ->get();
+            foreach ($items as $item) {
+                $newItemNumber = $category->display_order . '.' . $item->display_order;
+                $item->update(['item_number' => $newItemNumber]);
+            }
+        }
     }
 }
