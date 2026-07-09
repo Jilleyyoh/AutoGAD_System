@@ -63,13 +63,24 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             </div>
 
                             {status && (
-                                <div className="rounded-lg border border-green-400 bg-green-50 p-4 text-sm">
-                                    <p className="font-semibold text-green-800">
+                                <div className="mt-2 rounded-lg border border-green-400 bg-green-50 p-4 text-sm text-green-800">
+                                    <p className="font-semibold">
                                         ✓ Password Reset Successful
                                     </p>
-                                    <p className="mt-2 text-green-700">
+                                    <p className="mt-2">
                                         {status}
                                     </p>
+                                </div>
+                            )}
+
+                            {status && (
+                                <div className="mt-4 text-center">
+                                    <TextLink
+                                        href={login()}
+                                        className="inline-flex items-center justify-center px-4 py-2 font-semibold text-white transition hover:text-purple-300"
+                                    >
+                                        Go back to log in
+                                    </TextLink>
                                 </div>
                             )}
                         </>
