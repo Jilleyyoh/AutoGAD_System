@@ -704,8 +704,8 @@ export default function Show({
                                 <div className="space-y-6">
                                     {!isCompleted && (
                                         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-xl p-4">
-                                            <p className={combineTheme('text-sm font-medium', 'text-blue-800 dark:text-blue-200')}>
-                                                💡 Evaluation Instructions
+                                            <p className={combineTheme('text-sm font-bold', 'text-blue-800 dark:text-blue-200')}>
+                                                Evaluation Instructions
                                             </p>
                                             <p className={combineTheme('text-xs mt-1', 'text-blue-600 dark:text-blue-300')}>
                                                 Answer each question using Yes/Partly/No. Your answers are automatically saved as you go.
