@@ -32,11 +32,12 @@ class CertificationController extends Controller
                 'implementationPhase',
                 'projectStatus',
                 'evaluations' => function ($query) {
-                        $query->where('status_id', 3); // Approved evaluations (status id 3)
-                    }
+                    $query->where('status_id', 3);
+                }
             ])
+            ->whereIn('project_status_id', [5, 7])
             ->whereHas('evaluations', function ($query) {
-                $query->where('status_id', 3); // Has approved evaluations
+                $query->where('status_id', 3);
             })
             ->orderBy('created_at', 'desc')
             ->paginate(15);
@@ -141,8 +142,12 @@ class CertificationController extends Controller
                     ->map(function ($categoryScores) {
                         $categoryId = $categoryScores->first()->questionnaireItem->category_id;
                         $categoryName = $categoryScores->first()->questionnaireItem->category?->category_name;
-                        $categoryTotal = $categoryScores->sum('score');
-
+                        $categoryMaxScore = floatval($categoryScores->first()->questionnaireItem->category?->max_score ?? 0);
+                        $categoryTotal = round($categoryScores->sum('score'), 2);
+                        if ($categoryMaxScore > 0 && $categoryTotal > $categoryMaxScore) {
+                            $categoryTotal = $categoryMaxScore;
+                        }
+                        
                         return [
                             'category_id' => $categoryId,
                             'category_name' => $categoryName,
@@ -291,6 +296,12 @@ class CertificationController extends Controller
                     }
             ])->findOrFail($projectId);
 
+            if ($project->project_status_id !=5) {
+                return response()->json([
+                    'message' => 'Only projects marked as For Certification can generate a certificate.'
+                ], 403);
+            }
+
             // Check if certificate already exists
             $existingCert = Certificate::where('project_id', $projectId)->first();
             if ($existingCert) {
@@ -424,7 +435,7 @@ class CertificationController extends Controller
                     return $frozenQuestion['category_id'] ?? 'unknown';
                 })->map(function ($categoryScores, $categoryId) use ($frozenCategories, $frozenQuestions) {
                     $frozenCategory = $frozenCategories->get($categoryId);
-                    $categoryTotal = $categoryScores->sum('score');
+                    $categoryTotal = round($categoryScores->sum('score'), 2);
 
                     return [
                         'category_id' => $categoryId,

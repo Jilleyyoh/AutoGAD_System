@@ -660,8 +660,23 @@ class EvaluationController extends Controller
                     }
                 }
 
-                // Calculate total score (rounded to 2 decimals to prevent floating-point errors)
-                $totalScore = round($evaluation->scores()->sum('score'), 2);
+                // Calculate total score by summing per-category, capped at each category's max.
+                // This prevents rounding leftovers (e.g. 0.67 x 3 = 2.01) from inflating the total.
+                $scoresByCategory = $evaluation->scores()
+                    ->join('questionnaire_items', 'evaluation_scores.questionnaire_item_id', '=', 'questionnaire_items.id')
+                    ->selectRaw('questionnaire_items.category_id, SUM(evaluation_scores.score) as category_total')
+                    ->groupBy('questionnaire_items.category_id')
+                    ->pluck('category_total', 'category_id');
+
+                $categoryMaxScores = \App\Models\QuestionnaireCategory::whereIn('id', $scoresByCategory->keys())
+                    ->pluck('max_score', 'id');
+
+                $totalScore = 0;
+                foreach ($scoresByCategory as $categoryId => $categoryTotal) {
+                    $categoryMax = (float)($categoryMaxScores[$categoryId] ?? PHP_FLOAT_MAX);
+                    $totalScore += min((float)$categoryTotal, $categoryMax);
+                }
+                $totalScore = round($totalScore, 2);
                 
                 // Get max score from bound questionnaire version snapshot (version-accurate)
                 $maxScore = EvaluationQuestionnaireTransformer::getMaxScoreFromSnapshot($evaluation);

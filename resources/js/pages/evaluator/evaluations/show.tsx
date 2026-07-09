@@ -187,14 +187,21 @@ export default function Show({
         const result: { [key: number]: { total: number; max: number; exceeded: boolean } } = {};
 
         categories.forEach(category => {
-            const categoryTotal = category.items.reduce((sum, item) => {
+            const rawTotal = category.items.reduce((sum, item) => {
                 return sum + (scores[item.id] ?? 0);
             }, 0);
+
+            // Round to 2 decimals FIRST to eliminate floating-point noise
+            // (0.67 + 0.67 + 0.67 in JS = 2.0100000000000002, not 2.01)
+            const roundedRawTotal = Math.round(rawTotal * 100) / 100;
+
+            // Cap what's shown at the category max, same as the backend does when saving
+            const categoryTotal = Math.min(roundedRawTotal, category.max_score);
 
             result[category.id] = {
                 total: categoryTotal,
                 max: category.max_score,
-                exceeded: categoryTotal > category.max_score,
+                exceeded: roundedRawTotal > category.max_score + 0.01,
             };
         });
 
@@ -274,15 +281,21 @@ export default function Show({
         if (!item || !itemCategory) return;
         
         // Calculate what the new category total would be
-        const currentCategoryTotal = itemCategory.items.reduce((sum, i) => {
+        const rawCategoryTotal = itemCategory.items.reduce((sum, i) => {
             if (i.id === itemId) {
                 return sum + (score ?? 0);
             }
             return sum + (scores[i.id] ?? 0);
         }, 0);
-        
-        // Prevent exceeding the category max_score
-        if (currentCategoryTotal > itemCategory.max_score) {
+
+        // Round to 2 decimals FIRST to eliminate floating-point noise
+        // (0.67 + 0.67 + 0.67 in JS = 2.0100000000000002, not 2.01)
+        const currentCategoryTotal = Math.round(rawCategoryTotal * 100) / 100;
+
+        const TOLERANCE = 0.01;
+
+        // Only block real overshoots, not rounding leftovers (e.g. 0.67 x 3 = 2.01)
+        if (currentCategoryTotal > itemCategory.max_score + TOLERANCE) {
             setMessage({
                 type: 'error',
                 text: `Cannot exceed maximum score of ${itemCategory.max_score} for ${itemCategory.name}. Current: ${currentCategoryTotal}`,
@@ -714,8 +727,8 @@ export default function Show({
                                     )}
 
                                     {categories.map((category) => {
-                                        const categoryScore = category.items.reduce((sum, item) => sum + (scores[item.id] ?? 0), 0);
-                                        const categoryProgress = categoryScore / category.max_score * 100;
+                                        const categoryScore = categoryScores[category.id]?.total ?? 0;
+                                        const categoryProgress = category.max_score > 0 ? (categoryScore / category.max_score) * 100 : 0;
                                         
                                         return (
                                             <div key={category.id} className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden">

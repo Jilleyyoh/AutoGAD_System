@@ -255,7 +255,7 @@ class CertificateController extends Controller
                     return $frozenQuestion['category_id'] ?? 'unknown';
                 })->map(function ($categoryScores, $categoryId) use ($frozenCategories, $frozenQuestions) {
                     $frozenCategory = $frozenCategories->get($categoryId);
-                    $categoryTotal = $categoryScores->sum('score');
+                    $categoryTotal = round($categoryScores->sum('score'), 2);
 
                     return [
                         'category_id' => $categoryId,

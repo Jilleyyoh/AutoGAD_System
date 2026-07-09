@@ -42,8 +42,9 @@ class QuestionnaireItemController extends Controller
      */
     private function shiftDisplayOrders($categoryId, $newDisplayOrder)
     {
-        // Get all items in category with display order >= new order
+        // Get all ACTIVE items in category with display order >= new order
         $itemsToShift = QuestionnaireItem::where('category_id', $categoryId)
+            ->where('is_active', true)
             ->where('display_order', '>=', $newDisplayOrder)
             ->orderBy('display_order', 'desc')
             ->get();
@@ -60,13 +61,21 @@ class QuestionnaireItemController extends Controller
     private function regenerateItemNumbers($categoryId)
     {
         $category = QuestionnaireCategory::findOrFail($categoryId);
+        
+        // Only active items participate in numbering. Renumber them 1, 2, 3...
+        // fresh, from their current relative order — never trust old stored values.
         $items = QuestionnaireItem::where('category_id', $categoryId)
+            ->where('is_active', true)
             ->orderBy('display_order')
             ->get();
 
+        $position = 1;
         foreach ($items as $item) {
-            $newItemNumber = $category->display_order . '.' . $item->display_order;
-            $item->update(['item_number' => $newItemNumber]);
+            $item->update([
+                'display_order' => $position,
+                'item_number' => $category->display_order . '.' . $position,
+            ]);
+            $position++;
         }
     }
 
@@ -132,6 +141,9 @@ class QuestionnaireItemController extends Controller
             'version' => $currentVersion,
         ]);
 
+        // Renumber the category cleanly now that a new item has been added
+        $this->regenerateItemNumbers($request->category_id);
+
         // AUTOMATIC: Always recalculate - check and recalculate if needed
         \App\Services\ScoreDistributionService::checkAndRecalculateIfNeeded($request->category_id);
 
@@ -164,6 +176,7 @@ class QuestionnaireItemController extends Controller
         if ($oldCategoryId != $newCategoryId) {
             // Remove from old category (close gaps)
             QuestionnaireItem::where('category_id', $oldCategoryId)
+                ->where('is_active', true)
                 ->where('display_order', '>', $oldDisplayOrder)
                 ->decrement('display_order');
 
@@ -174,12 +187,14 @@ class QuestionnaireItemController extends Controller
             if ($newDisplayOrder < $oldDisplayOrder) {
                 // Moving up - shift items down
                 QuestionnaireItem::where('category_id', $newCategoryId)
+                    ->where('is_active', true)
                     ->where('display_order', '>=', $newDisplayOrder)
                     ->where('display_order', '<', $oldDisplayOrder)
                     ->increment('display_order');
             } else {
                 // Moving down - shift items up
                 QuestionnaireItem::where('category_id', $newCategoryId)
+                    ->where('is_active', true)
                     ->where('display_order', '>', $oldDisplayOrder)
                     ->where('display_order', '<=', $newDisplayOrder)
                     ->decrement('display_order');
@@ -252,8 +267,13 @@ class QuestionnaireItemController extends Controller
         $hasHistory = \App\Models\EvaluationScore::where('questionnaire_item_id', $item->id)->exists();
 
         if ($hasHistory) {
-            // Can't hard-delete - deactivate instead to protect historical evaluations
-            $item->update(['is_active' => false]);
+            // Can't hard-delete - deactivate instead to protect historical evaluations.
+            // Push it out of the numbering space entirely so it can never collide
+            // with a future active item's display_order.
+            $item->update([
+                'is_active' => false,
+                'display_order' => -1 * $item->id, // guaranteed unique, guaranteed out of range
+            ]);
 
             // Close the gap for remaining ACTIVE items in this category
             QuestionnaireItem::where('category_id', $categoryId)
@@ -261,7 +281,7 @@ class QuestionnaireItemController extends Controller
                 ->where('display_order', '>', $displayOrder)
                 ->decrement('display_order');
 
-            // Regenerate item numbers for the category
+            // Regenerate item numbers for the category (active items only)
             $this->regenerateItemNumbers($categoryId);
 
             // AUTOMATIC: Recalculate distribution excluding this now-inactive question

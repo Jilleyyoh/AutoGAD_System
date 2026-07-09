@@ -16,7 +16,8 @@ class QuestionnaireCategoryController extends Controller
      */
     private function shiftDisplayOrders($newDisplayOrder, $excludeCategoryId = null)
     {
-        $query = QuestionnaireCategory::where('display_order', '>=', $newDisplayOrder)
+        $query = QuestionnaireCategory::where('is_active', true)
+            ->where('display_order', '>=', $newDisplayOrder)
             ->orderBy('display_order', 'desc');
 
         if ($excludeCategoryId) {
@@ -36,16 +37,46 @@ class QuestionnaireCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category_name' => 'required|string|max:255|unique:questionnaire_categories,category_name',
+            'category_name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
             'max_score' => 'required|numeric|min:0|max:999.99',
             'display_order' => 'required|integer|min:1|max:100',
         ]);
 
-        // Get current version
+        // Check if an ACTIVE category already has this name — that's a real conflict
+        $activeConflict = QuestionnaireCategory::where('category_name', $request->category_name)
+            ->where('is_active', true)
+            ->exists();
+
+        if ($activeConflict) {
+            return back()->withErrors(['category_name' => 'A category with this name already exists.'])->withInput();
+        }
+
+        // Check if an INACTIVE (previously deleted) category has this name — restore it instead
+        $inactiveMatch = QuestionnaireCategory::where('category_name', $request->category_name)
+            ->where('is_active', false)
+            ->first();
+
         $currentVersion = QuestionnaireSetting::getValue('questionnaire_version', '1.0');
 
-        // Make room for the new category at this position
+        if ($inactiveMatch) {
+            $this->shiftDisplayOrders($request->display_order);
+
+            $inactiveMatch->update([
+                'description' => $request->description,
+                'max_score' => $request->max_score,
+                'display_order' => $request->display_order,
+                'is_active' => true,
+                'version' => $currentVersion,
+            ]);
+
+            $this->regenerateAllItemNumbers();
+
+            return redirect()->route('questionnaire.index')
+                ->with('success', 'This category previously existed and has been restored with your updated details.');
+        }
+
+        // Genuinely new category
         $this->shiftDisplayOrders($request->display_order);
 
         QuestionnaireCategory::create([
@@ -57,8 +88,12 @@ class QuestionnaireCategoryController extends Controller
             'version' => $currentVersion,
         ]);
 
+        // at the end of store(), after QuestionnaireCategory::create([...]):
+        $this->regenerateAllItemNumbers();
+
         return redirect()->route('questionnaire.index')
             ->with('success', 'Category created successfully.');
+            
     }
 
     /**
@@ -68,11 +103,11 @@ class QuestionnaireCategoryController extends Controller
     {
         $request->validate([
             'category_name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('questionnaire_categories')->ignore($category->id),
-            ],
+            'required',
+            'string',
+            'max:255',
+            Rule::unique('questionnaire_categories')->ignore($category->id)->where('is_active', true),
+        ],
             'description' => 'nullable|string|max:1000',
             'max_score' => 'required|numeric|min:0|max:999.99',
             'display_order' => 'required|integer|min:1|max:100',
@@ -89,12 +124,14 @@ class QuestionnaireCategoryController extends Controller
             if ($newDisplayOrder < $oldDisplayOrder) {
                 // Moving up - shift others down
                 QuestionnaireCategory::where('id', '!=', $category->id)
+                    ->where('is_active', true)
                     ->where('display_order', '>=', $newDisplayOrder)
                     ->where('display_order', '<', $oldDisplayOrder)
                     ->increment('display_order');
             } else {
                 // Moving down - shift others up
                 QuestionnaireCategory::where('id', '!=', $category->id)
+                    ->where('is_active', true)
                     ->where('display_order', '>', $oldDisplayOrder)
                     ->where('display_order', '<=', $newDisplayOrder)
                     ->decrement('display_order');
@@ -109,6 +146,9 @@ class QuestionnaireCategoryController extends Controller
             'is_active' => $request->boolean('is_active', true),
             'version' => $currentVersion,
         ]);
+
+        // at the end of update(), after $category->update([...]):
+        $this->regenerateAllItemNumbers();
 
         return redirect()->route('questionnaire.index')
             ->with('success', 'Category updated successfully.');
@@ -132,9 +172,18 @@ class QuestionnaireCategoryController extends Controller
         $hasHistory = \App\Models\EvaluationScore::whereIn('questionnaire_item_id', $itemIds)->exists();
 
         if ($hasHistory) {
-            // Deactivate category and all its items instead of deleting
-            $category->update(['is_active' => false]);
-            QuestionnaireItem::where('category_id', $category->id)->update(['is_active' => false]);
+            // Deactivate category and all its items instead of deleting.
+            // Push both out of the numbering space so they never collide with
+            // anything active again.
+
+            $category->update([
+                'is_active' => false,
+                'display_order' => -1 * $category->id,
+            ]);
+            QuestionnaireItem::where('category_id', $category->id)->update([
+                'is_active' => false,
+                'display_order' => -1 * $category->id, // fine to share, these are inactive anyway
+            ]);
 
             // Close the gap for remaining ACTIVE categories
             QuestionnaireCategory::where('is_active', true)
@@ -161,16 +210,25 @@ class QuestionnaireCategoryController extends Controller
             ->with('success', 'Category and all its questions deleted successfully.');
     }
 
-    private function regenerateAllItemNumbers()
+    public function regenerateAllItemNumbers()
     {
-        $categories = QuestionnaireCategory::where('is_active', true)->get();
+        $categories = QuestionnaireCategory::where('is_active', true)
+            ->orderBy('display_order')
+            ->get();
+
         foreach ($categories as $category) {
             $items = QuestionnaireItem::where('category_id', $category->id)
+                ->where('is_active', true)
                 ->orderBy('display_order')
                 ->get();
+
+            $position = 1;
             foreach ($items as $item) {
-                $newItemNumber = $category->display_order . '.' . $item->display_order;
-                $item->update(['item_number' => $newItemNumber]);
+                $item->update([
+                    'display_order' => $position,
+                    'item_number' => $category->display_order . '.' . $position,
+                ]);
+                $position++;
             }
         }
     }

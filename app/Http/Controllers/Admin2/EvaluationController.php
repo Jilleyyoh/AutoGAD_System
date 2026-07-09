@@ -127,6 +127,7 @@ class EvaluationController extends Controller
 
             // Get all evaluations for this project
             $evaluations = $project->evaluations->map(function ($evaluation) {
+                \Log::info('Evaluation ID: '.$evaluation->id);
                 $scores = $evaluation->scores()
                     ->with('questionnaireItem.category')
                     ->get();
@@ -134,10 +135,24 @@ class EvaluationController extends Controller
                 // Group scores by category
                 $scoresByCategory = $scores->groupBy(function ($score) {
                     return $score->questionnaireItem->category?->id;
-                })->map(function ($categoryScores) {
-                    $categoryTotal = $categoryScores->sum('score');
+                })->map(function ($categoryScores) use ($evaluation) {
+
                     $categoryId = $categoryScores->first()->questionnaireItem->category?->id;
                     $categoryName = $categoryScores->first()->questionnaireItem->category?->category_name;
+
+                    $storedSubtotal = \App\Models\EvaluationSubtotal::where('evaluation_id', $evaluation->id)
+                        ->where('questionnaire_category_id', $categoryId)
+                        ->value('actual_score');
+
+                        \Log::info([
+                            'category' => $categoryName,
+                            'storedSubtotal' => $storedSubtotal,
+                            'calculated' => round($categoryScores->sum('score'), 2),
+                        ]);
+
+                    $categoryTotal = $storedSubtotal !== null
+                        ? (float) $storedSubtotal
+                        : round($categoryScores->sum('score'), 2);
 
                     return [
                         'category_id' => $categoryId,

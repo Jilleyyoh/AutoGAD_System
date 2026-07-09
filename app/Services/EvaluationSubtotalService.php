@@ -80,6 +80,13 @@ class EvaluationSubtotalService
                     // Round after accumulation to prevent floating-point precision errors
                     $actualScore = round($actualScore, 2);
 
+                    // Cap at the category's max_score so rounding leftovers
+                    // (e.g. 0.67 x 3 = 2.01) never exceed the true max (2.00)
+                    $maxScore = floatval($category['max_score'] ?? 0);
+                    if ($maxScore > 0 && $actualScore > $maxScore) {
+                        $actualScore = $maxScore;
+                    }
+
                     // Calculate percentage (rounded to 2 decimals)
                     $maxScore = floatval($category['max_score'] ?? 0);
                     $scorePercentage = $maxScore > 0 
