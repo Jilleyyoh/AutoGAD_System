@@ -37,7 +37,7 @@ export function AppSidebar() {
         ] : []),
         ...(isAdmin1 ? [
             { title: 'Manage Assignments', href: '/admin1/assignments', icon: CheckSquare },
-            { title: 'Manage Domain Expertise', href: '/domain-expertise', icon: Award },
+            { title: 'Manage Clusters', href: '/domain-expertise', icon: Award },
             { title: 'Manage Evaluators', href: '/evaluators', icon: Users },
             { title: 'Manage Questionnaire', href: '/questionnaire', icon: ClipboardList },
             { title: 'Certificates', href: '/admin1/certificates', icon: Award },

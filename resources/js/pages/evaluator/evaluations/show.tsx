@@ -615,7 +615,7 @@ export default function Show({
                                                 <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.proponent_name}</p>
                                             </div>
                                             <div>
-                                                <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Domain</p>
+                                                <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Cluster</p>
                                                 <p className={combineTheme('text-base', themeClasses.text.primary)}>{project.domain}</p>
                                             </div>
                                             <div>

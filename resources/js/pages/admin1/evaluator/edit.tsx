@@ -35,7 +35,7 @@ interface Props {
 export default function Edit({ evaluator, domains }: Props) {
   // Log the data to help with debugging
   console.log('Edit Evaluator:', evaluator);
-  console.log('Available Domains:', domains);
+  console.log('Available Clusters:', domains);
   
   const { data, setData, patch, processing, errors } = useForm({
     name: evaluator.user.name,
@@ -63,7 +63,7 @@ export default function Edit({ evaluator, domains }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Evaluator Assignment</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">Edit evaluator details and domain expertise.</p>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Edit evaluator details and cluster.</p>
           </div>
 
           <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
@@ -105,14 +105,14 @@ export default function Edit({ evaluator, domains }: Props) {
               </div>
 
               <div>
-                <label htmlFor="domain_expertise_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Domain Expertise</label>
+                <label htmlFor="domain_expertise_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Cluster</label>
                 <NativeSelect
                   id="domain_expertise_id"
                   value={data.domain_expertise_id}
                   onChange={(e) => setData('domain_expertise_id', e.target.value)}
                   className="mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                 >
-                  <option value="">Select a domain</option>
+                  <option value="">Select a cluster</option>
                   {domains.map((domain) => (
                     <option key={domain.id} value={domain.id}>
                       {domain.domain_name}

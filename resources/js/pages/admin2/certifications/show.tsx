@@ -301,7 +301,7 @@ export default function CertificationShow({
                                             <p className={combineTheme('text-base font-medium', themeClasses.text.primary)}>{project.organization}</p>
                                         </div>
                                         <div>
-                                            <p className={combineTheme('text-sm', themeClasses.text.tertiary)}>Domain</p>
+                                            <p className={combineTheme('text-sm', themeClasses.text.tertiary)}>Cluster</p>
                                             <p className={combineTheme('text-base font-medium', themeClasses.text.primary)}>{project.domain}</p>
                                         </div>
                                     </div>

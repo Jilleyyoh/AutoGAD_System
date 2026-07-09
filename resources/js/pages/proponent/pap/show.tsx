@@ -139,7 +139,7 @@ export default function Show({ project }: Props) {
                     <div className={combineTheme('font-medium', themeClasses.text.primary)}>{project.title || '—'}</div>
                   </div>
                   <div>
-                    <div className={combineTheme('', themeClasses.text.secondary)}>Domain</div>
+                    <div className={combineTheme('', themeClasses.text.secondary)}>Cluster</div>
                     <div className={combineTheme('font-medium', themeClasses.text.primary)}>{project.domain_expertise?.domain_name || '—'}</div>
                   </div>
                   <div>

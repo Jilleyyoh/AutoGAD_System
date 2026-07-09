@@ -17,8 +17,8 @@ interface Props {
 
 const managementItems = [
     {
-        title: 'Domain Expertise',
-        description: 'Define and manage evaluation domains for GAD initiatives',
+        title: 'Cluster',
+        description: 'Define and manage evaluation clusters for GAD initiatives',
         icon: Award,
         href: route('domain.index'),
         color: 'blue',
@@ -74,7 +74,7 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                         Dashboard
                     </h1>
                     <p className="text-gray-600 dark:text-gray-300 mt-2 max-w-4xl">
-                        Set up and manage the evaluation framework, including domains, evaluators, questionnaires, and project assignments.
+                        Set up and manage the evaluation framework, including clusters, evaluators, questionnaires, and project assignments.
                     </p>
                 </div>
 
@@ -159,8 +159,8 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                         {[
                             {
                                 step: '1',
-                                title: 'Set up Domain Expertise',
-                                description: 'Define evaluation criteria and domains',
+                                title: 'Set up Clusters',
+                                description: 'Define evaluation criteria and cluster',
                                 icon: Award,
                             },
                             {

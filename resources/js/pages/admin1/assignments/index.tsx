@@ -193,7 +193,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
             setIsModalOpen(true);
         } catch (error: any) {
             console.error('Error fetching evaluators:', error);
-            setErrorMessage('Failed to load evaluators for this domain');
+            setErrorMessage('Failed to load evaluators for this cluster');
         } finally {
             setLoadingEvaluators(false);
         }
@@ -371,7 +371,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search by project code, title, organization, domain, or evaluator..."
+                        placeholder="Search by project code, title, organization, cluster, or evaluator..."
                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     />
                 </div>
@@ -490,7 +490,7 @@ export default function Index({ projects: initialProjects, highlightProjectId }:
                                         Organization
                                     </th>
                                     <th className={combineTheme('px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider', themeClasses.text.secondary)}>
-                                        Domain
+                                        Cluster
                                     </th>
                                     <th className={combineTheme('px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider', themeClasses.text.secondary)}>
                                         Phase

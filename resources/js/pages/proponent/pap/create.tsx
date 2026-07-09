@@ -45,7 +45,7 @@ function ProjectInformation({ data, setData, domains, phases, errors }: any) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>
-            Domain <span className="text-red-500">*</span>
+            Cluster <span className="text-red-500">*</span>
           </label>
           <NativeSelect
             value={data.domain_id}
@@ -57,7 +57,7 @@ function ProjectInformation({ data, setData, domains, phases, errors }: any) {
               data.domain_id ? themeClasses.text.primary : 'text-gray-400 dark:text-slate-400'
             )}
           >
-            <option value="">{domains?.length ? 'Select domain' : 'Loading domains...'}</option>
+            <option value="">{domains?.length ? 'Select cluster' : 'Loading clusters...'}</option>
             {domains?.map((d: any) => (
               <option key={d.id} value={d.id}>{resolveDomainName(d)}</option>
             ))}
@@ -194,7 +194,7 @@ function ReviewSubmit({ data, domains, phases }: { data: FormDataShape; domains:
         <div className={combineTheme('border-t px-4 py-5 sm:px-6', themeClasses.border.primary)}>
           <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
             <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Title</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.title || 'Not provided'}</dd></div>
-            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Domain</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.domain_id ? resolveDomainName(domains.find((d: any) => d.id == data.domain_id)) : 'Not selected'}</dd></div>
+            <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Cluster</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.domain_id ? resolveDomainName(domains.find((d: any) => d.id == data.domain_id)) : 'Not selected'}</dd></div>
             <div><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Phase</dt><dd className={combineTheme('mt-1 text-sm', themeClasses.text.primary)}>{data.implementation_phase_id ? formatPhase(phases.find((p: any) => p.id == data.implementation_phase_id)?.name) : 'Not Selected'}</dd></div>
             <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Description</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.description || 'Not provided'}</dd></div>
             <div className="sm:col-span-2"><dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Rationale</dt><dd className={combineTheme('mt-1 text-sm whitespace-pre-wrap', themeClasses.text.primary)}>{data.rationale || 'Not provided'}</dd></div>
@@ -300,12 +300,12 @@ export default function Create() {
   // Dev aid: log domains once (won't spam due to ref length dependency)
   if (process.env.NODE_ENV !== 'production' && domainsState.length) {
     // eslint-disable-next-line no-console
-    console.debug('[PAP/Create] Domains available for dropdown:', domainsState.map(d => ({ id: d.id, keys: Object.keys(d) })));
+    console.debug('[PAP/Create] CLusters available for dropdown:', domainsState.map(d => ({ id: d.id, keys: Object.keys(d) })));
   }
 
   const steps = [
     { number: 1, name: 'Project Information' },
-    { number: 2, name: 'Document Upload' },
+    { number: 2, name: 'Upload Documents' },
     { number: 3, name: 'Review' },
   ];
 

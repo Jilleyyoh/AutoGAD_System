@@ -87,7 +87,7 @@ export default function AssignEvaluatorModal({ isOpen, onClose, project, evaluat
 
                         <div className="mb-4">
                             <label htmlFor="evaluator" className="block text-sm font-medium text-gray-700 mb-2">
-                                Select Evaluator for this Domain
+                                Select Evaluator for this Cluster
                             </label>
                             <NativeSelect
                                 id="evaluator"
@@ -106,7 +106,7 @@ export default function AssignEvaluatorModal({ isOpen, onClose, project, evaluat
                             
                             {evaluators.length === 0 && !loading && (
                                 <p className="mt-2 text-sm text-yellow-600">
-                                    No evaluators available for this domain.
+                                    No evaluators available for this cluster.
                                 </p>
                             )}
 

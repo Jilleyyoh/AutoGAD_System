@@ -75,7 +75,7 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
 
   // Get domain by ID (for display purposes)
   const getDomainName = (evaluator: Evaluator) => {
-    return evaluator.domainExpertise?.domain_name || 'No Domain';
+    return evaluator.domainExpertise?.domain_name || 'No Cluster';
   };
 
   // Filter evaluators based on search input
@@ -104,7 +104,7 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
                 Manage Evaluators
               </h1>
               <p className="text-gray-600 dark:text-gray-400 mt-2">
-                Recruit and manage evaluators across your domains
+                Recruit and manage evaluators across your clusters
               </p>
             </div>
             <Link
@@ -125,7 +125,7 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search evaluators by name, email, or domain..."
+              placeholder="Search evaluators by name, email, or cluster..."
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             />
           </div>
@@ -158,7 +158,7 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
                         Email
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                        Domain
+                        Cluster
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                         Birthdate

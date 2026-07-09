@@ -237,7 +237,7 @@ export default function Review({ project, evaluations, average_score, evaluation
                                 <p className="mt-1 text-gray-900">{project.proponent_name}</p>
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-gray-500">Domain</p>
+                                <p className="text-sm font-medium text-gray-500">Cluster</p>
                                 <p className="mt-1 text-gray-900">{project.domain}</p>
                             </div>
                             <div>

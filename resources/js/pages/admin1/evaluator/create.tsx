@@ -113,7 +113,7 @@ export default function Create({ domains, evaluatorRoleId }: Props) {
 
               <div>
                 <label htmlFor="domain_expertise_id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Domain Expertise
+                  Cluster
                 </label>
                 <NativeSelect
                   id="domain_expertise_id"
@@ -122,7 +122,7 @@ export default function Create({ domains, evaluatorRoleId }: Props) {
                   className="mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
                   required
                 >
-                  <option value="">Select a domain</option>
+                  <option value="">Select a cluster</option>
                   {domains.map((domain) => (
                     <option key={domain.id} value={domain.id}>
                       {domain.domain_name}

@@ -217,7 +217,7 @@ export default function ViewProjectDetailsModal({
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Domain</p>
+                                            <p className={combineTheme('text-sm font-medium', themeClasses.text.tertiary)}>Cluster</p>
                                             <p className={combineTheme('mt-1', themeClasses.text.primary)}>{project.domain_expertise.name}</p>
                                         </div>
                                         <div>

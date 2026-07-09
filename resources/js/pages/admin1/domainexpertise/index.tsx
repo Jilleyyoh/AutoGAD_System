@@ -46,20 +46,20 @@ export default function Index({ domains = { data: [], current_page: 1, last_page
     <AppLayout
       breadcrumbs={[
         { title: 'Dashboard', href: route('dashboard') },
-        { title: 'Domain Expertise', href: route('domain.index') }
+        { title: 'Cluster', href: route('domain.index') }
       ]}
     >
-      <Head title="Manage Domain Expertise" />
+      <Head title="Manage Cluster" />
       <div className="min-h-screen bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Header Section */}
           <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Manage Domain Expertise
+                Manage Clusters
               </h1>
               <p className="text-gray-600 dark:text-gray-400 mt-2">
-                Create and manage evaluation domains for your GAD initiatives
+                Create and manage evaluation clusters for your GAD initiatives
               </p>
             </div>
             <Link
@@ -67,20 +67,20 @@ export default function Index({ domains = { data: [], current_page: 1, last_page
               className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-medium hover:bg-gray-900 transition-all duration-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 whitespace-nowrap"
             >
               <Plus className="w-5 h-5" />
-              Add Domain
+              Add Cluster
             </Link>
           </div>
 
           {/* Search Section */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Search Domains
+              Search Clusters
             </label>
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by domain name or description..."
+              placeholder="Search by cluster name or description..."
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             />
           </div>
@@ -104,7 +104,7 @@ export default function Index({ domains = { data: [], current_page: 1, last_page
                         ID
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                        Domain Name
+                        Cluster Name
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                         Description
@@ -133,14 +133,14 @@ export default function Index({ domains = { data: [], current_page: 1, last_page
                             <Link
                               href={route('domain.edit', domain.id)}
                               className="inline-flex items-center px-3 py-2 border border-amber-300 dark:border-amber-600 text-sm font-medium rounded-md text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
-                              title="Edit Domain"
+                              title="Edit Cluster"
                             >
                               <Edit2 className="w-4 h-4" />
                             </Link>
                             <button
                               onClick={() => setDomainToDelete(domain)}
                               className="inline-flex items-center px-3 py-2 border border-red-300 dark:border-red-600 text-sm font-medium rounded-md text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors"
-                              title="Delete Domain"
+                              title="Delete Cluster"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -177,8 +177,8 @@ export default function Index({ domains = { data: [], current_page: 1, last_page
               </>
             ) : (
               <div className="px-6 py-16 text-center">
-                <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">No domains yet</p>
-                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Create your first domain to get started</p>
+                <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">No clusters yet</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Create your first cluster to get started</p>
               </div>
             )}
           </div>
@@ -195,8 +195,8 @@ export default function Index({ domains = { data: [], current_page: 1, last_page
             setDomainToDelete(null);
           }
         }}
-        title="Delete Domain"
-        description={`Are you sure you want to delete the domain "${domainToDelete?.domain_name}"? This action cannot be undone and may affect existing evaluations.`}
+        title="Delete Cluster"
+        description={`Are you sure you want to delete the cluster "${domainToDelete?.domain_name}"? This action cannot be undone and may affect existing evaluations.`}
       />
     </AppLayout>
   );

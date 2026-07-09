@@ -156,7 +156,7 @@ export default function SubmissionsIndex() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by project code, title, or domain..."
+              placeholder="Search by project code, title, or cluster..."
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             />
           </div>
@@ -267,7 +267,7 @@ export default function SubmissionsIndex() {
                   <tr>
                     <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Code</th>
                     <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Title</th>
-                    <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Domain</th>
+                    <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Cluster</th>
                     <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Submitted</th>
                     <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Status</th>
                     <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.secondary)}>Action</th>

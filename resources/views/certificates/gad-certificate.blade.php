@@ -314,7 +314,7 @@
                     <span class="info-value">{{ $project_code }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Domain:</span>
+                    <span class="info-label">Cluster:</span>
                     <span class="info-value">{{ $domain }}</span>
                 </div>
                 <div class="info-row info-full">
@@ -435,7 +435,7 @@
                     <td style="width: 50%; text-align: center; padding: 20px 10px; vertical-align: top;">
                         <div style="border-top: 2px solid #2c3e50; margin-bottom: 8px;"></div>
                         <div style="font-weight: bold; font-size: 11px; color: #2c3e50; margin-top: 2px;">{{ $evaluator['name'] }}</div>
-                        <div style="font-size: 10px; color: #7f8c8d;">Domain Evaluator</div>
+                        <div style="font-size: 10px; color: #7f8c8d;">Cluster Evaluator</div>
                     </td>
                     @if($loop->iteration % 2 == 0)
                     </tr><tr>

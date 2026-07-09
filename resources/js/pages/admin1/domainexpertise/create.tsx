@@ -22,21 +22,21 @@ export default function Create({}: Props) {
     <AppLayout
       breadcrumbs={[
         { title: 'Dashboard', href: route('dashboard') },
-        { title: 'Domain Expertise', href: route('domain.index') },
+        { title: 'Cluster', href: route('domain.index') },
         { title: 'Create', href: route('domain.create') },
       ]}
       sidebarOpen={true}
     >
-      <Head title="Create Domain Expertise" />
+      <Head title="Create Cluster" />
 
       <div className="min-h-screen bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Create Domain Expertise
+              Create Cluster
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Add a new domain expertise area for evaluators.
+              Add a new cluster for evaluators.
             </p>
           </div>
 
@@ -44,7 +44,7 @@ export default function Create({}: Props) {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="domain_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Domain Name
+                  Cluster Name
                 </label>
                 <input
                   type="text"
@@ -87,7 +87,7 @@ export default function Create({}: Props) {
                   disabled={processing}
                   className="px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition disabled:opacity-50"
                 >
-                  {processing ? 'Creating...' : 'Create Domain'}
+                  {processing ? 'Creating...' : 'Create Cluster'}
                 </button>
               </div>
             </form>

@@ -68,7 +68,7 @@ function RemarksAndProjectInfo({ data, setData, remarks, domains, phases, errors
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>
-                Domain
+                Cluster
               </label>
               <NativeSelect
                 value={data.domain_id}
@@ -232,7 +232,7 @@ function ReviewSubmit({ data, initialDocs, domainName, phaseName }: any) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Domain</dt>
+              <dt className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>Cluster</dt>
               <dd className={combineTheme('mt-1 text-base', themeClasses.text.primary)}>{domainName}</dd>
             </div>
             <div>

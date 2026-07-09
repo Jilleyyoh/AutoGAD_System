@@ -308,7 +308,7 @@ export default function Index({ projects = { data: [], current_page: 1, last_pag
                                                 Organization
                                             </th>
                                             <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.tertiary)}>
-                                                Domain
+                                                Cluster
                                             </th>
                                             <th className={combineTheme('px-6 py-3 text-left text-xs font-medium uppercase tracking-wider', themeClasses.text.tertiary)}>
                                                 Phase

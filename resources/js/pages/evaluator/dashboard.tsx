@@ -99,7 +99,7 @@ export default function Dashboard({ evaluator, stats }: Props) {
                                 </h1>
                                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
-                                        <p className={combineTheme('text-xs font-medium uppercase tracking-wider', themeClasses.text.tertiary)}>Domain Expertise</p>
+                                        <p className={combineTheme('text-xs font-medium uppercase tracking-wider', themeClasses.text.tertiary)}>Cluster</p>
                                         <p className={combineTheme('text-sm font-semibold', themeClasses.text.primary)}>{evaluator.domain_expertise}</p>
                                     </div>
                                     <div>
