@@ -57,6 +57,7 @@ interface Document {
     upload_date: string;
     file_path: string;
     drive_link: string;
+    download_route: string;
 }
 
 interface CertificateData {
@@ -318,6 +319,74 @@ export default function CertificationShow({
                                 </div>
                             </div>
 
+                            {/* Documents */}
+                            {documents.length > 0 && (
+                                <div className={combineTheme('rounded-lg shadow p-6', themeClasses.card.base)}>
+                                    <h2 className={combineTheme('text-lg font-semibold mb-4 flex items-center gap-2', themeClasses.text.primary)}>
+                                        <FileText className="w-5 h-5 text-green-600" />
+                                        Project Documents ({documents.length})
+                                    </h2>
+
+                                    <div className="space-y-2">
+                                        {documents.map((doc) => (
+                                            <div
+                                                key={doc.id}
+                                                className={combineTheme(
+                                                    'flex items-center justify-between p-3 border rounded-lg transition-colors',
+                                                    themeClasses.border.primary
+                                                )}
+                                            >
+                                                <div className="flex-1">
+                                                    <p className={combineTheme('font-medium', themeClasses.text.primary)}>
+                                                        {doc.file_name}
+                                                    </p>
+
+                                                    <p className={combineTheme('text-xs', themeClasses.text.tertiary)}>
+                                                        {doc.document_type} • Uploaded: {doc.upload_date}
+                                                    </p>
+
+                                                    {doc.description && (
+                                                        <p className={combineTheme('text-sm mt-1', themeClasses.text.secondary)}>
+                                                            {doc.description}
+                                                        </p>
+                                                    )}
+
+                                                    {doc.drive_link && (
+                                                        <p className={combineTheme('text-sm mt-1', themeClasses.text.secondary)}>
+                                                            Link:{' '}
+                                                            <a
+                                                                href={
+                                                                    doc.drive_link.startsWith('http')
+                                                                        ? doc.drive_link
+                                                                        : `https://${doc.drive_link}`
+                                                                }
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300"
+                                                            >
+                                                                {doc.drive_link}
+                                                            </a>
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <div className="flex gap-2 ml-4">
+                                                    {!doc.download_route && !doc.drive_link && (
+                                                        <a
+                                                            href={doc.download_route}
+                                                            className="p-2 rounded-lg text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                                                            title="Download"
+                                                        >
+                                                            <Download className="w-5 h-5" />
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Consolidated Score */}
                             <div className={`bg-gradient-to-r ${getScoreColorScheme(average_score).bg} border ${getScoreColorScheme(average_score).border} rounded-lg p-8 mb-8`}>
                                 <div className="flex items-start justify-between">
@@ -433,35 +502,7 @@ export default function CertificationShow({
                                 </div>
                             </div>
 
-                            {/* Documents */}
-                            {documents.length > 0 && (
-                                <div className={combineTheme('rounded-lg shadow p-6', themeClasses.card.base)}>
-                                    <h2 className={combineTheme('text-lg font-semibold mb-4 flex items-center gap-2', themeClasses.text.primary)}>
-                                        <FileText className="w-5 h-5 text-green-600" />
-                                        Project Documents ({documents.length})
-                                    </h2>
-                                    <div className="space-y-2">
-                                        {documents.map((doc) => (
-                                            <div key={doc.id} className={combineTheme('flex items-center justify-between p-3 border rounded-lg transition-colors', themeClasses.border.primary)}>
-                                                <div className="flex-1">
-                                                    <p className={combineTheme('font-medium', themeClasses.text.primary)}>{doc.file_name}</p>
-                                                    <p className={combineTheme('text-xs', themeClasses.text.tertiary)}>
-                                                        {doc.document_type} • Uploaded: {doc.upload_date}
-                                                    </p>
-                                                    {doc.description && (
-                                                        <p className={combineTheme('text-sm mt-1', themeClasses.text.secondary)}>{doc.description}</p>
-                                                    )}
-                                                    {doc.drive_link && (
-                                                        <p className={combineTheme('text-sm mt-1 text-blue-600 dark:text-blue-400', themeClasses.text.secondary)}>Link: {doc.drive_link}</p>
-                                                    )}
-                                                </div>
-                                                <div className="flex gap-2 ml-4">
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
+                            
                         </div>
 
                         {/* Sidebar - Certificate Generation */}
