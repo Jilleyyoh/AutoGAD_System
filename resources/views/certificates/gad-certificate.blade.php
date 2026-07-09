@@ -215,10 +215,16 @@
             padding-left: 15px;
         }
 
-        .score-cell {
+        .category-score-cell {
             text-align: center;
             font-weight: bold;
-            color: #27ae60;
+            color: #2c3e50;
+        }
+
+        .score-cell {
+            text-align: center;
+            font-weight: normal;
+            color: #2c3e50;
         }
 
         .remarks-cell {
@@ -233,6 +239,11 @@
             border-collapse: collapse;
             font-size: 9px;
             margin-bottom: 8px;
+        }
+
+        .interpretation-table th:first-child,
+        .interpretation-table td:first-child {
+            width: 80px;
         }
 
         .interpretation-table th,
@@ -354,40 +365,63 @@
         </div>
 
         <!-- Individual Evaluations Table -->
-        <div class="section">
-            <div class="section-title">DETAILED EVALUATION RESULTS</div>
+        <div class="section" style="page-break-before: always;">
+            
+            <div class="info-row" style="margin-bottom: 15px;">
+                <span class="info-label">Title:</span>
+                <span class="info-value" style="font-weight: bold; font-size: 13px;">
+                    {{ $project_title }}
+                </span>
+            </div>
+
             <table class="evaluations-table">
                 <thead>
                     <tr>
-                        <th>Category</th>
-                        <th>Question</th>
-                        <th style="width: 50px;">Score</th>
-                        <th style="width: 100px;">Remarks</th>
+                        <th>Questionnaire</th>
+                        <th style="width: 60px;">Score</th>
+                        <th style="width: 120px;">Remarks</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    @foreach($evaluations as $eval_idx => $evaluation)
-                        @php
-                            $is_first_eval = true;
-                            $eval_row_count = 0;
-                            foreach($evaluation['scores_by_category'] as $category) {
-                                $eval_row_count += count($category['items']);
-                            }
-                        @endphp
-                        @foreach($evaluation['scores_by_category'] as $cat_idx => $category)
-                            @php $is_first_category = true; @endphp
-                            @foreach($category['items'] as $item_idx => $item)
+                    @foreach($evaluations as $evaluation)
+
+                        @foreach($evaluation['scores_by_category'] as $category)
+
+                            {{-- Category Row --}}
+                            <tr style="background-color: #f5f5f5; font-weight: bold;">
+                                <td class="category-cell">
+                                    {{ $category['category_name'] }}
+                                </td>
+
+                                <td class="category-score-cell">
+                                    {{ number_format($category['subtotal'], 2) }}
+                                </td>
+
+                                <td class="remarks-cell">
+                                    -
+                                </td>
+                            </tr>
+
+                            {{-- Question Rows --}}
+                            @foreach($category['items'] as $item)
                                 <tr>
-                                    @if($item_idx == 0)
-                                        <td rowspan="{{ count($category['items']) }}" class="category-cell">{{ $category['category_name'] }}</td>
-                                    @endif
-                                    <td class="question-cell">{{ $item['question'] }}</td>
-                                    <td class="score-cell">{{ number_format($item['score'], 2) }}</td>
-                                    <td class="remarks-cell">{{ $item['remarks'] ?? '-' }}</td>
+                                    <td class="question-cell" style="padding-left: 20px;">
+                                        {{ $item['question'] }}
+                                    </td>
+
+                                    <td class="score-cell">
+                                        {{ number_format($item['score'], 2) }}
+                                    </td>
+
+                                    <td class="remarks-cell">
+                                        {{ $item['remarks'] ?? '-' }}
+                                    </td>
                                 </tr>
                             @endforeach
+
                         @endforeach
-                        @php $is_first_eval = false; @endphp
+
                     @endforeach
                 </tbody>
             </table>
@@ -395,7 +429,7 @@
 
         <!-- Score Interpretation Reference -->
         <div class="section">
-            <div class="section-title">SCORE INTERPRETATION REFERENCE</div>
+            <div class="section-title">Interpretation of the GAD Score</div>
             <table class="interpretation-table">
                 <thead>
                     <tr>

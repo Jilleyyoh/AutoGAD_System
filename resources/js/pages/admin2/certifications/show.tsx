@@ -442,31 +442,35 @@ export default function CertificationShow({
                                         <div className="space-y-4 mb-4">
                                             {evaluation.scores_by_category.map((category, catIdx) => (
                                                 <div key={catIdx} className="bg-gray-50 dark:bg-gray-900 rounded p-4">
-                                                    <div className="flex items-center justify-between mb-3">
-                                                        <h4 className={combineTheme('font-semibold', themeClasses.text.primary)}>{category.category_name}</h4>
-                                                        <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+        
+                                                    {/* Category Header */}
+                                                    <div className="grid grid-cols-[1fr_80px] gap-4 items-center border-b border-gray-200 dark:border-gray-700 pb-2 mb-3">
+                                                        <h4 className={combineTheme('font-semibold', themeClasses.text.primary)}>
+                                                            {category.category_name}
+                                                        </h4>
+        
+                                                        <span className="text-center font-bold text-blue-600 dark:text-blue-400">
                                                             {category.subtotal.toFixed(2)}
                                                         </span>
                                                     </div>
+        
+                                                    {/* Questions */}
                                                     <div className="space-y-2">
                                                         {category.items.map((item, itemIdx) => (
-                                                            <div key={itemIdx} className="flex justify-between text-sm">
-                                                                <span className={combineTheme('', themeClasses.text.secondary)}>{item.question}</span>
-                                                                <span className={combineTheme('font-medium ml-10', themeClasses.text.primary)}>{item.score}</span>
+                                                            <div
+                                                                key={itemIdx}
+                                                                className="grid grid-cols-[1fr_80px] gap-4 items-start text-sm"                                                            >
+                                                                <span className={combineTheme('', themeClasses.text.secondary)}>
+                                                                    {item.question}
+                                                                </span>
+        
+                                                                <span className={combineTheme('text-center font-medium', themeClasses.text.primary)}>
+                                                                    {item.score}
+                                                                </span>
                                                             </div>
                                                         ))}
                                                     </div>
-                                                    {category.items.some(i => i.remarks) && (
-                                                        <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                                                            <p className={combineTheme('text-xs font-medium mb-1', themeClasses.text.tertiary)}>Remarks:</p>
-                                                            <p className={combineTheme('text-sm italic', themeClasses.text.secondary)}>
-                                                                {category.items
-                                                                    .filter(i => i.remarks)
-                                                                    .map(i => i.remarks)
-                                                                    .join(' | ')}
-                                                            </p>
-                                                        </div>
-                                                    )}
+        
                                                 </div>
                                             ))}
                                         </div>
@@ -557,18 +561,7 @@ export default function CertificationShow({
                                             </button>
                                         ) : (
                                             <form onSubmit={handleGenerateCertificate} className="space-y-3">
-                                                <div>
-                                                    <label className={combineTheme('block text-sm font-medium mb-2', themeClasses.text.primary)}>
-                                                        Additional Remarks (Optional)
-                                                    </label>
-                                                    <textarea
-                                                        value={remarks}
-                                                        onChange={(e) => setRemarks(e.target.value)}
-                                                        placeholder="Add any remarks about this certification..."
-                                                        rows={3}
-                                                        className={combineTheme('w-full px-3 py-2 rounded-lg text-sm', themeClasses.input.base, themeClasses.input.focus, themeClasses.input.placeholder)}
-                                                    />
-                                                </div>
+                                                
                                                 <button
                                                     type="submit"
                                                     disabled={isGenerating}

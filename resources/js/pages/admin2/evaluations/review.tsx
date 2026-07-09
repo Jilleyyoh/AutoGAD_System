@@ -307,41 +307,54 @@ export default function Review({ project, evaluations, average_score, evaluation
                                 {/* Scores by Category */}
                                 <div className="space-y-4 mb-4">
                                     {evaluation.scores_by_category.map((category, catIdx) => (
-                                        <div key={catIdx} className="bg-gray-50 rounded p-4">
-                                            <div className="flex items-center justify-between mb-3">
-                                                <h4 className="font-semibold text-gray-900">{category.category_name}</h4>
-                                                <span className="text-sm font-bold text-blue-600">
+                                        <div key={catIdx} className="bg-gray-50 dark:bg-gray-900 rounded p-4">
+
+                                            {/* Category Header */}
+                                            <div className="grid grid-cols-[1fr_80px_250px] gap-4 items-center border-b border-gray-200 dark:border-gray-700 pb-2 mb-3">
+                                                <h4 className={combineTheme('font-semibold', themeClasses.text.primary)}>
+                                                    {category.category_name}
+                                                </h4>
+
+                                                <span className="text-center font-bold text-blue-600 dark:text-blue-400">
                                                     {category.subtotal.toFixed(2)}
                                                 </span>
+
+                                                <span className={combineTheme('font-semibold text-sm', themeClasses.text.primary)}>
+                                                    
+                                                </span>
                                             </div>
+
+                                            {/* Questions */}
                                             <div className="space-y-2">
                                                 {category.items.map((item, itemIdx) => (
-                                                    <div key={itemIdx} className="flex justify-between text-sm">
-                                                        <span className="text-gray-700">{item.question}</span>
-                                                        <span className="font-medium text-gray-900 ml-10">{item.score}</span>
+                                                    <div
+                                                        key={itemIdx}
+                                                        className="grid grid-cols-[1fr_80px_250px] gap-4 items-start text-sm"
+                                                    >
+                                                        <span className={combineTheme('', themeClasses.text.secondary)}>
+                                                            {item.question}
+                                                        </span>
+
+                                                        <span className={combineTheme('text-center font-medium', themeClasses.text.primary)}>
+                                                            {item.score}
+                                                        </span>
+
+                                                        <span className={combineTheme('italic', themeClasses.text.secondary)}>
+                                                            {item.remarks || '-'}
+                                                        </span>
                                                     </div>
                                                 ))}
                                             </div>
-                                            {category.items.some(i => i.remarks) && (
-                                                <div className="mt-3 pt-3 border-t border-gray-200">
-                                                    <p className="text-xs font-medium text-gray-600 mb-1">Remarks:</p>
-                                                    <p className="text-sm text-gray-700 italic">
-                                                        {category.items
-                                                            .filter(i => i.remarks)
-                                                            .map(i => i.remarks)
-                                                            .join(' | ')}
-                                                    </p>
-                                                </div>
-                                            )}
+
                                         </div>
                                     ))}
                                 </div>
 
                                 {/* Final Remarks */}
                                 {evaluation.final_remarks && (
-                                    <div className="bg-yellow-50 border border-yellow-200 rounded p-4">
-                                        <p className="text-sm font-medium text-yellow-900 mb-1">Final Remarks</p>
-                                        <p className="text-sm text-yellow-800">{evaluation.final_remarks}</p>
+                                    <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded p-4">
+                                        <p className={combineTheme('text-sm font-medium mb-1', themeClasses.text.primary)}>Final Remarks</p>
+                                        <p className={combineTheme('text-sm', themeClasses.text.secondary)}>{evaluation.final_remarks}</p>
                                     </div>
                                 )}
                             </div>

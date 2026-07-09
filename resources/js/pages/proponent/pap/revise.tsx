@@ -330,7 +330,7 @@ export default function Revise() {
   const steps = [
     { number: 1, name: 'Remarks & Project Info' },
     { number: 2, name: 'Documents' },
-    { number: 3, name: 'Review & Submit' },
+    { number: 3, name: 'Review' },
   ];
 
   // Initialize supporting documents with old docs pre-loaded
