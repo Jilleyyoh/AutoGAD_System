@@ -1309,6 +1309,7 @@ export default function Show({
                                     const currentIndex = tabs.findIndex(t => t.id === activeTab);
                                     if (currentIndex > 0) {
                                         setActiveTab(tabs[currentIndex - 1].id);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
                                     }
                                 }}
                                 className={combineTheme('flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200',
