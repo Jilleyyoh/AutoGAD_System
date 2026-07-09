@@ -1101,50 +1101,58 @@ export default function Show({
                                     <h3 className={combineTheme('text-2xl font-bold mb-6', themeClasses.text.primary)}>
                                         Category Breakdown
                                     </h3>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                        {categories.map((category, index) => {
-                                            const catScore = categoryScores[category.id];
-                                            const categoryPercentage = catScore.max > 0 ? (catScore.total / catScore.max) * 100 : 0;
-                                            
-                                            return (
-                                                <div
-                                                    key={`result-${category.id}`}
-                                                    className={combineTheme('p-6 rounded-2xl border-2', themeClasses.border.primary, 'bg-white dark:bg-slate-800/60 hover:shadow-lg transition-all')}
-                                                >
-                                                    <div className="flex items-center gap-3 mb-4">
-                                                        <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-                                                            {index + 1}
-                                                        </div>
-                                                        <h4 className={combineTheme('font-bold text-lg', themeClasses.text.primary)}>
-                                                            {category.name}
-                                                        </h4>
-                                                    </div>
-                                                    
-                                                    <div className="space-y-4">
-                                                        <div className="flex items-center justify-between">
-                                                            <span className={combineTheme('text-2xl font-bold', themeClasses.text.primary)}>
-                                                                {catScore.total.toFixed(2)}
-                                                            </span>
-                                                            <span className={combineTheme('text-sm', themeClasses.text.secondary)}>
-                                                                / {catScore.max.toFixed(0)} pts
-                                                            </span>
-                                                        </div>
-                                                        
-                                                        <div className="relative">
-                                                            <div className={combineTheme('w-full rounded-full h-3', 'bg-gray-200 dark:bg-slate-600')}>
-                                                                <div
-                                                                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-500"
-                                                                    style={{ width: `${Math.min(categoryPercentage, 100)}%` }}
-                                                                />
-                                                            </div>
-                                                            <span className="absolute -top-6 right-0 text-sm font-bold text-blue-600 dark:text-blue-400">
-                                                                {Math.round(categoryPercentage)}%
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                                    <div className={combineTheme('rounded-2xl border-2 overflow-hidden', themeClasses.border.primary)}>
+                                        <table className="w-full">
+                                            <thead>
+                                                <tr className={combineTheme('border-b-2', themeClasses.border.primary, 'bg-gray-50 dark:bg-slate-800/60')}>
+                                                    <th className={combineTheme('px-6 py-4 text-left text-xs font-bold uppercase tracking-wide', themeClasses.text.tertiary)}>No.</th>
+                                                    <th className={combineTheme('px-6 py-4 text-left text-xs font-bold uppercase tracking-wide', themeClasses.text.tertiary)}>Category</th>
+                                                    <th className={combineTheme('px-6 py-4 text-left text-xs font-bold uppercase tracking-wide', themeClasses.text.tertiary)}>Score</th>
+                                                    <th className={combineTheme('px-6 py-4 text-left text-xs font-bold uppercase tracking-wide', themeClasses.text.tertiary)}>Percentage</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {categories.map((category, index) => {
+                                                    const catScore = categoryScores[category.id];
+                                                    const categoryPercentage = catScore.max > 0 ? (catScore.total / catScore.max) * 100 : 0;
+
+                                                    return (
+                                                        <tr
+                                                            key={`result-${category.id}`}
+                                                            className={combineTheme('border-b last:border-b-0', themeClasses.border.primary, 'hover:bg-gray-50 dark:hover:bg-slate-800/40 transition-colors')}
+                                                        >
+                                                            <td className="px-6 py-4">
+                                                                <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm">
+                                                                    {index + 1}
+                                                                </div>
+                                                            </td>
+                                                            <td className={combineTheme('px-6 py-4 font-bold', themeClasses.text.primary)}>
+                                                                {category.name}
+                                                            </td>
+                                                            <td className={combineTheme('px-6 py-4', themeClasses.text.primary)}>
+                                                                <span className="font-bold">{catScore.total.toFixed(2)}</span>
+                                                                <span className={combineTheme('text-sm ml-1', themeClasses.text.secondary)}>
+                                                                    / {catScore.max.toFixed(0)} pts
+                                                                </span>
+                                                            </td>
+                                                            <td className="px-6 py-4">
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className={combineTheme('flex-1 rounded-full h-2.5', 'bg-gray-200 dark:bg-slate-600')}>
+                                                                        <div
+                                                                            className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full transition-all duration-500"
+                                                                            style={{ width: `${Math.min(categoryPercentage, 100)}%` }}
+                                                                        />
+                                                                    </div>
+                                                                    <span className="text-sm font-bold text-blue-600 dark:text-blue-400 w-10 text-right">
+                                                                        {Math.round(categoryPercentage)}%
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
 
@@ -1295,39 +1303,37 @@ export default function Show({
 
                     {/* Tab Navigation Buttons */}
                     <div className="flex justify-between items-center mt-6">
-                        {/* <button
-                            onClick={() => {
-                                const currentIndex = tabs.findIndex(t => t.id === activeTab);
-                                if (currentIndex > 0) {
-                                    setActiveTab(tabs[currentIndex - 1].id);
-                                }
-                            }}
-                            disabled={activeTab === 'info'}
-                            className={combineTheme('flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200', 
-                                activeTab === 'info' 
-                                    ? 'opacity-50 cursor-not-allowed bg-gray-100 dark:bg-slate-700 text-gray-400'
-                                    : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
-                            )}
-                        >
-                            ← Previous
-                        </button> */}
+                        {activeTab !== 'info' ? (
+                            <button
+                                onClick={() => {
+                                    const currentIndex = tabs.findIndex(t => t.id === activeTab);
+                                    if (currentIndex > 0) {
+                                        setActiveTab(tabs[currentIndex - 1].id);
+                                    }
+                                }}
+                                className={combineTheme('flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200',
+                                    'bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
+                                )}
+                            >
+                                ← Previous
+                            </button>
+                        ) : <div />}
 
-                        {/* <button
-                            onClick={() => {
-                                const currentIndex = tabs.findIndex(t => t.id === activeTab);
-                                if (currentIndex < tabs.length - 1) {
-                                    setActiveTab(tabs[currentIndex + 1].id);
-                                }
-                            }}
-                            disabled={activeTab === 'result'}
-                            className={combineTheme('flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200',
-                                activeTab === 'result'
-                                    ? 'opacity-50 cursor-not-allowed bg-gray-100 dark:bg-slate-700 text-gray-400'
-                                    : 'bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
-                            )}
-                        >
-                            Next →
-                        </button> */}
+                        {activeTab !== 'result' && (
+                            <button
+                                onClick={() => {
+                                    const currentIndex = tabs.findIndex(t => t.id === activeTab);
+                                    if (currentIndex < tabs.length - 1) {
+                                        setActiveTab(tabs[currentIndex + 1].id);
+                                    }
+                                }}
+                                className={combineTheme('flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200',
+                                    'bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
+                                )}
+                            >
+                                Next →
+                            </button>
+                        )}
                     </div>
                 </div>
 
