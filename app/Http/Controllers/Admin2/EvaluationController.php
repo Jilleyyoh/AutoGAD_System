@@ -158,14 +158,17 @@ class EvaluationController extends Controller
                         'category_id' => $categoryId,
                         'category_name' => $categoryName,
                         'subtotal' => (float)$categoryTotal,
-                        'items' => $categoryScores->map(function ($score) {
+                        'items' => $categoryScores->sortBy(function ($score) {
+                            return $score->questionnaireItem->display_order ?? 999;
+                        })->map(function ($score) {
                             return [
                                 'question' => $score->questionnaireItem->question,
                                 'score' => (float)$score->score,
                                 'remarks' => $score->remarks,
                             ];
-                        })->toArray(),
+                        })->values()->toArray(),
                     ];
+
                 })->sortBy(function ($category) use ($evaluation) {
                     $snapshot = $evaluation->questionnaireVersion?->snapshot ?? [];
                     $snapshotCategory = collect($snapshot['categories'] ?? [])->firstWhere('id', $category['category_id']);

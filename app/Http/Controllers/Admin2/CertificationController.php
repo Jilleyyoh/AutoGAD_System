@@ -152,13 +152,15 @@ class CertificationController extends Controller
                             'category_id' => $categoryId,
                             'category_name' => $categoryName,
                             'subtotal' => (float)$categoryTotal,
-                            'items' => $categoryScores->map(function ($score) {
+                            'items' => $categoryScores->sortBy(function ($score) {
+                                return $score->questionnaireItem->display_order ?? 999;
+                            })->map(function ($score) {
                                 return [
                                     'question' => $score->questionnaireItem->question,
                                     'score' => (float)$score->score,
                                     'remarks' => $score->remarks,
                                 ];
-                            })->toArray(),
+                            })->values()->toArray(),
                         ];
                     })->sortBy(function ($category) use ($evaluation) {
                         $snapshot = $evaluation->questionnaireVersion?->snapshot ?? [];
@@ -445,7 +447,10 @@ class CertificationController extends Controller
                         'category_id' => $categoryId,
                         'category_name' => $frozenCategory['category_name'] ?? 'Unknown Category',
                         'subtotal' => (float)$categoryTotal,
-                        'items' => $categoryScores->map(function ($score) use ($frozenQuestions) {
+                        'items' => $categoryScores->sortBy(function ($score) use ($frozenQuestions) {
+                            $frozenQuestion = $frozenQuestions->get($score->questionnaire_item_id);
+                            return $frozenQuestion['display_order'] ?? 999;
+                        })->map(function ($score) use ($frozenQuestions) {
                             $frozenQuestion = $frozenQuestions->get($score->questionnaire_item_id);
                             return [
                                 'question' => $frozenQuestion['question'] ?? '(Question no longer available)',
