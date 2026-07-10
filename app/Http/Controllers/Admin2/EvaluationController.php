@@ -166,6 +166,10 @@ class EvaluationController extends Controller
                             ];
                         })->toArray(),
                     ];
+                })->sortBy(function ($category) use ($evaluation) {
+                    $snapshot = $evaluation->questionnaireVersion?->snapshot ?? [];
+                    $snapshotCategory = collect($snapshot['categories'] ?? [])->firstWhere('id', $category['category_id']);
+                    return $snapshotCategory['display_order'] ?? 999;
                 })->values()->toArray();
 
                 // Get version information

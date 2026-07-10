@@ -160,6 +160,10 @@ class CertificationController extends Controller
                                 ];
                             })->toArray(),
                         ];
+                    })->sortBy(function ($category) use ($evaluation) {
+                        $snapshot = $evaluation->questionnaireVersion?->snapshot ?? [];
+                        $snapshotCategory = collect($snapshot['categories'] ?? [])->firstWhere('id', $category['category_id']);
+                        return $snapshotCategory['display_order'] ?? 999;
                     })->values()->toArray();
 
                 // Get version information
@@ -450,6 +454,9 @@ class CertificationController extends Controller
                             ];
                         })->values()->toArray(),
                     ];
+                })->sortBy(function ($category, $categoryId) use ($frozenCategories) {
+                    $frozenCategory = $frozenCategories->get($categoryId);
+                    return $frozenCategory['display_order'] ?? 999;
                 })->values()->toArray();
 
                 return [
