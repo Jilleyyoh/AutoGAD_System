@@ -17,6 +17,7 @@ class QuestionnaireVersion extends Model
         'snapshot',
         'passing_score',
         'archived_at',
+        'created_by', 
     ];
 
     protected $casts = [
@@ -84,5 +85,13 @@ class QuestionnaireVersion extends Model
     public function evaluationCount(): int
     {
         return $this->evaluations()->count();
+    }
+
+    /**
+     * Get the user who created this version
+     */
+    public function createdBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

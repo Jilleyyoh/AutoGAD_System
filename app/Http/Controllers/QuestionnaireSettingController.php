@@ -101,7 +101,7 @@ class QuestionnaireSettingController extends Controller
         $interpretations = ScoreInterpretation::orderBy('score_min')->get();
 
         // Get all questionnaire versions for version history display
-        $versions = \App\Models\QuestionnaireVersion::with('evaluations')
+        $versions = \App\Models\QuestionnaireVersion::with(['evaluations', 'createdBy'])
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(function ($version) {
@@ -116,6 +116,7 @@ class QuestionnaireSettingController extends Controller
                     'description' => $version->description,
                     'evaluation_count' => $version->evaluations->count(),
                     'snapshot' => $snapshot,
+                    'created_by' => $version->createdBy?->name ?? 'Unknown',
                 ];
             })
             ->toArray();

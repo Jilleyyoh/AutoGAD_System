@@ -55,6 +55,7 @@ interface VersionData {
   created_at: string;
   description?: string;
   evaluation_count: number;
+  created_by?: string; // ← add this
   snapshot: {
     categories: any[];
     questions?: any[];
@@ -545,10 +546,19 @@ export default function Index({ settings, categories = [], interpretations = [],
 
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <Settings className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    <Settings className="w-6 h-6" />
                     Questionnaire Settings
                   </h2>
-                  <p className="text-gray-600 dark:text-gray-400 mt-2">Configure version and passing score threshold</p>
+
+                  <p className="text-gray-600 dark:text-gray-400 mt-2">
+                    Configure the questionnaire version, passing score threshold, and update questionnaire categories and questions.
+                  </p>
+
+                  <div className="mt-4 rounded-lg border p-4">
+                    <p className="text-sm">
+                      <span className="font-semibold">Note:</span> Always enter a new version number when modifying the questionnaire, including its categories, questions, or passing score, to save the changes as a new version.
+                    </p>
+                  </div>
                 </div>
                 
                 <form onSubmit={handleSettingsSubmit} className="space-y-6" noValidate>
@@ -592,12 +602,6 @@ export default function Index({ settings, categories = [], interpretations = [],
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                    <p className="text-blue-800 dark:text-blue-300 text-sm">
-                      <strong>Current Configuration:</strong> Maximum possible score is <span className="font-bold text-lg text-blue-600 dark:text-blue-400">{getSafeMaxScore().toFixed(2)}</span> from {getTotalQuestions()} questions across {categories.length} categories.
-                    </p>
-                  </div>
-
                   <div className="flex justify-end gap-4">
                     <button
                       type="submit"
@@ -606,7 +610,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                     >
                       {processing ? 'Updating...' : <>
                         <CheckCircle2 className="w-4 h-4" />
-                        Update Settings
+                        Update Version
                       </>}
                     </button>
                   </div>
@@ -713,46 +717,54 @@ export default function Index({ settings, categories = [], interpretations = [],
                                     </p>
                                   )}
 
-                                  <div className="grid grid-cols-4 gap-4 mt-3 text-sm">
+                                  <div className="grid grid-cols-5 gap-4 mt-3 text-sm">
                                     <div>
-                                      <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                        Created
-                                      </p>
-                                      <p className={combineTheme('text-xs', themeClasses.text.primary)}>
-                                        {new Date(version.created_at).toLocaleDateString('en-US', {
-                                          year: 'numeric',
-                                          month: 'short',
-                                          day: 'numeric',
-                                          hour: '2-digit',
-                                          minute: '2-digit',
-                                        })}
-                                      </p>
+                                        <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
+                                            Created
+                                        </p>
+                                        <p className={combineTheme('text-xs', themeClasses.text.primary)}>
+                                            {new Date(version.created_at).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'short',
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            })}
+                                        </p>
                                     </div>
                                     <div>
-                                      <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                        CATEGORIES
-                                      </p>
-                                      <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
-                                        {version.snapshot.categories.length}
-                                      </p>
+                                        <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
+                                            Last Edited By
+                                        </p>
+                                        <p className={combineTheme('text-xs', themeClasses.text.primary)}>
+                                            {version.created_by ?? 'Unknown'}
+                                        </p>
                                     </div>
                                     <div>
-                                      <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                        QUESTIONS
-                                      </p>
-                                      <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
-                                        {version.snapshot.questions?.length || version.snapshot.question_count || 0}
-                                      </p>
+                                        <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
+                                            CATEGORIES
+                                        </p>
+                                        <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
+                                            {version.snapshot.categories.length}
+                                        </p>
                                     </div>
                                     <div>
-                                      <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                        EVALUATIONS USING THIS VERSION
-                                      </p>
-                                      <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
-                                        {version.evaluation_count || 0}
-                                      </p>
+                                        <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
+                                            QUESTIONS
+                                        </p>
+                                        <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
+                                            {version.snapshot.questions?.length || version.snapshot.question_count || 0}
+                                        </p>
                                     </div>
-                                  </div>
+                                    <div>
+                                        <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
+                                            EVALUATIONS USING THIS VERSION
+                                        </p>
+                                        <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
+                                            {version.evaluation_count || 0}
+                                        </p>
+                                    </div>
+                                </div>
                                 </div>
                               </div>
                             </div>

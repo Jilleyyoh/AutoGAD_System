@@ -50,6 +50,7 @@ class QuestionnaireVersionService
             'status' => 'active',
             'snapshot' => $snapshot,
             'passing_score' => $passingScore,
+            'created_by' => auth()->id(), // ← add this line
         ]);
 
         Log::info("Created questionnaire version {$versionNumber}", [
@@ -133,7 +134,8 @@ class QuestionnaireVersionService
      */
     public static function getAllVersions(): array
     {
-        return QuestionnaireVersion::orderByDesc('created_at')
+        return QuestionnaireVersion::with('createdBy')
+            ->orderByDesc('created_at')
             ->get()
             ->map(function ($version) {
                 return [
@@ -146,6 +148,7 @@ class QuestionnaireVersionService
                     'evaluation_count' => $version->evaluationCount(),
                     'is_locked' => $version->isLocked(),
                     'description' => $version->description,
+                    'created_by' => $version->createdBy?->name ?? 'Unknown', // ← add this
                 ];
             })
             ->toArray();
