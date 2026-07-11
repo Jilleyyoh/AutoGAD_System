@@ -30,10 +30,10 @@ export default function Welcome() {
                     <div className="w-full max-w-4xl text-center">
                         <div className="mb-12">
                             <h1 className="mb-6 text-5xl leading-tight font-bold md:text-6xl">
-                                Gender and Development Automated Evaluation System
+                                Gender-Inclusive Knowledge Management System
                             </h1>
                             <p className="mx-auto mb-8 max-w-2xl text-xl text-muted-foreground">
-                                Streamline your Gender and Development project evaluation with our comprehensive, automated assessment platform designed for modern organizations.
+                                Streamline your Gender and Development Evaluation with our comprehensive, automated assessment platform designed for modern organizations.
                             </p>
                             {!auth.user && (
                                 <Link
@@ -51,7 +51,7 @@ export default function Welcome() {
 
                 <footer className="border-t px-6 py-8">
                     <div className="mx-auto max-w-7xl text-center text-muted-foreground">
-                        <p>&copy; 2025 GAD Automated Evaluation System. All rights reserved.</p>
+                        <p>&copy; 2025 Gender-Inclusive Knowledge Management System. All rights reserved.</p>
                     </div>
                 </footer>
             </div>
