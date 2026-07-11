@@ -134,12 +134,7 @@ export default function ConversationShow() {
                                                 : 'bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 ml-auto max-w-2xl'
                                         }`}
                                     >
-                                        <div className="flex items-center justify-between mb-2">
-                                            <p className={`font-semibold text-sm ${
-                                                msg.replied_by ? 'text-gray-900 dark:text-white' : 'text-green-900 dark:text-green-100'
-                                            }`}>
-                                                {msg.replied_by ? 'Admin Response' : 'Your Message'}
-                                            </p>
+                                        <div className="flex items-center justify-between mb-2">                                  
                                             <time className="text-xs text-gray-500 dark:text-gray-400">
                                                 {new Date(msg.created_at).toLocaleString()}
                                             </time>

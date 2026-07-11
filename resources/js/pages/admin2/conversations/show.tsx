@@ -98,7 +98,7 @@ export default function Admin2ConversationShow() {
                                 {conversation.subject || 'Conversation'}
                             </h1>
                             <p className="text-gray-600 dark:text-gray-400 mt-2">
-                                View and reply to this conversation with the proponent
+                                View and reply to this conversation with the end-user.
                             </p>
                         </div>
                     </div>
@@ -132,11 +132,6 @@ export default function Admin2ConversationShow() {
                                         }`}
                                     >
                                         <div className="flex items-center justify-between mb-2">
-                                            <p className={`font-semibold text-sm ${
-                                                msg.replied_by ? 'text-green-900 dark:text-green-100' : 'text-gray-900 dark:text-white'
-                                            }`}>
-                                                {msg.replied_by ? 'Your Response' : 'Proponent Message'}
-                                            </p>
                                             <time className="text-xs text-gray-500 dark:text-gray-400">
                                                 {new Date(msg.created_at).toLocaleString()}
                                             </time>
