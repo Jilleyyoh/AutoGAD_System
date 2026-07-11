@@ -192,7 +192,10 @@ class CertificateController extends Controller
                         'category_id' => $categoryId,
                         'category_name' => $frozenCategory['category_name'] ?? 'Unknown Category',
                         'subtotal' => (float)$categoryTotal,
-                        'items' => $categoryScores->map(function ($score) use ($frozenQuestions) {
+                        'items' => $categoryScores->sortBy(function ($score) use ($frozenQuestions) {
+                            $frozenQuestion = $frozenQuestions->get($score->questionnaire_item_id);
+                            return $frozenQuestion['display_order'] ?? 999;
+                        })->map(function ($score) use ($frozenQuestions) {
                             $frozenQuestion = $frozenQuestions->get($score->questionnaire_item_id);
                             return [
                                 'question' => $frozenQuestion['question'] ?? '(Question no longer available)',
@@ -201,6 +204,9 @@ class CertificateController extends Controller
                             ];
                         })->values()->toArray(),
                     ];
+                })->sortBy(function ($category, $categoryId) use ($frozenCategories) {
+                    $frozenCategory = $frozenCategories->get($categoryId);
+                    return $frozenCategory['display_order'] ?? 999;
                 })->values()->toArray();
 
                 return [

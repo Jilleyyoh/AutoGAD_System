@@ -132,10 +132,8 @@ class CertificateController extends Controller
 
             // Build detailed evaluations data using FROZEN snapshot data, not live questionnaire tables
             $evaluations = $certificate->project->evaluations->map(function ($evaluation) {
-                // Get the frozen snapshot for this evaluation's version
                 $snapshot = $evaluation->questionnaireVersion?->snapshot;
 
-                // Fallback: if for some reason there's no version/snapshot, skip gracefully
                 if (!$snapshot) {
                     return [
                         'id' => $evaluation->id,
@@ -149,14 +147,11 @@ class CertificateController extends Controller
                     ];
                 }
 
-                // Index frozen questions and categories by ID for fast lookup
                 $frozenQuestions = collect($snapshot['questions'] ?? [])->keyBy('id');
                 $frozenCategories = collect($snapshot['categories'] ?? [])->keyBy('id');
 
-                // Get this evaluation's actual scores
                 $scores = $evaluation->scores;
 
-                // Group scores by the FROZEN question's category_id (not live relationship)
                 $scoresByCategory = $scores->groupBy(function ($score) use ($frozenQuestions) {
                     $frozenQuestion = $frozenQuestions->get($score->questionnaire_item_id);
                     return $frozenQuestion['category_id'] ?? 'unknown';
@@ -168,7 +163,10 @@ class CertificateController extends Controller
                         'category_id' => $categoryId,
                         'category_name' => $frozenCategory['category_name'] ?? 'Unknown Category',
                         'subtotal' => (float)$categoryTotal,
-                        'items' => $categoryScores->map(function ($score) use ($frozenQuestions) {
+                        'items' => $categoryScores->sortBy(function ($score) use ($frozenQuestions) {
+                            $frozenQuestion = $frozenQuestions->get($score->questionnaire_item_id);
+                            return $frozenQuestion['display_order'] ?? 999;
+                        })->map(function ($score) use ($frozenQuestions) {
                             $frozenQuestion = $frozenQuestions->get($score->questionnaire_item_id);
                             return [
                                 'question' => $frozenQuestion['question'] ?? '(Question no longer available)',
@@ -177,6 +175,9 @@ class CertificateController extends Controller
                             ];
                         })->values()->toArray(),
                     ];
+                })->sortBy(function ($category, $categoryId) use ($frozenCategories) {
+                    $frozenCategory = $frozenCategories->get($categoryId);
+                    return $frozenCategory['display_order'] ?? 999;
                 })->values()->toArray();
 
                 return [
