@@ -79,11 +79,11 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
     <AppLayout
       breadcrumbs={[
         { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Proponents', href: route('admin2.proponents.index') },
+        { title: 'End-Users', href: route('admin2.proponents.index') },
       ]}
       sidebarOpen={false}
     >
-      <Head title="Manage Proponents" />
+      <Head title="Manage End-Users" />
       
       <div className="min-h-screen bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -91,10 +91,10 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
           <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Manage Proponents
+                Manage End-Users
               </h1>
               <p className="text-gray-600 dark:text-gray-400 mt-2">
-                Recruit and manage proponents for project submissions
+                Recruit and manage end-users for project submissions
               </p>
             </div>
             <Link
@@ -102,14 +102,14 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
               className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-medium hover:bg-gray-900 transition-all duration-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 whitespace-nowrap"
             >
               <Plus className="w-5 h-5" />
-              Add Proponent
+              Add End-User
             </Link>
           </div>
 
           {/* Search Bar */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Search Proponents
+              Search End-Users
             </label>
             <input
               type="text"
@@ -125,7 +125,7 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-center justify-between mb-4">
-                  <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Total Proponents</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Total End-Users</p>
                   <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-400">{proponents.total}</p>
@@ -215,14 +215,14 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
                             <Link
                               href={route('admin2.proponents.edit', proponent.id)}
                               className="inline-flex items-center px-3 py-2 border border-amber-300 dark:border-amber-600 text-sm font-medium rounded-md text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
-                              title="Edit Proponent"
+                              title="Edit End-User"
                             >
                               <Edit2 className="w-4 h-4" />
                             </Link>
                             <button
                               onClick={() => setProponentToDelete(proponent)}
                               className="inline-flex items-center px-3 py-2 border border-red-300 dark:border-red-600 text-sm font-medium rounded-md text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors"
-                              title="Delete Proponent"
+                              title="Delete End-User"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -261,8 +261,8 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
             ) : (
               <div className="px-6 py-16 text-center">
                 <Users className="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-3" />
-                <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">No proponents yet</p>
-                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Start by adding your first proponent</p>
+                <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">No end-users yet</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Start by adding your first end-user</p>
               </div>
             )}
           </div>
@@ -280,8 +280,8 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
             setProponentToDelete(null);
           }
         }}
-        title="Delete Proponent"
-        description={`Are you sure you want to delete ${proponentToDelete?.user?.name} as a proponent? This action cannot be undone and may affect pending projects.`}
+        title="Delete End-User"
+        description={`Are you sure you want to delete ${proponentToDelete?.user?.name} as an end-user? This action cannot be undone and may affect pending projects.`}
       />
     </AppLayout>
   );

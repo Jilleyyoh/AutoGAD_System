@@ -30,7 +30,7 @@ export function AppSidebar() {
             { title: 'Certificates', href: route('evaluator.certificates.index'), icon: Award },
         ] : []),
         ...(isAdmin2 ? [
-            { title: 'Manage Proponents', href: route('admin2.proponents.index'), icon: Users },
+            { title: 'Manage End-Users', href: route('admin2.proponents.index'), icon: Users },
             { title: 'Manage Evaluations', href: route('admin2.evaluations.index'), icon: CheckSquare },
             { title: 'Manage Certifications', href: route('admin2.certifications.index'), icon: Award },
             { title: 'Messages', href: route('admin2.conversations.index'), icon: MessageSquare },

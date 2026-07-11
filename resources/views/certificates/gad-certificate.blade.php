@@ -297,7 +297,7 @@
                     <span class="info-value" style="font-weight: bold; font-size: 14px;">{{ $project_title }}</span>
                 </div>
                 <div class="info-row" style="grid-template-columns: 1fr;">
-                    <span class="info-label">Proponent:</span>
+                    <span class="info-label">Submitted by:</span>
                     <span class="info-value">{{ $proponent_name }}</span>
                 </div>
                 <div class="info-row" style="grid-template-columns: 1fr;">

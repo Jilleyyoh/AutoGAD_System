@@ -105,7 +105,7 @@ export default function Dashboard({ projects, proponent }: Props) {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-4">
                   <span className={combineTheme('px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider', themeClasses.badge.purple)}>
-                    Proponent
+                    End-User
                   </span>
                 </div>
                 <h1 className={combineTheme('text-3xl font-bold', themeClasses.text.primary)}>

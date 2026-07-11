@@ -72,10 +72,10 @@ export default function Admin2ConversationsIndex() {
                     <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                                Proponent Messages
+                                End-User Messages
                             </h1>
                             <p className="text-gray-600 dark:text-gray-400 mt-2">
-                                Manage conversations and messages with proponents
+                                Manage conversations and messages with end-users
                             </p>
                         </div>
                     </div>
@@ -87,7 +87,7 @@ export default function Admin2ConversationsIndex() {
                         </label>
                         <input
                             type="text"
-                            placeholder="Search by subject or proponent name..."
+                            placeholder="Search by subject or an end-user name..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"

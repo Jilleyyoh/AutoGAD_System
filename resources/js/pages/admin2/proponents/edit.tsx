@@ -48,16 +48,16 @@ export default function Edit({ proponent }: Props) {
     <AppLayout
       breadcrumbs={[
         { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Proponents', href: route('admin2.proponents.index') },
+        { title: 'End-Users', href: route('admin2.proponents.index') },
         { title: 'Edit', href: route('admin2.proponents.edit', proponent.id) },
       ]}
     >
-      <Head title="Edit Proponent" />
+      <Head title="Edit End-User" />
       <div className="min-h-screen bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Proponent</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">Edit proponent details for project submissions.</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit End-User</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Edit end-user details for project submissions.</p>
           </div>
 
           <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
@@ -144,7 +144,7 @@ export default function Edit({ proponent }: Props) {
                   disabled={processing}
                   className="px-4 py-2 bg-[#5a189a] dark:bg-[#5a189a] text-white rounded-lg hover:bg-[#4a0e7a] dark:hover:bg-[#4a0e7a] transition disabled:opacity-50"
                 >
-                  {processing ? 'Updating...' : 'Update Proponent'}
+                  {processing ? 'Updating...' : 'Update End-User'}
                 </button>
               </div>
             </form>

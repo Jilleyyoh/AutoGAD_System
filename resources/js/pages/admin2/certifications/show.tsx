@@ -595,7 +595,7 @@ export default function CertificationShow({
 
                             {/* Proponent Info Card */}
                             <div className={combineTheme('rounded-lg shadow p-6 mt-6', themeClasses.card.base)}>
-                                <h3 className={combineTheme('text-sm font-semibold mb-3', themeClasses.text.primary)}>Proponent Information</h3>
+                                <h3 className={combineTheme('text-sm font-semibold mb-3', themeClasses.text.primary)}>End-User Information</h3>
                                 <div className="space-y-2">
                                     <div>
                                         <p className={combineTheme('text-xs', themeClasses.text.tertiary)}>Name</p>

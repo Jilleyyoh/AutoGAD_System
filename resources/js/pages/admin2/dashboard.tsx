@@ -40,8 +40,8 @@ const managementItems = [
         accent: 'from-emerald-500 to-emerald-600',
     },
     {
-        title: 'Manage Proponents',
-        description: 'View and manage proponent records',
+        title: 'Manage End-Users',
+        description: 'View and manage end-user records',
         icon: Users,
         href: '/admin2/proponents',
         color: 'purple',
@@ -49,7 +49,7 @@ const managementItems = [
     },
     {
         title: 'Messages',
-        description: 'View messages from proponents',
+        description: 'View messages from end-users',
         icon: Mail,
         href: '/admin2/conversations',
         color: 'orange',
@@ -166,7 +166,7 @@ export default function Dashboard({ admin, stats }: Props) {
                                 },
                                 {
                                     step: '4',
-                                    title: 'Notify Proponents',
+                                    title: 'Notify End-Users',
                                     description: 'Send results and next steps',
                                     icon: Mail,
                                 },
