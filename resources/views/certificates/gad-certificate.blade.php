@@ -124,6 +124,10 @@
         .info-value {
             color: black;
             font-size: 13px;
+            text-align: justify;
+            line-height: 1.8;    
+            padding: 0 10px;    
+            display: block;  
         }
 
         /* Full-width row */
