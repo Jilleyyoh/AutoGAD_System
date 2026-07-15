@@ -51,7 +51,7 @@ export default function Welcome() {
 
                 <footer className="border-t px-6 py-8">
                     <div className="mx-auto max-w-7xl text-center text-muted-foreground">
-                        <p>&copy; 2025 Gender-Inclusive Knowledge Management System. All rights reserved.</p>
+                        <p>&copy; 2026 Gender-Inclusive Knowledge Management System. All rights reserved.</p>
                     </div>
                 </footer>
             </div>
