@@ -30,14 +30,14 @@
             }
         </style>
 
-        <title inertia>{{ config('app.name', 'AutoGAD') }}</title>
+        <title inertia>{{ config('app.name', 'GIKMS') }}</title>
 
         {{-- CSRF Token for API requests --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" href="{{ asset('favicon.ico') }}?v={{ filemtime(public_path('favicon.ico')) }}" sizes="any">
+        <link rel="icon" href="{{ asset('favicon.svg') }}?v={{ filemtime(public_path('favicon.svg')) }}" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v={{ filemtime(public_path('favicon.png')) }}">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />

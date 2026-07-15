@@ -63,6 +63,7 @@ const accessItems = [
 ];
 
 export default function Dashboard({ projects, proponent }: Props) {
+  const proponentFirstName = proponent.name.trim().split(/\s+/)[0] || proponent.name;
   const recentCount = projects.length;
   const certifiedCount = projects.filter((project) => String(project.status || project.project_status?.name || '').toLowerCase() === 'certified').length;
   const activeCount = projects.filter((project) => {
@@ -109,7 +110,7 @@ export default function Dashboard({ projects, proponent }: Props) {
                   </span>
                 </div>
                 <h1 className={combineTheme('text-3xl font-bold', themeClasses.text.primary)}>
-                  {proponent.name}
+                  Welcome, {proponentFirstName}!
                 </h1>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>

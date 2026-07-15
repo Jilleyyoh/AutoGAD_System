@@ -58,6 +58,8 @@ const managementItems = [
 ];
 
 export default function Dashboard({ admin, stats }: Props) {
+    const adminFirstName = admin.name.trim().split(/\s+/)[0] || admin.name;
+
     return (
         <AppLayout
             breadcrumbs={[
@@ -87,7 +89,7 @@ export default function Dashboard({ admin, stats }: Props) {
                                     </span>
                                 </div>
                                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                                    {admin.name}
+                                    Welcome, {adminFirstName}!
                                 </h1>
                                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>

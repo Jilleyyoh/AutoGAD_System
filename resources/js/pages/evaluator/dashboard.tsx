@@ -60,6 +60,8 @@ const accessItems = [
 ];
 
 export default function Dashboard({ evaluator, stats }: Props) {
+    const evaluatorFirstName = evaluator.name.trim().split(/\s+/)[0] || evaluator.name;
+
     return (
         <AppLayout breadcrumbs={[{ title: 'Dashboard', href: route('evaluator.dashboard') }]}>
             <Head title="Dashboard" />
@@ -95,7 +97,7 @@ export default function Dashboard({ evaluator, stats }: Props) {
                                     </span>
                                 </div>
                                 <h1 className={combineTheme('text-3xl font-bold', themeClasses.text.primary)}>
-                                    {evaluator.name}
+                                    Welcome, {evaluatorFirstName}!
                                 </h1>
                                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>

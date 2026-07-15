@@ -58,6 +58,7 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
         title: 'System Administrator'
     };
     const currentAdmin = admin || defaultAdmin;
+    const adminFirstName = currentAdmin.name.trim().split(/\s+/)[0] || currentAdmin.name;
 
     return (
         <AppLayout
@@ -88,7 +89,7 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                                 </span>
                             </div>
                             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                                {currentAdmin.name}
+                                Welcome, {adminFirstName}!
                             </h1>
                             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
