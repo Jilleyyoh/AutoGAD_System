@@ -3,6 +3,8 @@ import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Award, Users, FileText, ClipboardList, ArrowRight } from 'lucide-react';
 import { route } from 'ziggy-js';
+import { usePage } from '@inertiajs/react';
+import { type SharedData } from '@/types';
 
 interface Admin {
     id: number;
@@ -51,13 +53,19 @@ const managementItems = [
 ];
 
 export default function Admin1Dashboard({ admin }: Props = {}) {
+    const { auth } = usePage<SharedData>().props;
     const defaultAdmin = {
         id: 1,
         name: 'Admin 1',
         email: 'admin1@example.com',
         title: 'System Administrator'
     };
-    const currentAdmin = admin || defaultAdmin;
+    const currentAdmin = admin || (auth.user ? {
+        id: auth.user.id,
+        name: auth.user.name,
+        email: auth.user.email,
+        title: defaultAdmin.title,
+    } : defaultAdmin);
     const adminFirstName = currentAdmin.name.trim().split(/\s+/)[0] || currentAdmin.name;
 
     return (
