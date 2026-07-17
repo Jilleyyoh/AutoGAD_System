@@ -70,7 +70,7 @@
     --card-foreground: oklch(0.14 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.14 0 0);
-    --primary: oklch(0.14 0 0);
+    --primary: #690383;
     --primary-foreground: oklch(1 0 0);
     --secondary: oklch(0.96 0 0);
     --secondary-foreground: oklch(0.14 0 0);
@@ -91,7 +91,7 @@
     --radius: 0rem;
     --sidebar: oklch(1 0 0);
     --sidebar-foreground: oklch(0.14 0 0);
-    --sidebar-primary: oklch(0.14 0 0);
+    --sidebar-primary: #690383;
     --sidebar-primary-foreground: oklch(1 0 0);
     --sidebar-accent: oklch(0.96 0 0);
     --sidebar-accent-foreground: oklch(0.14 0 0);
@@ -106,7 +106,7 @@
     --card-foreground: oklch(0.14 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.14 0 0);
-    --primary: oklch(0.14 0 0);
+    --primary: #690383;
     --primary-foreground: oklch(1 0 0);
     --secondary: oklch(0.96 0 0);
     --secondary-foreground: oklch(0.14 0 0);
@@ -126,7 +126,7 @@
     --chart-5: oklch(0.85 0 0);
     --sidebar: oklch(1 0 0);
     --sidebar-foreground: oklch(0.14 0 0);
-    --sidebar-primary: oklch(0.14 0 0);
+    --sidebar-primary: #690383;
     --sidebar-primary-foreground: oklch(1 0 0);
     --sidebar-accent: oklch(0.96 0 0);
     --sidebar-accent-foreground: oklch(0.14 0 0);
@@ -579,4 +579,106 @@ table tfoot {
 .dark .drag-scroll.is-active::-webkit-scrollbar-thumb,
 .dark .drag-scroll:hover::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Primary actions share one application palette. Table actions are deliberately
+   excluded so their contextual edit/delete/download styling remains unchanged. */
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-black'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-primary'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-[#690383]'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-blue-500'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-blue-600'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-blue-700'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-green-500'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-green-600'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-green-700'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-purple-400'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-purple-500'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-purple-600'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-purple-700'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-indigo-500'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-indigo-600'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-indigo-700'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-orange-500'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-orange-600'],
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-orange-700'] {
+    background-color: #690383 !important;
+    color: #ffffff !important;
+}
+
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-black']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-primary']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-[#690383]']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-blue-500']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-blue-600']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-blue-700']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-green-500']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-green-600']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-green-700']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-purple-400']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-purple-500']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-purple-600']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-purple-700']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-indigo-500']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-indigo-600']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-indigo-700']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-orange-500']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-orange-600']:hover:not(:disabled),
+:is(button, a, [role='button']):not(table button, table a, table [role='button'])[class*='bg-orange-700']:hover:not(:disabled) {
+    background-color: #B51297 !important;
+}
+
+/* The login form has legacy global color rules, so its primary action needs an
+   explicit hook to retain the application palette. */
+.login-primary-button {
+    background-color: #690383 !important;
+    color: #ffffff !important;
+}
+
+.login-primary-button:hover:not(:disabled) {
+    background-color: #B51297 !important;
+}
+
+/* Evaluator scorecard controls: neutral until selected, then use the score's
+   semantic color. These explicit states avoid the app-wide legacy color reset. */
+.score-option-button {
+    background-color: #f3f4f6 !important;
+    border: 1px solid #d1d5db !important;
+    color: #374151 !important;
+}
+
+.score-option-no:hover:not(:disabled) {
+    background-color: #fee2e2 !important;
+    border-color: #fca5a5 !important;
+    color: #991b1b !important;
+}
+
+.score-option-partly:hover:not(:disabled) {
+    background-color: #fef9c3 !important;
+    border-color: #fde047 !important;
+    color: #854d0e !important;
+}
+
+.score-option-yes:hover:not(:disabled) {
+    background-color: #dcfce7 !important;
+    border-color: #86efac !important;
+    color: #166534 !important;
+}
+
+.score-option-no.is-selected {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+    color: #ffffff !important;
+}
+
+.score-option-partly.is-selected {
+    background-color: #eab308 !important;
+    border-color: #eab308 !important;
+    color: #ffffff !important;
+}
+
+.score-option-yes.is-selected {
+    background-color: #16a34a !important;
+    border-color: #16a34a !important;
+    color: #ffffff !important;
 }

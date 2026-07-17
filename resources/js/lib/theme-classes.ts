@@ -29,7 +29,7 @@ export const themeClasses = {
 
     // Button states
     button: {
-        primary: 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200',
+        primary: 'bg-[#690383] text-white hover:bg-[#B51297]',
         secondary: 'text-gray-900 dark:text-gray-100 bg-white hover:bg-gray-100 dark:bg-black dark:hover:bg-neutral-900 border border-gray-200 dark:border-gray-800',
         ghost: 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-900',
     },

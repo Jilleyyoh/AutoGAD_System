@@ -835,8 +835,7 @@ export default function Show({
                                                             {item.score_options.map((score) => {
                                                                 const isSelected = scoresMatch(scores[item.id], score);
                                                                 const scoreLabel = getScoreLabel(score, item.score_options);
-                                                                const buttonColor = scoreLabel === 'Yes' ? 'green' :
-                                                                                  scoreLabel === 'Partly' ? 'yellow' : 'red';
+                                                                const scoreOption = scoreLabel.toLowerCase();
                                                                 
                                                                 return (
                                                                     <button
@@ -844,14 +843,8 @@ export default function Show({
                                                                         onClick={() => handleScoreChange(item.id, score)}
                                                                         disabled={isCompleted}
                                                                         className={combineTheme(
-                                                                            'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
-                                                                            isSelected
-                                                                                ? buttonColor === 'green' ? 'bg-green-600 text-white shadow-md focus:ring-green-500'
-                                                                                : buttonColor === 'yellow' ? 'bg-yellow-500 text-white shadow-md focus:ring-yellow-500'
-                                                                                : 'bg-red-600 text-white shadow-md focus:ring-red-500'
-                                                                                : buttonColor === 'green' ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/30'
-                                                                                : buttonColor === 'yellow' ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800 hover:bg-yellow-100 dark:hover:bg-yellow-900/30'
-                                                                                : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900/30'
+                                                                            `score-option-button score-option-${scoreOption} px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`,
+                                                                            isSelected ? 'is-selected shadow-md' : undefined,
                                                                         )}
                                                                     >
                                                                         {scoreLabel}
