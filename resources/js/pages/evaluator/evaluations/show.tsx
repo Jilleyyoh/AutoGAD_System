@@ -102,6 +102,21 @@ interface Props {
     };
 }
 
+// Matches the questionnaire settings interpretation gradient: the lowest
+// interpretation is red and the highest is green, regardless of how many
+// ranges are configured.
+const getInterpretationColors = (index: number, total: number) => {
+    const ratio = total <= 1 ? 0 : index / (total - 1);
+    const hue = ratio * 120;
+
+    return {
+        backgroundColor: `hsl(${hue}, 90%, 96%)`,
+        borderColor: `hsl(${hue}, 75%, 45%)`,
+        accentColor: `hsl(${hue}, 75%, 45%)`,
+        trackColor: `hsl(${hue}, 75%, 80%)`,
+    };
+};
+
 /**
  * Dynamic score labeling function
  * 
@@ -241,6 +256,19 @@ export default function Show({
             interp => totalScore >= interp.min && totalScore <= interp.max
         );
     }, [totalScore, interpretations]);
+
+    const scoreInterpretationIndex = scoreInterpretation
+        ? interpretations.indexOf(scoreInterpretation)
+        : -1;
+    const scoreInterpretationColors = scoreInterpretationIndex >= 0
+        ? getInterpretationColors(scoreInterpretationIndex, interpretations.length)
+        : null;
+    const totalScoreColors = scoreInterpretationColors ?? {
+        backgroundColor: '#eff6ff',
+        borderColor: '#bfdbfe',
+        accentColor: '#2563eb',
+        trackColor: '#bfdbfe',
+    };
 
     // Utility function for tolerant score comparison (handles floating-point precision)
     // Handles both Category 2's precision issues and clean decimal scores (Categories 4, 6)
@@ -1046,17 +1074,23 @@ export default function Show({
                                     </div>
 
                                     {/* Total Score Card */}
-                                    <div className={combineTheme('border-2 rounded-3xl p-8 mb-8', 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-700 shadow-lg')}>
+                                    <div
+                                        className="border-2 rounded-3xl p-8 mb-8 shadow-lg"
+                                        style={{
+                                            backgroundColor: totalScoreColors.backgroundColor,
+                                            borderColor: totalScoreColors.borderColor,
+                                        }}
+                                    >
                                         <div className="text-center">
                                             <div className="flex items-center justify-center gap-8 mb-6">
                                                 <div className="text-center">
-                                                    <p className={combineTheme('text-sm font-semibold mb-2', themeClasses.text.tertiary)}>
+                                                    <p className="text-sm font-semibold mb-2" style={{ color: totalScoreColors.accentColor }}>
                                                         TOTAL SCORE
                                                     </p>
-                                                    <p className="text-6xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                                                    <p className="text-6xl font-bold mb-2" style={{ color: totalScoreColors.accentColor }}>
                                                         {totalScore.toFixed(2)}
                                                     </p>
-                                                    <p className={combineTheme('text-lg', themeClasses.text.secondary)}>
+                                                    <p className="text-lg" style={{ color: totalScoreColors.accentColor }}>
                                                         out of {maxTotalScore.toFixed(0)} points
                                                     </p>
                                                 </div>
@@ -1070,7 +1104,7 @@ export default function Show({
                                                                 stroke="currentColor"
                                                                 strokeWidth="2"
                                                                 strokeDasharray="100,100"
-                                                                className="text-blue-200 dark:text-blue-800"
+                                                                style={{ color: totalScoreColors.trackColor }}
                                                             />
                                                             <path
                                                                 d="M18 2.0845a15.9155 15.9155 0 0 1 0 31.831 15.9155 15.9155 0 0 1 0-31.831"
@@ -1078,11 +1112,11 @@ export default function Show({
                                                                 stroke="currentColor"
                                                                 strokeWidth="3"
                                                                 strokeDasharray={`${Math.min(totalPercentage, 100)},100`}
-                                                                className="text-blue-600 dark:text-blue-400"
+                                                                style={{ color: totalScoreColors.accentColor }}
                                                             />
                                                         </svg>
                                                         <div className="absolute inset-0 flex items-center justify-center">
-                                                            <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                                                            <span className="text-lg font-bold" style={{ color: totalScoreColors.accentColor }}>
                                                                 {Math.round(totalPercentage)}%
                                                             </span>
                                                         </div>
@@ -1091,16 +1125,31 @@ export default function Show({
                                             </div>
 
                                             {scoreInterpretation && (
-                                                <div className={combineTheme('p-6 rounded-2xl', 'bg-white dark:bg-slate-800/60 border border-blue-200 dark:border-blue-700')}>
+                                                <div
+                                                    className="p-6 rounded-2xl border"
+                                                    style={{
+                                                        backgroundColor: scoreInterpretationColors?.backgroundColor,
+                                                        borderColor: scoreInterpretationColors?.borderColor,
+                                                    }}
+                                                >
                                                     <div className="flex items-center justify-center gap-3 mb-3">
-                                                        <div className="w-8 h-8 rounded-full bg-blue-600 dark:bg-blue-500 text-white flex items-center justify-center">
+                                                        <div
+                                                            className="w-8 h-8 rounded-full text-white flex items-center justify-center"
+                                                            style={{ backgroundColor: scoreInterpretationColors?.accentColor }}
+                                                        >
                                                             <Award className="w-4 h-4" />
                                                         </div>
-                                                        <h3 className={combineTheme('text-2xl font-bold', themeClasses.text.primary)}>
+                                                        <h3
+                                                            className="text-2xl font-bold"
+                                                            style={{ color: scoreInterpretationColors?.accentColor }}
+                                                        >
                                                             {scoreInterpretation.interpretation}
                                                         </h3>
                                                     </div>
-                                                    <p className={combineTheme('text-base leading-relaxed', themeClasses.text.secondary)}>
+                                                    <p
+                                                        className="text-base leading-relaxed"
+                                                        style={{ color: scoreInterpretationColors?.accentColor }}
+                                                    >
                                                         {scoreInterpretation.description}
                                                     </p>
                                                 </div>
@@ -1179,30 +1228,47 @@ export default function Show({
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 {interpretations.map((interp, idx) => {
                                                     const isCurrentRange = scoreInterpretation?.interpretation === interp.interpretation;
+                                                    const colors = getInterpretationColors(idx, interpretations.length);
                                                     
                                                     return (
                                                         <div 
                                                             key={idx} 
-                                                            className={`p-4 rounded-xl border-2 transition-all ${
-                                                                isCurrentRange 
-                                                                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' 
-                                                                    : combineTheme('border-gray-200 dark:border-slate-600', 'bg-gray-50 dark:bg-slate-700/30')
-                                                            }`}
+                                                            className="p-4 rounded-xl border-2 transition-all"
+                                                            style={{
+                                                                backgroundColor: colors.backgroundColor,
+                                                                borderColor: colors.borderColor,
+                                                            }}
                                                         >
                                                             <div className="flex items-center justify-between mb-2">
-                                                                <h4 className={combineTheme('font-bold text-lg', isCurrentRange ? 'text-blue-700 dark:text-blue-300' : themeClasses.text.primary)}>
+                                                                <h4
+                                                                    className="font-bold text-lg"
+                                                                    style={{ color: colors.accentColor }}
+                                                                >
                                                                     {interp.interpretation}
                                                                     {isCurrentRange && (
-                                                                        <span className="ml-2 inline-flex items-center justify-center w-6 h-6 bg-blue-600 text-white rounded-full text-xs">
+                                                                        <span
+                                                                            className="ml-2 inline-flex items-center justify-center w-6 h-6 text-white rounded-full text-xs"
+                                                                            style={{ backgroundColor: colors.accentColor }}
+                                                                        >
                                                                             ✓
                                                                         </span>
                                                                     )}
                                                                 </h4>
-                                                                <span className={combineTheme('font-mono text-sm font-bold px-3 py-1 rounded-full', isCurrentRange ? 'bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200' : 'bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-gray-300')}>
+                                                                <span
+                                                                    className="font-mono text-sm font-bold px-3 py-1 rounded-full"
+                                                                    style={{
+                                                                        backgroundColor: colors.backgroundColor,
+                                                                        color: colors.accentColor,
+                                                                        border: `1px solid ${colors.borderColor}`,
+                                                                    }}
+                                                                >
                                                                     {interp.min}-{interp.max}
                                                                 </span>
                                                             </div>
-                                                            <p className={combineTheme('text-sm leading-relaxed', isCurrentRange ? 'text-blue-600 dark:text-blue-300' : themeClasses.text.secondary)}>
+                                                            <p
+                                                                className="text-sm leading-relaxed"
+                                                                style={{ color: colors.accentColor }}
+                                                            >
                                                                 {interp.description}
                                                             </p>
                                                         </div>

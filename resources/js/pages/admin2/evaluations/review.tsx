@@ -131,6 +131,33 @@ export default function Review({ project, evaluations, average_score, evaluation
         return interpretation?.interpretation || 'Unknown';
     };
 
+    // Matches the questionnaire interpretation gradient: lowest range is red,
+    // highest range is green, with evenly spaced colors in between.
+    const getAverageScoreColors = (score?: number) => {
+        const interpretationIndex = score === undefined
+            ? -1
+            : interpretations.findIndex((interp) => score >= interp.min && score <= interp.max);
+
+        if (interpretationIndex < 0) {
+            return {
+                backgroundColor: '#f9fafb',
+                borderColor: '#e5e7eb',
+                accentColor: '#4b5563',
+            };
+        }
+
+        const ratio = interpretations.length <= 1
+            ? 0
+            : interpretationIndex / (interpretations.length - 1);
+        const hue = ratio * 120;
+
+        return {
+            backgroundColor: `hsl(${hue}, 90%, 96%)`,
+            borderColor: `hsl(${hue}, 75%, 45%)`,
+            accentColor: `hsl(${hue}, 75%, 45%)`,
+        };
+    };
+
     // Get color scheme based on score interpretation ranges: 0-4 (red), 4-8 (orange), 8-15 (blue), 15-20+ (green)
     const getScoreColorScheme = (score?: number) => {
         if (score === undefined || score === null) {
@@ -254,21 +281,27 @@ export default function Review({ project, evaluations, average_score, evaluation
                     </div>
 
                     {/* Consolidated Score */}
-                    <div className={`bg-gradient-to-r ${getScoreColorScheme(average_score).bg} border ${getScoreColorScheme(average_score).border} rounded-lg p-8 mb-8`}>
+                    <div
+                        className="border rounded-lg p-8 mb-8"
+                        style={{
+                            backgroundColor: getAverageScoreColors(average_score).backgroundColor,
+                            borderColor: getAverageScoreColors(average_score).borderColor,
+                        }}
+                    >
                         <div className="flex items-start justify-between">
                             <div>
-                                <p className={`text-sm font-medium ${getScoreColorScheme(average_score).textLabel} uppercase tracking-wide`}>Consolidated Average Score</p>
-                                <p className={`text-5xl font-bold ${getScoreColorScheme(average_score).textValue} mt-2`}>
+                                <p className="text-sm font-medium uppercase tracking-wide" style={{ color: getAverageScoreColors(average_score).accentColor }}>Consolidated Average Score</p>
+                                <p className="text-5xl font-bold mt-2" style={{ color: getAverageScoreColors(average_score).accentColor }}>
                                     {average_score?.toFixed(2) || 'N/A'}
                                 </p>
-                                <p className={`text-lg ${getScoreColorScheme(average_score).textSecondary} mt-2 font-semibold`}>
+                                <p className="text-lg mt-2 font-semibold" style={{ color: getAverageScoreColors(average_score).accentColor }}>
                                     {getInterpretation(average_score)}
                                 </p>
-                                <p className={`text-sm ${getScoreColorScheme(average_score).textTertiary} mt-1`}>
+                                <p className="text-sm mt-1" style={{ color: getAverageScoreColors(average_score).accentColor }}>
                                     Based on {evaluation_count} completed evaluation(s)
                                 </p>
                             </div>
-                            <CheckCircle2 className={`w-16 h-16 ${getScoreColorScheme(average_score).icon}`} />
+                            <CheckCircle2 className="w-16 h-16" style={{ color: getAverageScoreColors(average_score).accentColor }} />
                         </div>
                     </div>
 

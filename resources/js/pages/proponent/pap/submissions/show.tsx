@@ -95,6 +95,34 @@ export default function SubmissionShow() {
 
   const statusLabel = formatStatus(project.status);
 
+  // Matches the questionnaire interpretation gradient: lowest range is red,
+  // highest range is green, with evenly spaced colors in between.
+  const getInterpretationColors = (interpretationLabel?: string) => {
+    const interpretations = project.interpretations ?? [];
+    const interpretationIndex = interpretations.findIndex(
+      (interpretation) => interpretation.interpretation === interpretationLabel,
+    );
+
+    if (interpretationIndex < 0) {
+      return {
+        backgroundColor: '#eff6ff',
+        borderColor: '#bfdbfe',
+        accentColor: '#2563eb',
+      };
+    }
+
+    const ratio = interpretations.length <= 1
+      ? 0
+      : interpretationIndex / (interpretations.length - 1);
+    const hue = ratio * 120;
+
+    return {
+      backgroundColor: `hsl(${hue}, 90%, 96%)`,
+      borderColor: `hsl(${hue}, 75%, 45%)`,
+      accentColor: `hsl(${hue}, 75%, 45%)`,
+    };
+  };
+
   const formatDocumentLabel = (value?: string | null) => {
     if (!value) return 'Document';
     return value
@@ -234,24 +262,33 @@ export default function SubmissionShow() {
                   <p className={combineTheme('text-sm italic', themeClasses.text.tertiary)}>No evaluations yet.</p>
                 ) : (
                   <div className="space-y-6">
-                    {project.evaluations.map(ev => (
+                    {project.evaluations.map(ev => {
+                      const colors = getInterpretationColors(ev.interpretation?.interpretation);
+
+                      return (
                       <div key={ev.id} className="space-y-4">
                         {/* Score Section */}
-                        <div className={combineTheme('border rounded-lg p-6', themeClasses.border.primary, 'bg-blue-50 dark:bg-blue-900/30')}>
+                        <div
+                          className="border rounded-lg p-6"
+                          style={{
+                            backgroundColor: colors.backgroundColor,
+                            borderColor: colors.borderColor,
+                          }}
+                        >
                           <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(12rem,0.8fr)_minmax(0,1.2fr)] md:items-center">
                             <div>
                               <p className={combineTheme('text-sm font-medium mb-2', themeClasses.text.tertiary)}>Total Score</p>
-                              <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                              <p className="text-4xl font-bold" style={{ color: colors.accentColor }}>
                                 {ev.total_score !== null && ev.total_score !== undefined ? parseFloat(String(ev.total_score)).toFixed(2) : 'N/A'}
                               </p>
                             </div>
                             {ev.interpretation && (
                               <div>
                                 <p className={combineTheme('text-sm font-medium mb-2', themeClasses.text.tertiary)}>Score Interpretation</p>
-                                <p className={combineTheme('font-semibold text-xl', themeClasses.text.primary)}>
+                                <p className="font-semibold text-xl" style={{ color: colors.accentColor }}>
                                   {ev.interpretation.interpretation}
                                 </p>
-                                <p className={combineTheme('text-sm mt-2', themeClasses.text.secondary)}>
+                                <p className="text-sm mt-2" style={{ color: colors.accentColor }}>
                                   {ev.interpretation.description}
                                 </p>
                               </div>
@@ -292,7 +329,8 @@ export default function SubmissionShow() {
                           </div>
                         )}
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>
