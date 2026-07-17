@@ -35,8 +35,8 @@ const managementItems = [
         accent: 'from-emerald-500 to-emerald-600',
     },
     {
-        title: 'Questionnaire',
-        description: 'Create and configure evaluation questionnaires',
+        title: 'Scorecard',
+        description: 'Create and configure evaluation scorecards',
         icon: FileText,
         href: '/questionnaire',
         color: 'purple',
@@ -83,7 +83,7 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                         Dashboard
                     </h1>
                     <p className="text-gray-600 dark:text-gray-300 mt-2 max-w-4xl">
-                        Set up and manage the evaluation framework, including clusters, evaluators, questionnaires, and project assignments.
+                        Set up and manage the evaluation framework, including clusters, evaluators, scorecards, and project assignments.
                     </p>
                 </div>
 
@@ -180,7 +180,7 @@ export default function Admin1Dashboard({ admin }: Props = {}) {
                             },
                             {
                                 step: '3',
-                                title: 'Create Questionnaire',
+                                title: 'Create Scorecard',
                                 description: 'Design evaluation forms',
                                 icon: FileText,
                             },

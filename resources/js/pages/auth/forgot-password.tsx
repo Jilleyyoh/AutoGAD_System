@@ -1,6 +1,6 @@
 import { store } from '@/actions/App/Http/Controllers/Auth/PasswordResetLinkController';
 import { login } from '@/routes';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 
 import InputError from '@/components/input-error';
@@ -9,7 +9,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
-export default function ForgotPassword({ status }: { status?: string }) {
+export default function ForgotPassword({ status, temporary_password }: { status?: string; temporary_password?: string }) {
+    const { flash } = usePage().props as {
+        flash?: {
+            status?: string;
+            temporary_password?: string;
+        };
+    };
+    const successStatus = status ?? flash?.status;
+    const successPassword = temporary_password ?? flash?.temporary_password;
+
     return (
         <AuthLayout title="Reset password" description="Enter your email and birthdate to reset your password">
             <Head title="Forgot password">
@@ -62,34 +71,29 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                 </button>
                             </div>
 
-                            {status && (
+                            {successStatus && (
                                 <div className="mt-2 rounded-lg border border-green-400 bg-green-50 p-4 text-sm text-green-800">
                                     <p className="font-semibold">
                                         ✓ Password Reset Successful
                                     </p>
                                     <p className="mt-2">
-                                        {status}
+                                        {successStatus}
                                     </p>
+                                    {successPassword && (
+                                        <div className="mt-3 rounded-md bg-white px-3 py-2 font-mono text-base tracking-wider text-gray-900">
+                                            {successPassword}
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
-                            {status && (
-                                <div className="mt-4 text-center">
-                                    <TextLink
-                                        href={login()}
-                                        className="inline-flex items-center justify-center px-4 py-2 font-semibold text-white transition hover:text-purple-300"
-                                    >
-                                        Go back to log in
-                                    </TextLink>
-                                </div>
-                            )}
                         </>
                     )}
                 </Form>
 
-                <div className="space-x-1 text-center text-sm text-white">
-                    <span>Or, return to</span>
-                    <TextLink href={login()} className="text-white hover:text-gray-300">
+                <div className="space-x-1 text-center text-sm text-gray-700 dark:text-gray-300">
+                    <span>Return to</span>
+                    <TextLink href={login()} className="text-gray-900 hover:text-purple-600 dark:text-gray-100 dark:hover:text-purple-300">
                         log in
                     </TextLink>
                 </div>

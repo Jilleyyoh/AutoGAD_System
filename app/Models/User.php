@@ -27,6 +27,7 @@ class User extends Authenticatable
         'role_id',
         'birthdate',
         'contact_number',
+        'must_change_password',
     ];
 
     /**
@@ -49,6 +50,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'birthdate' => 'date',
+            'must_change_password' => 'boolean',
             'password' => 'hashed',
         ];
     }

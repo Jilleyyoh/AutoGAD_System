@@ -427,10 +427,10 @@ export default function Index({ settings, categories = [], interpretations = [],
     <AppLayout
       breadcrumbs={[
         { title: 'Dashboard', href: route('dashboard') },
-        { title: 'Questionnaire', href: route('questionnaire.index') },
+        { title: 'Scorecard', href: route('questionnaire.index') },
       ]}
     >
-      <Head title="Manage Questionnaire" />
+      <Head title="Manage Scorecard" />
       
       <div className="min-h-screen bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -439,7 +439,7 @@ export default function Index({ settings, categories = [], interpretations = [],
           ">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Manage Questionnaire
+                Manage Scorecard
               </h1>
               <p className="text-gray-600 dark:text-gray-400 mt-2">
                 Configure evaluation criteria, categories, questions, and score interpretations
@@ -546,17 +546,16 @@ export default function Index({ settings, categories = [], interpretations = [],
 
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <Settings className="w-6 h-6" />
-                    Questionnaire Settings
+                    Scorecard Settings
                   </h2>
 
                   <p className="text-gray-600 dark:text-gray-400 mt-2">
-                    Configure the questionnaire version, passing score threshold, and update questionnaire categories and questions.
+                    Configure the scorecard version, passing score threshold, and update scorecard categories and questions.
                   </p>
 
-                  <div className="mt-4 rounded-lg border p-4">
+                  <div className="mt-4">
                     <p className="text-sm">
-                      <span className="font-semibold">Note:</span> Always enter a new version number when modifying the questionnaire, including its categories, questions, or passing score, to save the changes as a new version.
+                      <span className="font-semibold">Note:</span> Always enter a new version number when modifying the scorecard, including its categories, questions, or passing score, to save the changes as a new version.
                     </p>
                   </div>
                 </div>
@@ -621,10 +620,9 @@ export default function Index({ settings, categories = [], interpretations = [],
               <div className="mt-16 border-t border-gray-200 dark:border-gray-700 pt-12">
                 <div className="mb-8">
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                    Questionnaire Version History
+                    Scorecard Version History
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mt-2">Track all changes to your questionnaire and compare versions</p>
+                  <p className="text-gray-600 dark:text-gray-400 mt-2">Track all changes to your scorecard and compare versions</p>
                 </div>
 
                 {/* Version History Tab Content */}
@@ -633,32 +631,28 @@ export default function Index({ settings, categories = [], interpretations = [],
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between mb-4">
-                          <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Total Versions</p>
-                          <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold tracking-wide">Total versions</p>
                         </div>
                         <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">{versions.length}</p>
                       </div>
 
                       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between mb-4">
-                          <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Active Version</p>
-                          <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold tracking-wide">Active version</p>
                         </div>
                         <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">v{versions.find(v => v.is_active)?.version_number || 'N/A'}</p>
                       </div>
 
                       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between mb-4">
-                          <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Active Uses</p>
-                          <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold tracking-wide">Active uses</p>
                         </div>
                         <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">{versions.find(v => v.is_active)?.evaluation_count || 0}</p>
                       </div>
 
                       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between mb-4">
-                          <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Questions</p>
-                          <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                          <p className="text-gray-600 dark:text-gray-400 text-sm font-semibold tracking-wide">Questions</p>
                         </div>
                         <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">{categories.reduce((sum: number, cat: any) => sum + (cat.items?.length || 0), 0)}</p>
                       </div>
@@ -734,7 +728,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                                     </div>
                                     <div>
                                         <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                            Last Edited By
+                                            Last edited by
                                         </p>
                                         <p className={combineTheme('text-xs', themeClasses.text.primary)}>
                                             {version.created_by ?? 'Unknown'}
@@ -742,7 +736,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                                     </div>
                                     <div>
                                         <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                            CATEGORIES
+                                            Categories
                                         </p>
                                         <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
                                             {version.snapshot.categories.length}
@@ -750,7 +744,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                                     </div>
                                     <div>
                                         <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                            QUESTIONS
+                                            Questions
                                         </p>
                                         <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
                                             {version.snapshot.questions?.length || version.snapshot.question_count || 0}
@@ -758,7 +752,7 @@ export default function Index({ settings, categories = [], interpretations = [],
                                     </div>
                                     <div>
                                         <p className={combineTheme('font-medium', themeClasses.text.tertiary)}>
-                                            EVALUATIONS USING THIS VERSION
+                                            Evaluations using this version
                                         </p>
                                         <p className={combineTheme('text-xs font-bold', 'text-blue-600 dark:text-blue-400')}>
                                             {version.evaluation_count || 0}

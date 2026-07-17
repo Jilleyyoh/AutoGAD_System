@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin2;
 use App\Models\Proponent;
 use App\Models\User;
 use App\Models\Role;
+use App\Services\TemporaryPasswordGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -40,30 +41,34 @@ class ProponentController
         return Inertia::render('admin2/proponents/create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, TemporaryPasswordGenerator $temporaryPasswordGenerator)
     {
+        $request->merge([
+            'contact_number' => $this->normalizePhilippineContactNumber($request->contact_number ?? ''),
+        ]);
+
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email',
             'birthdate' => 'required|date_format:Y-m-d',
             'organization' => 'required|string|max:150',
             'position' => 'nullable|string|max:100',
-            'contact_number' => 'nullable|string|max:20',
+            'contact_number' => ['required', 'string', 'size:11', 'regex:/^09\d{9}$/'],
         ]);
 
         // Get proponent role (role_id = 1)
         $role = Role::where('name', 'proponent')->firstOrFail();
 
-        // Auto-generate password as registered date (MM-DD-YYYY format)
-        $registeredDate = now()->format('m-d-Y');
+        $temporaryPassword = $temporaryPasswordGenerator->generate(10);
 
         // Create user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'birthdate' => $request->birthdate,
-            'password' => Hash::make($registeredDate),
+            'password' => Hash::make($temporaryPassword),
             'role_id' => $role->id,
+            'must_change_password' => true,
         ]);
 
         // Create proponent profile
@@ -71,10 +76,13 @@ class ProponentController
             'user_id' => $user->id,
             'organization' => $request->organization,
             'position' => $request->position,
-            'contact_number' => $request->contact_number,
+            'contact_number' => $this->normalizePhilippineContactNumber($request->contact_number),
         ]);
 
-        return redirect()->route('admin2.proponents.index')->with('success', 'Proponent created successfully. Default password is the registered date: ' . $registeredDate);
+        return redirect()->route('admin2.proponents.create')->with([
+            'success' => 'Proponent created successfully. Share the temporary password below with the user, then ask them to change it after first login.',
+            'temporary_password' => $temporaryPassword,
+        ]);
     }
 
     public function edit(Proponent $proponent)
@@ -86,13 +94,17 @@ class ProponentController
 
     public function update(Request $request, Proponent $proponent)
     {
+        $request->merge([
+            'contact_number' => $this->normalizePhilippineContactNumber($request->contact_number ?? ''),
+        ]);
+
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email,' . $proponent->user_id,
             'birthdate' => 'required|date_format:Y-m-d',
             'organization' => 'required|string|max:150',
             'position' => 'nullable|string|max:100',
-            'contact_number' => 'nullable|string|max:20',
+            'contact_number' => ['required', 'string', 'size:11', 'regex:/^09\d{9}$/'],
         ]);
 
         // Update user
@@ -106,7 +118,7 @@ class ProponentController
         $proponent->update([
             'organization' => $request->organization,
             'position' => $request->position,
-            'contact_number' => $request->contact_number,
+            'contact_number' => $this->normalizePhilippineContactNumber($request->contact_number),
         ]);
 
         return redirect()->route('admin2.proponents.index')->with('success', 'Proponent updated successfully.');
@@ -118,5 +130,28 @@ class ProponentController
         $proponent->delete();
         $user->delete();
         return redirect()->route('admin2.proponents.index')->with('success', 'Proponent deleted successfully.');
+    }
+
+    private function normalizePhilippineContactNumber(string $contactNumber): string
+    {
+        $digits = preg_replace('/\D+/', '', trim($contactNumber)) ?? '';
+
+        if ($digits === '') {
+            return '09';
+        }
+
+        if (str_starts_with($digits, '63')) {
+            $digits = '0' . substr($digits, 2);
+        }
+
+        if (str_starts_with($digits, '09')) {
+            return substr($digits, 0, 11);
+        }
+
+        if (strlen($digits) === 10 && str_starts_with($digits, '9')) {
+            return '0' . $digits;
+        }
+
+        return '09' . substr($digits, -9);
     }
 }

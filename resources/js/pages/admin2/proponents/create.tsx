@@ -1,20 +1,23 @@
 import React from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
+import { PhilippineMobileInput } from '@/components/philippine-mobile-input';
 
-interface Props {
-  proponentRoleId: number;
-}
-
-export default function Create({ proponentRoleId }: Props) {
+export default function Create() {
+  const { flash } = usePage().props as {
+    flash?: {
+      success?: string;
+      temporary_password?: string;
+    };
+  };
   const { data, setData, post, processing, errors } = useForm({
     name: '',
     email: '',
     birthdate: '',
     organization: '',
     position: '',
-    contact_number: '',
+    contact_number: '09',
   });
 
   function handleSubmit(e: React.FormEvent) {
@@ -43,6 +46,17 @@ export default function Create({ proponentRoleId }: Props) {
               Create a new end-user account for project submissions.
             </p>
           </div>
+
+          {flash?.temporary_password && (
+            <div className="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-950 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-50">
+              <p className="font-semibold">End-user created successfully</p>
+              <p className="mt-2 text-sm">Temporary password</p>
+              <div className="mt-2 rounded-md bg-white/80 px-3 py-2 font-mono text-base tracking-wider text-emerald-900 dark:bg-black/30 dark:text-emerald-100">
+                {flash.temporary_password}
+              </div>
+              <p className="mt-2 text-sm">The user should change this after first login.</p>
+            </div>
+          )}
 
           <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -101,7 +115,7 @@ export default function Create({ proponentRoleId }: Props) {
 
               <div className="bg-blue-50 dark:bg-slate-800 p-3 rounded-md">
                 <p className="text-sm text-blue-800 dark:text-blue-200">
-                  Password will be automatically set to the registered date (MM-DD-YYYY format) upon account creation.
+                  A secure 10-character temporary password will be generated automatically after account creation and shown only after a successful save. It includes uppercase, lowercase, number, and special characters.
                 </p>
               </div>
 
@@ -143,13 +157,10 @@ export default function Create({ proponentRoleId }: Props) {
                 <label htmlFor="contact_number" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Contact Number
                 </label>
-                <input
-                  type="text"
+                <PhilippineMobileInput
                   id="contact_number"
                   value={data.contact_number}
-                  onChange={(e) => setData('contact_number', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
-                  placeholder="Enter contact number"
+                  onValueChange={(value) => setData('contact_number', value)}
                 />
                 {errors.contact_number && (
                   <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.contact_number}</p>

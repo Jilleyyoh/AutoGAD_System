@@ -163,7 +163,7 @@ export default function Certificates({ certificates = { data: [], current_page: 
                             <p className="mt-1">{getStatusBadge(cert.status)}</p>
                           </div>
                           <div>
-                            <p className="text-gray-500 dark:text-gray-500 text-xs uppercase">Questionnaire</p>
+                            <p className="text-gray-500 dark:text-gray-500 text-xs uppercase">Scorecard</p>
                             <p className="font-semibold text-gray-900 dark:text-gray-100">{cert.questionnaire_version}</p>
                           </div>
                           <div>

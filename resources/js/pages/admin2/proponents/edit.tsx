@@ -2,6 +2,7 @@ import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
+import { PhilippineMobileInput } from '@/components/philippine-mobile-input';
 
 interface User {
   id: number;
@@ -35,7 +36,7 @@ export default function Edit({ proponent }: Props) {
     birthdate: proponent.user.birthdate || '',
     organization: proponent.organization || '',
     position: proponent.position || '',
-    contact_number: proponent.contact_number || '',
+    contact_number: proponent.contact_number || '09',
   });
 
   function handleSubmit(e: React.FormEvent) {
@@ -127,13 +128,10 @@ export default function Edit({ proponent }: Props) {
 
               <div>
                 <label htmlFor="contact_number" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Number</label>
-                <input
-                  type="text"
+                <PhilippineMobileInput
                   id="contact_number"
                   value={data.contact_number}
-                  onChange={(e) => setData('contact_number', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
-                  placeholder="Enter contact number"
+                  onValueChange={(value) => setData('contact_number', value)}
                 />
                 {errors.contact_number && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.contact_number}</p>}
               </div>

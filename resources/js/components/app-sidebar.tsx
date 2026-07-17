@@ -39,7 +39,7 @@ export function AppSidebar() {
             { title: 'Manage Assignments', href: '/admin1/assignments', icon: CheckSquare },
             { title: 'Manage Clusters', href: '/domain-expertise', icon: Award },
             { title: 'Manage Evaluators', href: '/evaluators', icon: Users },
-            { title: 'Manage Questionnaire', href: '/questionnaire', icon: ClipboardList },
+            { title: 'Manage Scorecard', href: '/questionnaire', icon: ClipboardList },
             { title: 'Certificates', href: '/admin1/certificates', icon: Award },
         ] : []),
     ];

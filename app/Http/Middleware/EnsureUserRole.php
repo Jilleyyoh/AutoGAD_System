@@ -14,6 +14,10 @@ class EnsureUserRole
     public function handle(Request $request, Closure $next): Response
     {
         $user = auth()->user();
+
+        if ($request->routeIs('password.edit', 'password.update', 'logout')) {
+            return $next($request);
+        }
         
         // Guard rails: redirect user back to their allowed namespace root if strays.
         if ($user->role_id === 1 && !str_starts_with($request->path(), 'proponent')) {

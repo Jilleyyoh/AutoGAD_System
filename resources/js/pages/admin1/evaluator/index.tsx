@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import DragScroll from '@/components/drag-scroll';
 import { route } from 'ziggy-js';
@@ -50,6 +50,7 @@ interface Props {
 
 export default function Index({ evaluators = { data: [], current_page: 1, last_page: 1, per_page: 15, total: 0, links: [] } }: Props) {
   const { delete: destroy } = useForm({});
+  const { flash } = usePage().props as any;
   const [evaluatorToDelete, setEvaluatorToDelete] = useState<Evaluator | null>(null);
   const [search, setSearch] = useState('');
 
@@ -115,6 +116,12 @@ export default function Index({ evaluators = { data: [], current_page: 1, last_p
               Add Evaluator
             </Link>
           </div>
+
+          {flash?.success && (
+            <div className="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900 dark:border-green-900/40 dark:bg-green-950/40 dark:text-green-100">
+              {flash.success}
+            </div>
+          )}
 
           {/* Search Bar - New Position */}
           <div className="mb-6">

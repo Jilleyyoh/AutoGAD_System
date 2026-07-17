@@ -25,7 +25,7 @@ interface VersionInfoProps {
 
 /**
  * VersionInfo Component
- * Displays questionnaire version information with metadata and status indicators
+ * Displays scorecard version information with metadata and status indicators
  */
 export default function VersionInfo({
     version,
@@ -91,7 +91,7 @@ export default function VersionInfo({
             <div className={combineTheme(`${fullWidth ? 'flex' : 'inline-flex'} items-center gap-3 px-4 py-2 rounded-lg`, themeClasses.card.base)}>
                 <div>
                     <p className={combineTheme('text-sm font-medium', themeClasses.text.secondary)}>
-                        Questionnaire Version
+                        Scorecard Version
                     </p>
                     <p className={combineTheme('text-lg font-bold', themeClasses.text.primary)}>
                         {version.version_number}

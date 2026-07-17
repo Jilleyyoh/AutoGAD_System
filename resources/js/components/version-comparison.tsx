@@ -34,7 +34,7 @@ interface VersionComparisonProps {
 
 /**
  * VersionComparison Component
- * Displays side-by-side comparison of two questionnaire versions
+ * Displays side-by-side comparison of two scorecard versions
  * Highlights changes in categories, questions, and scoring
  */
 export default function VersionComparison({

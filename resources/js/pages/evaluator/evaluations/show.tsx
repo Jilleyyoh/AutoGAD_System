@@ -415,13 +415,13 @@ export default function Show({
     const tabs = [
         { id: 'info', label: 'Project Info' },
         { id: 'documents', label: 'Documents' },
-        { id: 'questionnaire', label: 'Questionnaire' },
+        { id: 'questionnaire', label: 'Scorecard' },
         { id: 'result', label: 'Evaluation Result' },
     ];
 
     return (
         <AppLayout  breadcrumbs={[{ title: 'Dashboard', href: route('evaluator.dashboard') }, { title: 'Evaluations', href: route('evaluator.evaluations.index') }, { title: 'Evaluate', href: project ? route('evaluator.evaluations.show', project.id) : '#' }]}>
-            <Head title={`Evaluate: ${project?.project_code || 'Questionnaire'}`} />
+            <Head title={`Evaluate: ${project?.project_code || 'Scorecard'}`} />
 
             <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
                 {/* Error State Display */}
@@ -436,10 +436,10 @@ export default function Show({
                                 </div>
                                 <div className="flex-1">
                                     <h3 className="text-lg font-medium text-red-900 dark:text-red-100 mb-2">
-                                        Questionnaire Unavailable
+                                        Scorecard Unavailable
                                     </h3>
                                     <p className="text-sm text-red-800 dark:text-red-200 mb-4">
-                                        {`The questionnaire is unavailable. Please contact the administrator.`}
+                                        {`The scorecard is unavailable. Please contact the administrator.`}
                                     </p>
                                     <Link
                                         href={route('evaluator.evaluations.index')}
@@ -499,14 +499,14 @@ export default function Show({
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {/* Status Alerts */}
                     <div className="space-y-4 mb-8">
-                        {/* Questionnaire Version Info */}
+                        {/* Scorecard Version Info */}
                         {questionnaire_version && (
                             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
                                     <div>
                                         <p className={combineTheme('font-semibold text-sm', 'text-amber-800 dark:text-amber-200')}>
-                                            Questionnaire Version {questionnaire_version.version_number}
+                                            Scorecard Version {questionnaire_version.version_number}
                                         </p>
                                         <p className={combineTheme('text-xs', 'text-amber-600 dark:text-amber-300')}>
                                             Created {new Date(questionnaire_version.created_at).toLocaleDateString()}
@@ -712,7 +712,7 @@ export default function Show({
                                 </div>
                                 
                             )}
-                            {/* Questionnaire Tab */}
+                            {/* Scorecard Tab */}
                             {activeTab === 'questionnaire' && (
                                 <div className="space-y-6">
                                     {!isCompleted && (
@@ -721,7 +721,7 @@ export default function Show({
                                                 Evaluation Instructions
                                             </p>
                                             <p className={combineTheme('text-xs mt-1', 'text-blue-600 dark:text-blue-300')}>
-                                                Answer each question using Yes/Partly/No. Your answers are automatically saved as you go.
+                                                Answer each scorecard item using Yes/Partly/No. Your answers are automatically saved as you go.
                                             </p>
                                         </div>
                                     )}
@@ -1257,7 +1257,7 @@ export default function Show({
                                                 </div>
                                                 <div className={combineTheme('p-4 rounded-xl', 'bg-amber-100 dark:bg-amber-900/50')}>
                                                     <p className={combineTheme('text-sm', 'text-amber-800 dark:text-amber-100')}>
-                                                        Complete the questionnaire and submit to finalize this evaluation.
+                                                        Complete the scorecard and submit to finalize this evaluation.
                                                     </p>
                                                 </div>
                                             </div>

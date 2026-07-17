@@ -381,7 +381,7 @@
             <table class="evaluations-table">
                 <thead>
                     <tr>
-                        <th>Questionnaire</th>
+                        <th>Scorecard</th>
                         <th style="width: 60px;">Score</th>
                         <th style="width: 120px;">Remarks</th>
                     </tr>

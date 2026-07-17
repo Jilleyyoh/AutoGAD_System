@@ -40,7 +40,7 @@ export default function VersionHistory({ versions }: Props) {
 
     return (
         <AppLayout>
-            <Head title="Questionnaire Version History" />
+            <Head title="Scorecard Version History" />
 
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 <div className={combineTheme('px-4 py-6 sm:px-0', themeClasses.text.primary)}>
@@ -49,10 +49,10 @@ export default function VersionHistory({ versions }: Props) {
                         <div className="flex items-center gap-4 mb-4">
                             <div>
                                 <h1 className={combineTheme('text-3xl font-bold', themeClasses.text.primary)}>
-                                    Questionnaire Version History
+                                    Scorecard Version History
                                 </h1>
                                 <p className={combineTheme('mt-1', themeClasses.text.secondary)}>
-                                    View all versions and changes to your questionnaire
+                                    View all versions and changes to your scorecard
                                 </p>
                             </div>
                         </div>

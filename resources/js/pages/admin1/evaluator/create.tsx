@@ -1,5 +1,5 @@
 import React from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { route } from 'ziggy-js';
 import { NativeSelect } from '@/components/ui/native-select';
@@ -16,6 +16,7 @@ interface Props {
 }
 
 export default function Create({ domains, evaluatorRoleId }: Props) {
+  const { flash } = usePage().props as any;
   const { data, setData, post, processing, errors } = useForm({
     name: '',
     email: '',
@@ -49,6 +50,17 @@ export default function Create({ domains, evaluatorRoleId }: Props) {
               Add a new evaluator to the system.
             </p>
           </div>
+
+          {flash?.temporary_password && (
+            <div className="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-950 dark:border-emerald-900/40 dark:bg-emerald-950/40 dark:text-emerald-50">
+              <p className="font-semibold">Evaluator created successfully</p>
+              <p className="mt-2 text-sm">Temporary password</p>
+              <div className="mt-2 rounded-md bg-white/80 px-3 py-2 font-mono text-base tracking-wider text-emerald-900 dark:bg-black/30 dark:text-emerald-100">
+                {flash.temporary_password}
+              </div>
+              <p className="mt-2 text-sm">The user should change this after first login.</p>
+            </div>
+          )}
 
           <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -107,7 +119,7 @@ export default function Create({ domains, evaluatorRoleId }: Props) {
 
               <div className="bg-blue-50 dark:bg-slate-800 p-3 rounded-md">
                 <p className="text-sm text-blue-800 dark:text-blue-200">
-                  Password will be automatically set to the registered date (MM-DD-YYYY format) upon account creation.
+                  A secure 10-character temporary password will be generated automatically after account creation and shown only after a successful save. It includes uppercase, lowercase, number, and special characters.
                 </p>
               </div>
 

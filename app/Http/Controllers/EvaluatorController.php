@@ -6,6 +6,7 @@ use App\Models\DomainExpertise;
 use App\Models\Evaluator;
 use App\Models\User;
 use App\Models\Role;
+use App\Services\TemporaryPasswordGenerator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -67,7 +68,7 @@ class EvaluatorController extends Controller
     /**
      * Store a newly created evaluator in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, TemporaryPasswordGenerator $temporaryPasswordGenerator)
     {
         // Creating a new user with evaluator role
         $request->validate([
@@ -80,16 +81,16 @@ class EvaluatorController extends Controller
         // Get the evaluator role ID (fixed as 2)
         $evaluatorRoleId = 2;
 
-        // Auto-generate password as registered date (MM-DD-YYYY format)
-        $registeredDate = now()->format('m-d-Y');
+        $temporaryPassword = $temporaryPasswordGenerator->generate(10);
 
         // Create the user with explicit role_id
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'birthdate' => $request->birthdate,
-            'password' => bcrypt($registeredDate),
+            'password' => bcrypt($temporaryPassword),
             'role_id' => $evaluatorRoleId,
+            'must_change_password' => true,
         ]);
 
         // Create the evaluator
@@ -98,8 +99,10 @@ class EvaluatorController extends Controller
             'domain_expertise_id' => $request->domain_expertise_id,
         ]);
 
-        return redirect()->route('evaluators.index')
-                        ->with('success', 'New evaluator created successfully. Default password is the registered date: ' . $registeredDate);
+        return redirect()->route('evaluators.create')->with([
+            'success' => 'New evaluator created successfully. Share the temporary password below with the user, then ask them to change it after first login.',
+            'temporary_password' => $temporaryPassword,
+        ]);
     }
 
     /**

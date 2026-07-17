@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import DragScroll from '@/components/drag-scroll';
 import { route } from 'ziggy-js';
 import ConfirmationDialog from '@/components/ui/confirmation-dialog';
-import { Plus, Edit2, Trash2, Users, AlertCircle, FileText } from 'lucide-react';
+import { Plus, Edit2, Trash2, Users, FileText } from 'lucide-react';
 
 interface User {
   id: number;
@@ -45,6 +45,11 @@ interface Props {
 
 export default function Index({ proponents = { data: [], current_page: 1, last_page: 1, per_page: 15, total: 0, links: [] } }: Props) {
   const { delete: destroy } = useForm({});
+  const { flash } = usePage().props as {
+    flash?: {
+      success?: string;
+    };
+  };
   const [proponentToDelete, setProponentToDelete] = useState<Proponent | null>(null);
   const [search, setSearch] = useState('');
 
@@ -63,6 +68,23 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
     const day = String(date.getDate()).padStart(2, '0');
     const year = date.getFullYear();
     return `${month}-${day}-${year}`;
+  };
+
+  const formatPhilippineContactNumber = (value: string) => {
+    const digits = value.replace(/\D/g, '');
+    const normalized = digits.startsWith('63')
+      ? `0${digits.slice(2)}`
+      : digits.startsWith('09')
+        ? digits
+        : digits.length >= 9
+          ? `09${digits.slice(-9)}`
+          : '';
+
+    if (normalized.length !== 11 || !normalized.startsWith('09')) {
+      return value || 'N/A';
+    }
+
+    return `${normalized.slice(0, 4)} ${normalized.slice(4, 7)} ${normalized.slice(7, 11)}`;
   };
 
   // Safely check proponents before rendering
@@ -105,6 +127,12 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
               Add End-User
             </Link>
           </div>
+
+          {flash?.success && (
+            <div className="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900 dark:border-green-900/40 dark:bg-green-950/40 dark:text-green-100">
+              {flash.success}
+            </div>
+          )}
 
           {/* Search Bar */}
           <div className="mb-6">
@@ -202,7 +230,7 @@ export default function Index({ proponents = { data: [], current_page: 1, last_p
                           {proponent.position || 'N/A'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                          {proponent.contact_number || 'N/A'}
+                          {proponent.contact_number ? formatPhilippineContactNumber(proponent.contact_number) : 'N/A'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                           {formatBirthdate(proponent.user?.birthdate || '')}

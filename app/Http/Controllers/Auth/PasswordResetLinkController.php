@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\TemporaryPasswordGenerator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +28,7 @@ class PasswordResetLinkController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, TemporaryPasswordGenerator $temporaryPasswordGenerator): RedirectResponse
     {
         $request->validate([
             'email' => 'required|email',
@@ -45,10 +46,15 @@ class PasswordResetLinkController extends Controller
             ]);
         }
 
-        // Reset password to registered date (MM-DD-YYYY format)
-        $registeredDate = $user->created_at->format('m-d-Y');
-        $user->update(['password' => Hash::make($registeredDate)]);
+        $temporaryPassword = $temporaryPasswordGenerator->generate(10);
+        $user->update([
+            'password' => Hash::make($temporaryPassword),
+            'must_change_password' => true,
+        ]);
 
-        return back()->with('status', "Your password has been reset. Your default password is your registered date: {$registeredDate}. Please use this to log in.");
+        return back()->with([
+            'status' => 'Your password has been reset. Please use the temporary password below to log in.',
+            'temporary_password' => $temporaryPassword,
+        ]);
     }
 }
