@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { AppAlertsProvider } from './components/app-alerts';
 import { initializeTheme } from './hooks/use-appearance';
 
-const appName = import.meta.env.VITE_APP_NAME || 'AutoGAD';
+const appName = import.meta.env.VITE_APP_NAME || 'GIKMS';
 
 createInertiaApp({
     title: (title) => title || appName,
