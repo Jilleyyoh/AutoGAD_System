@@ -219,8 +219,8 @@
 [class*="bg-[#4a148c]"],
 [class*="bg-[#300B63]"],
 [class*="bg-[#300b63]"] {
-    background-color: var(--bw-foreground) !important;
-    color: var(--bw-inverse) !important;
+    background-color: #690383 !important;
+    color: #ffffff !important;
 }
 
 [class*="bg-blue-50"]:not(.avatar-fallback),
@@ -434,8 +434,8 @@ span[class*="border-"]:not(.avatar-fallback):not(.user-avatar-border) {
 [class*="hover:bg-fuchsia-"]:hover,
 [class*="hover:bg-pink-"]:hover,
 [class*="hover:bg-rose-"]:hover {
-    background-color: var(--bw-hover) !important;
-    color: var(--bw-foreground) !important;
+    background-color: #b61297 !important;
+    color: #ffffff !important;
 }
 
 [class*="dark:bg-black"],

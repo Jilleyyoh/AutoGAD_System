@@ -792,38 +792,74 @@ export default function Index({ settings, categories = [], interpretations = [],
               </div>
 
               <div className="space-y-4">
-                {interpretations.map((interpretation) => (
-                  <div key={interpretation.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-5 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
-                    <div className="flex justify-between items-start gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm px-4 py-1.5 rounded-full font-bold">
-                            {interpretation.score_min.toFixed(2)} – {interpretation.score_max.toFixed(2)}
-                          </span>
-                        </div>
-                        <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-1">{interpretation.interpretation}</h3>
-                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">{interpretation.description}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-500">v{interpretation.version}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button 
-                          onClick={() => handleEditInterpretation(interpretation)}
-                          className="p-2 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition"
-                          title="Edit"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button 
-                          onClick={() => handleDeleteInterpretation(interpretation)}
-                          className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+{interpretations.map((interpretation, index) => {
+  const ratio =
+    interpretations.length <= 1 ? 0 : index / (interpretations.length - 1);
+
+  const hue = ratio * 120; // Red (0) → Green (120)
+
+  const backgroundColor = `hsl(${hue}, 90%, 96%)`;
+  const borderColor = `hsl(${hue}, 75%, 45%)`;
+  const badgeColor = `hsl(${hue}, 75%, 45%)`;
+
+  return (
+    <div
+      key={interpretation.id}
+      className="border rounded-lg p-5 transition-colors"
+      style={{
+        backgroundColor,
+        borderColor,
+      }}
+    >
+      <div className="flex justify-between items-start gap-4">
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-2">
+<span
+    className="inline-block text-sm px-4 py-1.5 rounded-full font-bold"
+    style={{
+        backgroundColor: `hsl(${(interpretations.length <= 1 ? 0 : interpretations.findIndex(i => i.id === interpretation.id) / (interpretations.length - 1)) * 120}, 90%, 96%)`,
+        color: `hsl(${(interpretations.length <= 1 ? 0 : interpretations.findIndex(i => i.id === interpretation.id) / (interpretations.length - 1)) * 120}, 75%, 45%)`,
+        border: `1px solid hsl(${(interpretations.length <= 1 ? 0 : interpretations.findIndex(i => i.id === interpretation.id) / (interpretations.length - 1)) * 120}, 75%, 45%)`,
+    }}
+>
+    {interpretation.score_min.toFixed(2)} – {interpretation.score_max.toFixed(2)}
+</span>
+          </div>
+
+          <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-1">
+            {interpretation.interpretation}
+          </h3>
+
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
+            {interpretation.description}
+          </p>
+
+          <p className="text-xs text-gray-500 dark:text-gray-500">
+            v{interpretation.version}
+          </p>
+        </div>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleEditInterpretation(interpretation)}
+            className="p-2 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition"
+            title="Edit"
+          >
+            <Edit2 className="w-4 h-4" />
+          </button>
+
+          <button
+            onClick={() => handleDeleteInterpretation(interpretation)}
+            className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
+            title="Delete"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+})}
                 
                 {interpretations.length === 0 && (
                   <div className="text-center py-12">
